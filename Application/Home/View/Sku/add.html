@@ -1,0 +1,90 @@
+<div class="main ">
+
+	<div class="row">
+		<div class="col-lg-12">
+			<h3 class="page-header"><i class="fa fa-indent"></i>SKU管理</h3>
+			<ol class="breadcrumb">
+				<li><i class="fa fa-home"></i><a href="/Home">Home</a></li>
+				<li><i class="fa fa-list-alt"></i><a href="/Home/SkuDetail/index">SKU</a></li>
+				<li><i class="fa fa-indent"></i>新增</li>				
+			</ol>
+		</div>
+	</div>
+	<div class="row">
+	    <div class="col-md-12">
+	        <div class="panel panel-default">
+	            <div class="panel-heading">
+	                <h2><i class="fa fa-indent red"></i><strong>Sku新增表单</strong></h2>
+	            </div>
+				<div class="panel-body">
+					<form action="/Home/SkuDetail/save" method="post" enctype="multipart/form-data" class="form-horizontal ">
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label">Sku</label>
+		                    <div class="col-md-6">
+		                        <input type="text" id="text-input" name="sku" class="form-control" value="">
+		                    </div>
+		                </div>
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label" for="text-input">重量(g)</label>
+		                    <div class="col-md-6">
+		                        <input type="text" id="text-input" name="weight" class="form-control" value="">
+		                    </div>
+		                </div>
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label" for="email-input">长度(cm)</label>
+		                    <div class="col-md-6">
+		                        <input type="text" id="text-input" name="length" class="form-control" value="">
+		                    </div>
+		                </div>
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label" for="email-input">宽度(cm)</label>
+		                    <div class="col-md-6">
+		                        <input type="text" id="text-input" name="width" class="form-control" value="">
+		                    </div>
+		                </div>
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label" for="email-input">高度(cm)</label>
+		                    <div class="col-md-6">
+		                        <input type="text" id="text-input" name="height" class="form-control" value="">
+		                    </div>
+		                </div>	
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label" for="email-input">进货价(以人民币元为单位)</label>
+		                    <div class="col-md-6">
+		                        <input type="text" id="text-input" name="buy_price" class="form-control" value="">
+		                    </div>
+		                </div>
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label" for="email-input">国内端运费(以人民币元为单位)</label>
+		                    <div class="col-md-6">
+		                        <input type="text" id="text-input" name="domestic_logistics_price" class="form-control" value="">
+		                    </div>
+		                </div>	
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label" for="email-input">包装成本(以人民币元为单位)</label>
+		                    <div class="col-md-6">
+		                        <input type="text" id="text-input" name="domestic_logistics_price" class="form-control" value="">
+		                    </div>
+		                </div>				                			              
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label">物流方式</label>
+		                    <div class="col-md-6">
+		                        <label class="radio-inline" for="inline-radio1">
+		                        	<input type="radio" id="inline-radio1" name="logistics_type" value="1"> 直邮
+		                        </label>
+		                        <label class="radio-inline" for="inline-radio2">
+		                        	<input type="radio" id="inline-radio2" name="logistics_type" value="2"> FBA
+		                        </label>
+		                    </div>
+		                </div>
+						<br>
+						<button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i> Submit</button>
+		            </form>
+				</div>
+<!-- 						<div class="panel-footer">
+	                		<button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i> Submit</button>
+	            		</div>	 -->
+	        </div>	
+	    </div>
+	</div>
+</div>
