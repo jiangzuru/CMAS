@@ -10,10 +10,29 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2017-04-07 16:50:13
+Date: 2017-04-15 15:10:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `think_change_rate`
+-- ----------------------------
+DROP TABLE IF EXISTS `think_change_rate`;
+CREATE TABLE `think_change_rate` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `change_rate` decimal(11,4) NOT NULL COMMENT '汇率',
+  `date` varchar(11) NOT NULL COMMENT '日期',
+  `from_Currency` varchar(11) NOT NULL COMMENT '本币',
+  `to_Currency` varchar(11) NOT NULL COMMENT '要兑换的币种',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of think_change_rate
+-- ----------------------------
+INSERT INTO `think_change_rate` VALUES ('1', '7.3049', '2017-04-14', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('2', '8.6129', '2017-04-14', 'GBP', 'CNY');
 
 -- ----------------------------
 -- Table structure for `think_fba_fee`
@@ -160,7 +179,7 @@ CREATE TABLE `think_sku_detail` (
 -- ----------------------------
 -- Records of think_sku_detail
 -- ----------------------------
-INSERT INTO `think_sku_detail` VALUES ('19', 'XZ01HCBK01-F2', '1.00', '0.00', '0.00', '0.00', '0.00', '1', '0.00', '0.00');
+INSERT INTO `think_sku_detail` VALUES ('19', 'XZ01HCBK01-F2', '500.00', '22.00', '22.00', '34.00', '11.00', '2', '2.00', '2.00');
 INSERT INTO `think_sku_detail` VALUES ('20', 'XZ01HCBK01-F3', '0.00', '0.00', '0.00', '0.00', '0.00', '1', '0.00', '0.00');
 INSERT INTO `think_sku_detail` VALUES ('21', 'xz11f8dd', '1.00', '22.00', '22.00', '11.00', '11.00', '1', '2.00', '0.00');
 INSERT INTO `think_sku_detail` VALUES ('22', 'zjqe01fba', '500.00', '44.00', '44.00', '22.00', '10.00', '2', '0.00', '0.00');
