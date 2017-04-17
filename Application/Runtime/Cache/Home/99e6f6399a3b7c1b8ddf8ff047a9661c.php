@@ -176,6 +176,7 @@
 						<ul class="nav nav-sidebar">
               				<li><a href="/Home/SkuDetail/index"><i class="fa fa-laptop"></i><span class="text"> SKU</span></a></li>
               				<li><a href="/Home/FbaFee/index"><i class="fa fa-life-bouy"></i><span class="text"> FBA基础服务费</span></a></li>
+              				<li><a href="/Home/Logistics/index"><i class="fa fa-plane"></i><span class="text"> FBA基础服务费</span></a></li>
 						</ul>
 					</div>					
 				</div>
@@ -188,111 +189,86 @@
 		<div class="main">
 
 
-	<div class="main ">
+	
 
-	<div class="row">
-		<div class="col-lg-12">
-			<h3 class="page-header"><i class="fa fa-indent"></i>SKU管理</h3>
-			<ol class="breadcrumb">
-				<li><i class="fa fa-home"></i><a href="/Home">Home</a></li>
-				<li><i class="fa fa-list-alt"></i><a href="/Home/SkuDetail/index">SKU</a></li>
-				<li><i class="fa fa-indent"></i>新增</li>				
-			</ol>
-		</div>
-	</div>
-	<div class="row">
-	    <div class="col-md-12">
-	        <div class="panel panel-default">
-	            <div class="panel-heading">
-	                <h2><i class="fa fa-indent red"></i><strong>Sku新增表单</strong></h2>
-	            </div>
-				<div class="panel-body">
-					<form action="/Home/SkuDetail/save" method="post" enctype="multipart/form-data" class="form-horizontal ">
-		                <div class="form-group">
-		                    <label class="col-md-3 control-label">Sku</label>
-		                    <div class="col-md-6">
-		                        <input type="text" id="text-input" name="sku" class="form-control" value="">
-		                    </div>
-		                </div>
-		                <div class="form-group">
-		                    <label class="col-md-3 control-label" for="text-input">重量(g)</label>
-		                    <div class="col-md-6">
-		                        <input type="text" id="text-input" name="weight" class="form-control" value="">
-		                    </div>
-		                </div>
-		                <div class="form-group">
-		                    <label class="col-md-3 control-label" for="email-input">长度(cm)</label>
-		                    <div class="col-md-6">
-		                        <input type="text" id="text-input" name="length" class="form-control" value="">
-		                    </div>
-		                </div>
-		                <div class="form-group">
-		                    <label class="col-md-3 control-label" for="email-input">宽度(cm)</label>
-		                    <div class="col-md-6">
-		                        <input type="text" id="text-input" name="width" class="form-control" value="">
-		                    </div>
-		                </div>
-		                <div class="form-group">
-		                    <label class="col-md-3 control-label" for="email-input">高度(cm)</label>
-		                    <div class="col-md-6">
-		                        <input type="text" id="text-input" name="height" class="form-control" value="">
-		                    </div>
-		                </div>	
-		                <div class="form-group">
-		                    <label class="col-md-3 control-label" for="email-input">进货价(以人民币元为单位)</label>
-		                    <div class="col-md-6">
-		                        <input type="text" id="text-input" name="buy_price" class="form-control" value="">
-		                    </div>
-		                </div>
-		                <div class="form-group">
-		                    <label class="col-md-3 control-label" for="email-input">国内端运费(以人民币元为单位)</label>
-		                    <div class="col-md-6">
-		                        <input type="text" id="text-input" name="domestic_logistics_price" class="form-control" value="">
-		                    </div>
-		                </div>	
-		                <div class="form-group">
-		                    <label class="col-md-3 control-label" for="email-input">包装成本(以人民币元为单位)</label>
-		                    <div class="col-md-6">
-		                        <input type="text" id="text-input" name="domestic_logistics_price" class="form-control" value="">
-		                    </div>
-		                </div>				                			              
-		                <div class="form-group">
-		                    <label class="col-md-3 control-label">物流方式</label>
-		                    <div class="col-md-6">
-		                        <label class="radio-inline" for="inline-radio1">
-		                        	<input type="radio" id="inline-radio1" name="logistics_type" value="1"> 直邮
-		                        </label>
-		                        <label class="radio-inline" for="inline-radio2">
-		                        	<input type="radio" id="inline-radio2" name="logistics_type" value="2"> FBA
-		                        </label>
-		                    </div>
-		                </div>
-		                <div class="form-group">
-		                    <label class="col-md-3 control-label">特殊属性</label>
-		                    <div class="col-md-6">
-		                        <label class="checkbox-inline" for="inline-checkbox1">
-		                        	<input type="checkbox" id="inline-checkbox1" name="is_electronic" value="1"> 电子产品
-		                        </label>
-		                        <label class="checkbox-inline" for="inline-checkbox2">
-		                        	<input type="checkbox" id="inline-checkbox2" name="is_powder" value="1"> 粉末
-		                        </label>
-		                        <label class="checkbox-inline" for="inline-checkbox3">
-		                        	<input type="checkbox" id="inline-checkbox3" name="is_liquid" value="1"> 液体
-		                        </label>
-	                    </div>
-	                </div>
-						<br>
-						<button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i> Submit</button>
-		            </form>
-				</div>
-<!-- 						<div class="panel-footer">
-	                		<button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i> Submit</button>
-	            		</div>	 -->
-	        </div>	
-	    </div>
-	</div>
-</div>
+  <div class="container-fluid content">
+    <div class="row">
+            
+    <!-- start: Content -->
+    <div class="main sidebar-minified">
+    
+      <div class="row">
+        <div class="col-lg-12">
+          <h3 class="page-header"><i class="fa fa-table"></i>FBA基础服务费</h3>
+          <ol class="breadcrumb">
+            <li><i class="fa fa-home"></i><a href="/Home">Home</a></li>          
+            <li><i class="fa fa-table"></i>FBA基础服务费收费明细</li>        
+          </ol>
+        </div>
+      </div>
 
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2><i class="fa fa-table red"></i><span class="break"></span><strong>FBA Table</strong></h2>
+              <div class="panel-actions">
+                <a href="table.html#" class="btn-setting"><i class="fa fa-rotate-right"></i></a>
+                <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                <a href="table.html#" class="btn-close"><i class="fa fa-times"></i></a>
+              </div>
+            </div>
+            <div class="panel-body">
+              <table class="table table-striped table-bordered" id="sku_table">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>尺寸(cm)</th>
+                      <th>重量(g)</th>
+                      <th>销售站点</th>
+                      <th>基础服务费</th>  
+                      <th>操作</th>                                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php if(is_array($volist)): foreach($volist as $key=>$vo): ?><tr>
+                        <th><input type="checkbox" name="" value="<?php echo ($vo["id"]); ?>"></th>
+                        <th><?php echo ($vo["high_length"]); ?>*<?php echo ($vo["high_width"]); ?>*<?php echo ($vo["high_height"]); ?> cm</th>
+                        <th><?php echo ($vo["low_weight"]); ?> - <?php echo ($vo["high_weight"]); ?></th>
+                        <th><?php echo ($vo["sale_domain"]); ?></th>
+                        <th><?php echo ($vo["price"]); ?></th>
+                        <th><a href="edit?id=<?php echo ($vo["id"]); ?>">编辑</a></th>
+                      </tr><?php endforeach; endif; ?>
+                  </tbody>   
+               </table>
+            <button type="button" class="btn btn-success"><a href="/Home/FbaFee/add">新增</a></button>
+
+            </div>
+
+          </div>
+        </div><!--/col-->
+      </div><!--/row-->
+    </div>
+    <!-- end: Content -->
+    <br><br><br>    
+
+
+  </div><!--/container-->
+
+  
+  <div class="clearfix"></div>
+  
+
+  <script src="/Public/js/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript">
+    window.jQuery || document.write("<script src='/Public/js/jquery-2.1.1.min.js'>"+"<"+"/script>");
+  </script>
+
+  <script src="/Public/js/common.js"></script>
+  
+
+</body>
+</html>
 
 	
 	</div><!--/container-->

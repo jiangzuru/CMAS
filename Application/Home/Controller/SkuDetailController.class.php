@@ -141,7 +141,7 @@ class SkuDetailController extends Controller {
         $this->assign('sku_data',$sku_data);
         $this->assign('FBA_fee',$FBA_fee);
 
-        $this->display('SKU:calculate');
+        $this->display('Sku:calculate');
 
     }
 
