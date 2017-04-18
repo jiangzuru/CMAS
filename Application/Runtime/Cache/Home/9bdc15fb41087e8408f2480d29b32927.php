@@ -1,4 +1,4 @@
-
+<?php if (!defined('THINK_PATH')) exit();?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -183,7 +183,108 @@
 		<div class="main">
 
 
-	{__CONTENT__}
+	<div class="main ">
+
+	<div class="row">
+		<div class="col-lg-12">
+			<h3 class="page-header"><i class="fa fa-indent"></i>SKU管理</h3>
+			<ol class="breadcrumb">
+				<li><i class="fa fa-home"></i><a href="/Home">Home</a></li>
+				<li><i class="fa fa-list-alt"></i><a href="/Home/SkuDetail/index">SKU</a></li>
+				<li><i class="fa fa-indent"></i>编辑</li>				
+			</ol>
+		</div>
+	</div>
+	<div class="row">
+	    <div class="col-md-12">
+	        <div class="panel panel-default">
+	            <div class="panel-heading">
+	                <h2><i class="fa fa-indent red"></i><strong>Sku编辑表单</strong></h2>
+	            </div>
+				<div class="panel-body">
+					<form action="/Home/SkuDetail/update" method="post" enctype="multipart/form-data" class="form-horizontal ">
+						<input type="hidden" value="<?php echo ($data["id"]); ?>" name='id'>
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label">Sku</label>
+		                    <div class="col-md-6">
+		                        <p class="form-control-static"><?php echo ($data["sku"]); ?></p>
+		                    </div>
+		                </div>
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label" for="text-input">重量(g)</label>
+		                    <div class="col-md-6">
+		                        <input type="text" id="text-input" name="weight" class="form-control" value="<?php echo ($data["weight"]); ?>">
+		                    </div>
+		                </div>
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label" for="email-input">长度(cm)</label>
+		                    <div class="col-md-6">
+		                        <input type="text" id="text-input" name="length" class="form-control" value="<?php echo ($data["length"]); ?>">
+		                    </div>
+		                </div>
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label" for="email-input">宽度(cm)</label>
+		                    <div class="col-md-6">
+		                        <input type="text" id="text-input" name="width" class="form-control" value="<?php echo ($data["width"]); ?>">
+		                    </div>
+		                </div>
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label" for="email-input">高度(cm)</label>
+		                    <div class="col-md-6">
+		                        <input type="text" id="text-input" name="height" class="form-control" value="<?php echo ($data["height"]); ?>">
+		                    </div>
+		                </div>	
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label" for="email-input">进货价(以人民币元为单位)</label>
+		                    <div class="col-md-6">
+		                        <input type="text" id="text-input" name="buy_price" class="form-control" value="<?php echo ($data["buy_price"]); ?>">
+		                    </div>
+		                </div>
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label" for="email-input">国内端运费(以人民币元为单位)</label>
+		                    <div class="col-md-6">
+		                        <input type="text" id="text-input" name="domestic_logistics_price" class="form-control" value="<?php echo ($data["domestic_logistics_price"]); ?>">
+		                    </div>
+		                </div>
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label" for="email-input">包装成本(以人民币元为单位)</label>
+		                    <div class="col-md-6">
+		                        <input type="text" id="text-input" name="package_price" class="form-control" value="<?php echo ($data["package_price"]); ?>">
+		                    </div>
+		                </div>					                			              
+		                <div class="form-group">
+		                    <label class="col-md-3 control-label">物流方式</label>
+		                    <div class="col-md-6">
+		                    	<input type="hidden" value="<?php echo ($data["logistics_type"]); ?>" id="logistics_type_hidden">
+		                        <label class="radio-inline" for="inline-radio1">
+		                        	<input type="radio" id="inline-radio1" name="logistics_type" value="1"> 直邮
+		                        </label>
+		                        <label class="radio-inline" for="inline-radio2">
+		                        	<input type="radio" id="inline-radio2" name="logistics_type" value="2"> FBA
+		                        </label>
+		                    </div>
+		                </div>
+						<br>
+						<button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i> Submit</button>
+		            </form>
+				</div>
+<!-- 						<div class="panel-footer">
+	                		<button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i> Submit</button>
+	            		</div>	 -->
+	        </div>	
+	    </div>
+	</div>
+</div>
+
+<script src="/Public/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript">
+window.jQuery || document.write("<script src='/Public/js/jquery-2.1.1.min.js'>"+"<"+"/script>");
+</script>
+
+<script type="text/javascript">
+	var def = document.getElementById('logistics_type_hidden').value;
+	$("input:radio[name='logistics_type'][value="+def+"]").attr("checked",true);
+</script>
 
 	
 	</div><!--/container-->

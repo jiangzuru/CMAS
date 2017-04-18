@@ -15,6 +15,16 @@ class FbaFeeController extends Controller {
         $this->display('index');
     }
 
+    public function getFbafeeData(){
+        $FbaModel = M('FbaFee');
+        $data = $FbaModel->select();
+        if($data){
+            $this->ajaxReturn(['error'=>0,'message'=>'success','data'=>$data]);
+        }else{
+            $this->ajaxReturn(['error'=>1,'message'=>'数据库连接出错']);
+        }
+    }
+
     //进入新增细则页
     public function add(){
         $this->display('add');

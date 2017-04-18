@@ -1,4 +1,4 @@
-
+<?php if (!defined('THINK_PATH')) exit();?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -183,7 +183,86 @@
 		<div class="main">
 
 
-	{__CONTENT__}
+	
+
+  <div class="container-fluid content">
+    <div class="row">
+            
+    <!-- start: Content -->
+    <div class="main sidebar-minified">
+    
+      <div class="row">
+        <div class="col-lg-12">
+          <h3 class="page-header"><i class="fa fa-table"></i>FBA基础服务费</h3>
+          <ol class="breadcrumb">
+            <li><i class="fa fa-home"></i><a href="/Home">Home</a></li>          
+            <li><i class="fa fa-table"></i>FBA基础服务费收费明细</li>        
+          </ol>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2><i class="fa fa-table red"></i><span class="break"></span><strong>FBA Table</strong></h2>
+              <div class="panel-actions">
+                <a href="table.html#" class="btn-setting"><i class="fa fa-rotate-right"></i></a>
+                <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                <a href="table.html#" class="btn-close"><i class="fa fa-times"></i></a>
+              </div>
+            </div>
+            <div class="panel-body">
+              <table class="table table-striped table-bordered" id="sku_table">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>尺寸(cm)</th>
+                      <th>重量(g)</th>
+                      <th>销售站点</th>
+                      <th>基础服务费</th>  
+                      <th>操作</th>                                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php if(is_array($volist)): foreach($volist as $key=>$vo): ?><tr>
+                        <th><input type="checkbox" name="" value="<?php echo ($vo["id"]); ?>"></th>
+                        <th><?php echo ($vo["high_length"]); ?>*<?php echo ($vo["high_width"]); ?>*<?php echo ($vo["high_height"]); ?> cm</th>
+                        <th><?php echo ($vo["low_weight"]); ?> - <?php echo ($vo["high_weight"]); ?></th>
+                        <th><?php echo ($vo["sale_domain"]); ?></th>
+                        <th><?php echo ($vo["price"]); ?></th>
+                        <th><a href="edit?id=<?php echo ($vo["id"]); ?>">编辑</a></th>
+                      </tr><?php endforeach; endif; ?>
+                  </tbody>   
+               </table>
+            <button type="button" class="btn btn-success"><a href="/Home/FbaFee/add">新增</a></button>
+
+            </div>
+
+          </div>
+        </div><!--/col-->
+      </div><!--/row-->
+    </div>
+    <!-- end: Content -->
+    <br><br><br>    
+
+
+  </div><!--/container-->
+
+  
+  <div class="clearfix"></div>
+  
+
+  <script src="/Public/js/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript">
+    window.jQuery || document.write("<script src='/Public/js/jquery-2.1.1.min.js'>"+"<"+"/script>");
+  </script>
+
+  <script src="/Public/js/common.js"></script>
+  
+
+</body>
+</html>
 
 	
 	</div><!--/container-->

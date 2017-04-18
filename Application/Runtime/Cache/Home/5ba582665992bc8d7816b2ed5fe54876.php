@@ -1,4 +1,4 @@
-
+<?php if (!defined('THINK_PATH')) exit();?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -183,7 +183,97 @@
 		<div class="main">
 
 
-	{__CONTENT__}
+	
+
+  <div class="container-fluid content">
+    <div class="row">
+
+    <!-- start: Content -->
+    <div class="main sidebar-minified">
+
+      <div class="row">
+        <div class="col-lg-12">
+          <h3 class="page-header"><i class="fa fa-table"></i>SKU管理</h3>
+          <ol class="breadcrumb">
+            <li><i class="fa fa-home"></i><a href="/Home">Home</a></li>
+            <li><i class="fa fa-table"></i>SKU管理</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2><i class="fa fa-table red"></i><span class="break"></span><strong>SKU Table</strong></h2>
+              <div class="panel-actions">
+                <a href="table.html#" class="btn-setting"><i class="fa fa-rotate-right"></i></a>
+                <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                <a href="table.html#" class="btn-close"><i class="fa fa-times"></i></a>
+              </div>
+            </div>
+            <div class="panel-body">
+              <table class="table table-striped table-bordered" id="sku_table">
+                  <thead>
+                    <tr>
+                      <th>SKU</th>
+                      <th>重量(g)</th>
+                      <th>长(cm)</th>
+                      <th>宽(cm)</th>
+                      <th>高(cm)</th>
+                      <th>成本价(元)</th>
+                      <th>物流方式</th>
+                      <th>国内物流费用(元)</th>
+                      <th>包装成本(元)</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php if(is_array($volist)): foreach($volist as $key=>$vo): ?><tr>
+                        <th><?php echo ($vo["sku"]); ?></th>
+                        <th><?php echo ($vo["weight"]); ?></th>
+                        <th><?php echo ($vo["length"]); ?></th>
+                        <th><?php echo ($vo["width"]); ?></th>
+                        <th><?php echo ($vo["height"]); ?></th>
+                        <th><?php echo ($vo["buy_price"]); ?></th>
+                        <th><?php if($vo["logistics_type"] == 1): ?>国内直邮<?php elseif($vo["logistics_type"] == 2): ?>FBA<?php endif; ?></th>
+                        <th><?php echo ($vo["domestic_logistics_price"]); ?></th>
+                        <th><?php echo ($vo["package_price"]); ?></th>
+                        <th><a href="edit?id=<?php echo ($vo["id"]); ?>">编辑</a>  <a href="delete?id=<?php echo ($vo["id"]); ?>">删除</a> <a href="calculate?id=<?php echo ($vo["id"]); ?>" >成本计算</a></th>
+                      </tr><?php endforeach; endif; ?>
+                  </tbody>
+               </table>
+            <button type="button" class="btn btn-success"><a href="/Home/SkuDetail/add">新增</a></button>
+
+            </div>
+
+          </div>
+        </div><!--/col-->
+      </div><!--/row-->
+    </div>
+    <!-- end: Content -->
+    <br><br><br>
+
+
+  </div><!--/container-->
+
+
+  <div class="clearfix"></div>
+    <iframe name="test">
+    </iframe>
+
+
+  <script src="/Public/js/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript">
+    window.jQuery || document.write("<script src='/Public/js/jquery-2.1.1.min.js'>"+"<"+"/script>");
+  </script>
+
+  <script src="/Public/js/common.js"></script>
+
+
+</body>
+</html>
+
 
 	
 	</div><!--/container-->

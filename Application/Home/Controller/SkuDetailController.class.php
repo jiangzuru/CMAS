@@ -11,11 +11,21 @@ class SkuDetailController extends Controller {
     public function index(){
         $SKU_MODEL = M('SkuDetail');
         $data = $SKU_MODEL->select();
-
         $this->assign('volist',$data);
         $this->display('Sku:index');
     }
 
+    //获取sku列表
+    public function getSkuData(){
+        $SKU_MODEL = M('SkuDetail');
+        $data = $SKU_MODEL->select();
+        if($data){
+            $this->ajaxReturn(['error'=>0,'message'=>'success','data'=>$data]);
+        }else{
+            $this->ajaxReturn(['error'=>1,'message'=>'数据库连接出错']);
+        }
+
+    }
 
     //进入新增SKU页
     public function add(){
@@ -141,7 +151,7 @@ class SkuDetailController extends Controller {
         $this->assign('sku_data',$sku_data);
         $this->assign('FBA_fee',$FBA_fee);
 
-        $this->display('SKU:calculate');
+        $this->display('Sku:calculate');
 
     }
 

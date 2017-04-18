@@ -1,5 +1,46 @@
 <template>
     <div>
+        <div>FBA基础服务费</div>
+        <div>
+            <el-table
+                    :data="fbaFeeData"
+                    border
+                    style="width: 100%"
+                    max-height="500"
+            >
+                <el-table-column
+                        prop="size"
+                        label="尺寸（cm）"
+                        sortable
+                        :formatter="sizeFormatter"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="high_weight"
+                        label="重量(g)"
+                        sortable
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="sale_domain"
+                        label="销售站点"
+                        sortable
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="price"
+                        label="基础服务费"
+                        sortable
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="height"
+                        label="操作"
+                        sortable
+                        width="100">
+                </el-table-column>
+            </el-table>
+        </div>
     </div>
 </template>
 
@@ -8,42 +49,32 @@ export default {
   name: 'sku',
   data () {
     return {
-        skuData:[]
+        fbaFeeData:[]
     }
   },
   methods: {
-      getSkuData(){
+      getFbafeeData(){
           this.$http({
-              url: '/home/skuDetail/getSkuData',
+              url: '/home/FbaFee/getFbafeeData',
               params: {
               }
           })
           .then((res)=>{
                   if(res.body.error == 0){
-                      this.skuData = res.body.data
-                      console.log(this.skuData)
+                      this.fbaFeeData = res.body.data
+                      console.log(this.fbaFeeData)
                   }else {
                       //TODO
                   }
               }
           )
       },
-      logisticeTypeFormatter(row,column){
-          switch (row.logistics_type){
-              case '1':
-                  return '国内直邮';
-                  break;
-              case '2':
-                  return 'FBA';
-                  break;
-              default:
-                  return 'sha?';
-                  break;
-          }
+      sizeFormatter(row){
+          return row.high_length+'*'+row.high_width+'*'+row.high_height;
       }
   },
     mounted(){
-      this.getSkuData();
+      this.getFbafeeData();
     }
 }
 </script>
