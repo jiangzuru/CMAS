@@ -9,6 +9,9 @@ CREATE TABLE `think_sku_detail` (
   `logistics_type` tinyint(1) NOT NULL DEFAULT 1 COMMENT '物流方式，1：直邮，2：海外FBA',
   `package_price` decimal(11,2) NOT NULL DEFAULT COMMENT '包装成本',
   `domestic_logistics_price` decimal(11,2) NOT NULL DEFAULT 0 COMMENT '国内运费',
+  `is_electronic` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0:不带电 1:带电',
+  `is_powder` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0:不是粉末 1:是粉末',
+  `is_liquid` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0:不是液体 1：是液体',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -34,5 +37,20 @@ CREATE TABLE `think_change_rate`(
 	`date` varchar(11) NOT NULL COMMENT '日期',
 	`from_Currency` varchar(11) NOT NULL COMMENT '本币',
 	`to_Currency` varchar(11) NOT NULL COMMENT '要兑换的币种',
+	PRIMARY KEY(`id`)
+)ENGINE=innoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `think_logistics`(
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`name` varchar(256) NOT NULL COMMENT '物流名称',
+	`first_class` varchar(256) NOT NULL COMMENT '第一级名称',
+	`second_class` varchar(256) NOT NULL COMMENT '第二级名称',
+	`is_electronic` tinyint(1) NOT NULL COMMENT '能否运输带电物品',
+	`is_powder` tinyint(1) NOT NULL DEFAULT 0 COMMENT '能否运输粉末 0:不能 1:可以',
+	`is_liquid` tinyint(1) NOT NULL DEFAULT 0 COMMENT '能否运输液体 0:不能 1:可以',
+	`only_weight` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否计算体积重 0:不计算, 1:计算',
+	`price` decimal(4,2) NOT NULL COMMENT '每kg运输价格',
+	`volume_number` int(11) NOT NULL COMMENT '体积重系数',
+	`destination` varchar(256) NOT NULL COMMENT '目的地',
 	PRIMARY KEY(`id`)
 )ENGINE=innoDB DEFAULT CHARSET=utf8;
