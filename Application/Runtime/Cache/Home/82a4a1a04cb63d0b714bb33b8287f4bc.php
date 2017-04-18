@@ -30,8 +30,11 @@
 		<link href="/Public/plugins/morris/css/morris.css" rel="stylesheet">
 		<link href="/Public/plugins/jquery-ui/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 		<link href="/Public/plugins/jvectormap/css/jquery-jvectormap-1.2.2.css" rel="stylesheet">	    
-	  <link href="/Public/css/style.min.css" rel="stylesheet">
+	  	<link href="/Public/css/style.min.css" rel="stylesheet">
 		<link href="/Public/css/add-ons.min.css" rel="stylesheet">		
+		<!-- <link href="/Public/css/jquery.dataTables.css" rel="stylesheet">	 -->
+		<!-- DataTables CSS -->
+		<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
 
 	    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	    <!--[if lt IE 9]>
@@ -173,67 +176,12 @@
 						<ul class="nav nav-sidebar">
               				<li><a href="/Home/SkuDetail/index"><i class="fa fa-laptop"></i><span class="text"> SKU</span></a></li>
               				<li><a href="/Home/FbaFee/index"><i class="fa fa-life-bouy"></i><span class="text"> FBA基础服务费</span></a></li>
-							<li>
-								<a href="#"><i class="fa fa-file-text"></i><span class="text"> Pages</span> <span class="fa fa-angle-down pull-right"></span></a>
-								<ul class="nav sub">
-									<li><a href="page-activity.html"><i class="fa fa-car"></i><span class="text"> Activity</span></a></li>
-									<li><a href="page-inbox.html"><i class="fa fa-envelope"></i><span class="text"> Mail</span></a></li>
-									<li><a href="page-invoice.html"><i class="fa fa-credit-card"></i><span class="text"> Invoice</span></a></li>						
-									<li><a href="page-profile.html"><i class="fa fa-heart-o"></i><span class="text"> Profile</span></a></li>
-									<li><a href="page-pricing-tables.html"><i class="fa fa-columns"></i><span class="text"> Pricing Tables</span></a></li>
-									<li><a href="page-404.html"><i class="fa fa-puzzle-piece"></i><span class="text"> 404</span></a></li>
-									<li><a href="page-500.html"><i class="fa fa-puzzle-piece"></i><span class="text"> 500</span></a></li>
-									<li><a href="page-lockscreen.html"><i class="fa fa-lock"></i><span class="text"> LockScreen1</span></a></li>
-									<li><a href="page-lockscreen2.html"><i class="fa fa-lock"></i><span class="text"> LockScreen2</span></a></li>
-									<li><a href="page-login.html"><i class="fa fa-key"></i><span class="text"> Login Page</span></a></li>
-									<li><a href="page-register.html"><i class="fa fa-sign-in"></i><span class="text"> Register Page</span></a></li>
-								</ul>	
-							</li>
-							<li>
-								<a href="#"><i class="fa fa-list-alt"></i><span class="text"> Forms</span> <span class="fa fa-angle-down pull-right"></span></a>
-								<ul class="nav sub">
-									<li><a href="form-elements.html"><i class="fa fa-indent"></i><span class="text"> Form elements</span></a></li>
-									<li><a href="form-wizard.html"><i class="fa fa-tags"></i><span class="text"> Wizard</span></a></li>
-									<li><a href="form-dropzone.html"><i class="fa fa-plus-square-o"></i><span class="text"> Dropzone Upload</span></a></li>
-									<li><a href="form-x-editable.html"><i class="fa fa-pencil"></i><span class="text"> X-editable</span></a></li>
-								</ul>
-							</li>
-							<li><a href="table.html"><i class="fa fa-table"></i><span class="text"> Tables</span></a></li>
-							<li>
-								<a href="#"><i class="fa fa-signal"></i><span class="text"> Visual Chart</span> <span class="fa fa-angle-down pull-right"></span></a>
-								<ul class="nav sub">
-									<li><a href="chart-flot.html"><i class="fa fa-random"></i><span class="text"> Flot Chart</span></a></li>
-									<li><a href="chart-xchart.html"><i class="fa fa-retweet"></i><span class="text"> xChart</span></a></li>
-									<li><a href="chart-other.html"><i class="fa fa-bar-chart-o"></i><span class="text"> Other</span></a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#"><i class="fa fa-briefcase"></i><span class="text"> UI Features</span> <span class="fa fa-angle-down pull-right"></span></a>
-								<ul class="nav sub">
-									<li><a href="ui-sliders-progress.html"><i class="fa fa-align-left"></i><span class="text"> Progress</span></a></li>
-									<li><a href="ui-nestable-list.html"><i class="fa fa-outdent"></i><span class="text"> Nestable Lists</span></a></li>
-									<li><a href="ui-elements.html"><i class="fa fa-list"></i><span class="text"> Elements</span></a></li>
-									<li><a href="ui-panels.html"><i class="fa fa-list-alt"></i><span class="text"> Panels</span></a></li>
-									<li><a href="ui-buttons.html"><i class="fa fa-th"></i><span class="text"> Buttons</span></a></li>
-								</ul>
-							</li>
-							<li><a href="widgets.html"><i class="fa fa-life-bouy"></i><span class="text"> Widgets</span></a></li>
-							<li><a href="typography.html"><i class="fa fa-font"></i><span class="text"> Typography</span></a></li>
-							<li>
-								<a href="#"><i class="fa fa-bolt"></i><span class="text"> Icons</span> <span class="fa fa-angle-down pull-right"></span></a>
-								<ul class="nav sub">									
-									<li><a href="icons-font-awesome.html"><i class="fa fa-meh-o"></i><span class="text"> Font Awesome</span></a></li>
-									<li><a href="icons-climacons.html"><i class="fa fa-meh-o"></i><span class="text"> Climacons</span></a></li>
-								</ul>
-							</li>
-							<li><a href="gallery.html"><i class="fa fa-picture-o"></i><span class="text"> Gallery</span></a></li>							
-							<li><a href="calendar.html"><i class="fa fa-calendar"></i><span class="text"> Calendar</span></a></li>
+              				<li><a href="/Home/Logistics/index"><i class="fa fa-plane"></i><span class="text"> 物流方式</span></a></li>
 						</ul>
 					</div>					
 				</div>
 				<div class="sidebar-footer">					
 
-				
 				</div>	
 				
 			</div>

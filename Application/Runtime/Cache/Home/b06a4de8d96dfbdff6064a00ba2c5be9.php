@@ -189,86 +189,58 @@
 		<div class="main">
 
 
-	
+	<div class="main ">
 
-  <div class="container-fluid content">
-    <div class="row">
-            
-    <!-- start: Content -->
-    <div class="main sidebar-minified">
-    
-      <div class="row">
-        <div class="col-lg-12">
-          <h3 class="page-header"><i class="fa fa-table"></i>物流方式</h3>
-          <ol class="breadcrumb">
-            <li><i class="fa fa-home"></i><a href="/Home">Home</a></li>          
-            <li><i class="fa fa-table"></i>物流方式明细</li>        
-          </ol>
-        </div>
-      </div>
+	<div class="row">
+		<div class="col-lg-12">
+			<h3 class="page-header"><i class="fa fa-indent"></i>物流方式</h3>
+			<ol class="breadcrumb">
+				<li><i class="fa fa-home"></i><a href="/Home">Home</a></li>
+				<li><i class="fa fa-list-alt"></i><a href="/Home/Logistics/index">物流方式</a></li>
+				<li><i class="fa fa-indent"></i>新增</li>				
+			</ol>
+		</div>
+	</div>
+	<div class="row">
+	    <div class="col-md-12">
+	        <div class="panel panel-default">
+	            <div class="panel-heading">
+	                <h2><i class="fa fa-indent red"></i><strong>新增物流方式</strong></h2>
+	            </div>
+				<div class="panel-body">
+					<form action="/Home/Logistics/save" method="post" enctype="multipart/form-data" class="form-horizontal ">
+	                 	<div class="form-group">
+		                    <label class="col-md-3 control-label">目录:</label>
+		                    <div class="col-md-3">
+		                    	<select id="sel" onchange="demo()" class="form-control" size="1">
+		                    		<?php if(is_array($first_class)): foreach($first_class as $key=>$vo): ?><option value="first_class"><?php echo ($vo["first_class"]); ?></option><?php endforeach; endif; ?>
+		                    		<option value="first_class">其他</option>
+				                </select>
+		                    </div>
+		                    <div class="col-md-3">
+		                    	<select id="sel" onchange="demo()" class="form-control" size="1">
+		                    		<?php if(is_array($first_class)): foreach($first_class as $key=>$vo): ?><option value="first_class"><?php echo ($vo["second"]); ?></option><?php endforeach; endif; ?>
+		                    		<option value="first_class">其他</option>
+				                </select>
+		                    </div>
+		                </div>
+		                <div class="form-group">
+		                	<label class="col-md-3 control-label">名称:</label>
+			                <div class="col-md-6">
+	                     		<input type="text" id="text-input" name="package_weight" class="form-control" value="">
+	                 		</div>
+		                </div>
+						<br>
+						<div class="col-md-3">
+							<button type="submit" class="btn btn-sm btn-success" style="float: right;"><i class="fa fa-dot-circle-o"></i> Submit</button>
+						</div>
+		            </form>
+				</div>
+	        </div>	
+	    </div>
+	</div>
+</div>
 
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h2><i class="fa fa-table red"></i><span class="break"></span><strong>FBA Table</strong></h2>
-              <div class="panel-actions">
-                <a href="table.html#" class="btn-setting"><i class="fa fa-rotate-right"></i></a>
-                <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
-                <a href="table.html#" class="btn-close"><i class="fa fa-times"></i></a>
-              </div>
-            </div>
-            <div class="panel-body">
-              <table class="table table-striped table-bordered" id="sku_table">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th>尺寸(cm)</th>
-                      <th>重量(g)</th>
-                      <th>销售站点</th>
-                      <th>基础服务费</th>  
-                      <th>操作</th>                                      
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php if(is_array($volist)): foreach($volist as $key=>$vo): ?><tr>
-                        <th><input type="checkbox" name="" value="<?php echo ($vo["id"]); ?>"></th>
-                        <th><?php echo ($vo["high_length"]); ?>*<?php echo ($vo["high_width"]); ?>*<?php echo ($vo["high_height"]); ?> cm</th>
-                        <th><?php echo ($vo["low_weight"]); ?> - <?php echo ($vo["high_weight"]); ?></th>
-                        <th><?php echo ($vo["sale_domain"]); ?></th>
-                        <th><?php echo ($vo["price"]); ?></th>
-                        <th><a href="edit?id=<?php echo ($vo["id"]); ?>">编辑</a></th>
-                      </tr><?php endforeach; endif; ?>
-                  </tbody>   
-               </table>
-            <button type="button" class="btn btn-success"><a href="/Home/Logistics/add">新增</a></button>
-
-            </div>
-
-          </div>
-        </div><!--/col-->
-      </div><!--/row-->
-    </div>
-    <!-- end: Content -->
-    <br><br><br>    
-
-
-  </div><!--/container-->
-
-  
-  <div class="clearfix"></div>
-  
-
-  <script src="/Public/js/jquery-2.1.1.min.js"></script>
-  <script type="text/javascript">
-    window.jQuery || document.write("<script src='/Public/js/jquery-2.1.1.min.js'>"+"<"+"/script>");
-  </script>
-
-  <script src="/Public/js/common.js"></script>
-  
-
-</body>
-</html>
 
 	
 	</div><!--/container-->

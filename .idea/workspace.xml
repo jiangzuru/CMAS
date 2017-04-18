@@ -2,18 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70ba9dea-d93b-4dcf-9c2a-19cbbc672446" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Common/Conf/database.sql" afterPath="$PROJECT_DIR$/Application/Common/Conf/database.sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Home/Controller/IndexController.class.php" afterPath="$PROJECT_DIR$/Application/Home/Controller/IndexController.class.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Home/Controller/SkuDetailController.class.php" afterPath="$PROJECT_DIR$/Application/Home/Controller/SkuDetailController.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Home/View/Sku/add.html" afterPath="$PROJECT_DIR$/Application/Home/View/Sku/add.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Home/View/Sku/edit.html" afterPath="$PROJECT_DIR$/Application/Home/View/Sku/edit.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Home/View/layout.html" afterPath="$PROJECT_DIR$/Application/Home/View/layout.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Runtime/Cache/Home/3bd4273a90c7d632ec9ca75ad128a48a.php" afterPath="$PROJECT_DIR$/Application/Runtime/Cache/Home/3bd4273a90c7d632ec9ca75ad128a48a.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Runtime/Cache/Home/4317dec2ec58ada89d8a29302531a900.php" afterPath="$PROJECT_DIR$/Application/Runtime/Cache/Home/4317dec2ec58ada89d8a29302531a900.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Runtime/Cache/Home/5ba582665992bc8d7816b2ed5fe54876.php" afterPath="$PROJECT_DIR$/Application/Runtime/Cache/Home/5ba582665992bc8d7816b2ed5fe54876.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Runtime/Cache/Home/9bdc15fb41087e8408f2480d29b32927.php" afterPath="$PROJECT_DIR$/Application/Runtime/Cache/Home/9bdc15fb41087e8408f2480d29b32927.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Home/View/Logistics/add.html" afterPath="$PROJECT_DIR$/Application/Home/View/Logistics/add.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Home/View/Logistics/index.html" afterPath="$PROJECT_DIR$/Application/Home/View/Logistics/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Runtime/Cache/Home/82a4a1a04cb63d0b714bb33b8287f4bc.php" afterPath="$PROJECT_DIR$/Application/Runtime/Cache/Home/82a4a1a04cb63d0b714bb33b8287f4bc.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Runtime/Cache/Home/99e6f6399a3b7c1b8ddf8ff047a9661c.php" afterPath="$PROJECT_DIR$/Application/Runtime/Cache/Home/99e6f6399a3b7c1b8ddf8ff047a9661c.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Runtime/Logs/Common/17_04_17.log" afterPath="$PROJECT_DIR$/Application/Runtime/Logs/Common/17_04_17.log" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Runtime/Logs/Home/17_04_17.log" afterPath="$PROJECT_DIR$/Application/Runtime/Logs/Home/17_04_17.log" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -37,24 +33,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SkuDetailController.class.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SkuDetailController.class.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Application/Home/Controller/SkuDetailController.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="15" column="36" lean-forward="true" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
+            <state relative-caret-position="3013">
+              <caret line="230" column="30" lean-forward="true" selection-start-line="230" selection-start-column="30" selection-end-line="230" selection-end-column="30" />
               <folding>
                 <element signature="e#6#69#0#PHP" expanded="true" />
-                <element signature="e#1121#1960#0#PHP" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LogisticsController.class.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="LogisticsController.class.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Application/Home/Controller/LogisticsController.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="667">
-              <caret line="29" column="26" lean-forward="true" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
+            <state relative-caret-position="544">
+              <caret line="24" column="30" lean-forward="true" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
               <folding>
                 <element signature="e#6#71#0#PHP" expanded="true" />
               </folding>
@@ -105,10 +100,10 @@
         <option value="$PROJECT_DIR$/Application/Home/Model/FbaFeeModel.class.php" />
         <option value="$PROJECT_DIR$/Application/Home/Controller/FbaFeeController.class.php" />
         <option value="$PROJECT_DIR$/Application/Common/Conf/config.php" />
-        <option value="$PROJECT_DIR$/Application/Home/Controller/SkuDetailController.class.php" />
         <option value="$PROJECT_DIR$/Application/Home/Model/LogisticsModel.class.php" />
         <option value="$PROJECT_DIR$/Application/Home/Controller/IndexController.class.php" />
         <option value="$PROJECT_DIR$/Application/Home/Controller/LogisticsController.class.php" />
+        <option value="$PROJECT_DIR$/Application/Home/Controller/SkuDetailController.class.php" />
       </list>
     </option>
   </component>
@@ -140,6 +135,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -322,10 +318,31 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CMAS" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CMAS" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Application" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Home" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Common" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -443,12 +460,13 @@
       <workItem from="1492150158519" duration="6367000" />
       <workItem from="1492244320418" duration="1366000" />
       <workItem from="1492252533678" duration="4000" />
-      <workItem from="1492409776249" duration="6061000" />
+      <workItem from="1492409776249" duration="7360000" />
+      <workItem from="1492482577189" duration="4324000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="87090000" />
+    <option name="totallyTimeSpent" value="92713000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -460,10 +478,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="1" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15351813" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15511727" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -499,7 +517,6 @@
           <caret line="164" column="24" lean-forward="true" selection-start-line="164" selection-start-column="24" selection-end-line="164" selection-end-column="24" />
           <folding>
             <element signature="e#6#69#0#PHP" expanded="true" />
-            <element signature="e#1121#1960#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -528,7 +545,6 @@
           <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
           <folding>
             <element signature="e#6#69#0#PHP" expanded="true" />
-            <element signature="e#1121#1960#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -557,7 +573,6 @@
           <caret line="183" column="0" lean-forward="true" selection-start-line="183" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
           <folding>
             <element signature="e#6#69#0#PHP" expanded="true" />
-            <element signature="e#1121#1960#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -576,7 +591,6 @@
           <caret line="73" column="0" lean-forward="true" selection-start-line="45" selection-start-column="3" selection-end-line="73" selection-end-column="0" />
           <folding>
             <element signature="e#6#69#0#PHP" expanded="true" />
-            <element signature="e#1121#1960#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -633,7 +647,6 @@
           <caret line="57" column="38" lean-forward="true" selection-start-line="57" selection-start-column="38" selection-end-line="57" selection-end-column="38" />
           <folding>
             <element signature="e#6#69#0#PHP" expanded="true" />
-            <element signature="e#1121#1960#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -680,7 +693,6 @@
           <caret line="42" column="31" lean-forward="false" selection-start-line="42" selection-start-column="31" selection-end-line="42" selection-end-column="31" />
           <folding>
             <element signature="e#6#69#0#PHP" expanded="true" />
-            <element signature="e#1121#1960#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -699,7 +711,6 @@
           <caret line="16" column="1" lean-forward="true" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
           <folding>
             <element signature="e#6#69#0#PHP" expanded="true" />
-            <element signature="e#1121#1960#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -753,7 +764,6 @@
           <caret line="16" column="1" lean-forward="true" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
           <folding>
             <element signature="e#6#69#0#PHP" expanded="true" />
-            <element signature="e#1121#1960#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -886,23 +896,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Application/Home/Controller/SkuDetailController.class.php">
+    <entry file="file://$PROJECT_DIR$/Application/Home/Controller/LogisticsController.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="15" column="36" lean-forward="true" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
+        <state relative-caret-position="544">
+          <caret line="24" column="30" lean-forward="true" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
           <folding>
-            <element signature="e#6#69#0#PHP" expanded="true" />
-            <element signature="e#1121#1960#0#PHP" expanded="false" />
+            <element signature="e#6#71#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Application/Home/Controller/LogisticsController.class.php">
+    <entry file="file://$PROJECT_DIR$/Application/Home/Controller/SkuDetailController.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="667">
-          <caret line="29" column="26" lean-forward="true" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
+        <state relative-caret-position="3013">
+          <caret line="230" column="30" lean-forward="true" selection-start-line="230" selection-start-column="30" selection-end-line="230" selection-end-column="30" />
           <folding>
-            <element signature="e#6#71#0#PHP" expanded="true" />
+            <element signature="e#6#69#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
