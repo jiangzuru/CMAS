@@ -21,11 +21,10 @@ class SkuDetailController extends Controller {
         $SKU_MODEL = M('SkuDetail');
         $data = $SKU_MODEL->select();
         if($data){
-            $this->ajaxReturn(['error'=>0,'message'=>'success','data'=>$data]);
+            $this->ajaxReturn(['status'=>1,'message'=>'success','data'=>$data]);
         }else{
-            $this->ajaxReturn(['error'=>1,'message'=>'数据库连接出错']);
+            $this->ajaxReturn(['status'=>0,'message'=>'数据库连接出错']);
         }
-
     }
 
     //进入新增SKU页
@@ -52,15 +51,19 @@ class SkuDetailController extends Controller {
             $this->error("id不能为空");
         }
         $SKU_MODEL = M('SkuDetail');
-        $SKU_MODEL->where("id=".$id)->delete();
-        $this->success("删除成功","index",1);
+        $result = $SKU_MODEL->where("id=".$id)->delete();
+        if ($result){
+            $this->ajaxReturn(['status'=>1,'message'=>'success']);
+        }else{
+            $this->ajaxReturn(['status'=>0,'message'=>'删除失败']);
+        }
     }
 
     //新增SKU
     public function save(){
         $data = $_REQUEST;
         $data['status'] = 1;
-        $data['error']  = '';
+        $data['message']  = 'success';
 
         //传值检查
         if (intval($_REQUEST['weight']) <= 0){
@@ -83,6 +86,7 @@ class SkuDetailController extends Controller {
                 $this->ajaxReturn($data);
             }else{
                 $data['status'] = 0;
+                $data['message'] = '新增失败';
                 $this->ajaxReturn($data);
             }
         }
@@ -91,6 +95,8 @@ class SkuDetailController extends Controller {
     //保存编辑的SKU数据
     public function update(){
         $data = I('request.');
+        $data['status'] = 1;
+        $data['message'] = 'success';
 
         //传值检查
         if (intval($data['id']) == 0){
@@ -110,16 +116,28 @@ class SkuDetailController extends Controller {
         }
 
         $SKU_MODEL = M('SkuDetail');
-        $SKU_MODEL->where("id=".$data['id'])->save($data);
-        $this->success("保存修改成功","index",1);
+        $res = $SKU_MODEL->where("id=".$data['id'])->save($data);
+        if ($res){
+            $this->ajaxReturn($data);
+        }else{
+            $data['status'] = 0;
+            $data['message'] = '保存失败';
+            $this->ajaxReturn($data);
+        }
     }
 
     //计算成本价等数据
     //input: id(sku的id),domain_arr:需要计算的站点({"英国","德国"})
     public function calculate(){
         $sku_id = intval(I('request.id'));
+        $data = array();
+        $data['status'] = 1;
+        $data['message'] = 'success';
+
         if ($sku_id == 0){
-            $this->error("id不能为空","index",0);
+            $data['status'] = 0;
+            $data['message'] = 'sku_id不能为空';
+            $this->ajaxReturn($data);
         }
 
         $SKU_MODEL = M('SkuDetail');
@@ -137,48 +155,70 @@ class SkuDetailController extends Controller {
             $sku_data['toucheng_price'] = $weight * 40 / 1000;//FBA头程费用
 
             //FBA基础服务费
-            $FBA_fee = self::Fba_delivery_fee($sku_data['length'],$sku_data['width'],$sku_data['height'],$sku_data['weight']);
+            $FBA_fee = self::fbaDeliveryFee($sku_data['length'],$sku_data['width'],$sku_data['height'],$sku_data['weight']);
 
             foreach ($FBA_fee as $k => &$v){
                 //获取汇率
                 if ($v['sale_domain'] == '英国'){
                     $Rate = floatval(self::getExchangeRate("GBP","CNY"));
                     $v['price_sign'] = $v['price']."£";
+                    //计算固定成本总价
+                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
+                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
+                    $v['sum_foreign'] .= '£';
                 }else if ($v['sale_domain'] == '德国' || $v['sale_domain'] == '法国' || $v['sale_domain'] == '意大利' || $v['sale_domain'] == '西班牙'){
                     $Rate = floatval(self::getExchangeRate("EUR","CNY"));
                     $v['price_sign'] = $v['price']."€";
+                    //计算固定成本总价
+                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
+                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
+                    $v['sum_foreign'] .= '€';
                 }else if ($v['sale_domain'] == '美国'){
                     $Rate = floatval(self::getExchangeRate("USD","CNY"));
                     $v['price_sign'] = $v['price']."$";
+                    //计算固定成本总价
+                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
+                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
+                    $v['sum_foreign'] .= '$';
+
                 }else if ($v['sale_domain'] == '加拿大'){
                     $Rate = floatval(self::getExchangeRate("CAD","CNY"));
                     $v['price_sign'] = $v['price']."C$";
+                    //计算固定成本总价
+                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
+                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
+                    $v['sum_foreign'] .= 'C$';
                 }else if ($v['sale_domain'] == '墨西哥'){
                     $Rate = floatval(self::getExchangeRate("MXI","CNY"));
                     $v['price_sign'] = $v['price']."$";
+                    //计算固定成本总价
+                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
+                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
+                    $v['sum_foreign'] .= '$';
+
                 }else if ($v['sale_domain'] == '日本'){
                     $Rate = floatval(self::getExchangeRate("JPY","CNY"));
-                    $v['price_sign'] = $v['price']."$";
+                    $v['price_sign'] = $v['price']."¥";
+                    //计算固定成本总价
+                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
+                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
+                    $v['sum_foreign'] .= '¥';
                 }
 
                 //FBA基础服务费换算成人民币
                 $v['FBA_CNY'] = floatval($v['price'] * $Rate);
-                //计算固定成本总价
-                $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
-                //取小数点后两位
-                $v['sum_foreign'] = round($v['sum'] / $Rate,2);
                 $v['FBA_CNY'] = round($v['FBA_CNY'],2);
+                $v['sum']     = round($v['sum'],2);
             }
         }
 
-        $data = array();
         $data['sku_data'] = $sku_data;
         $data['FBA_fee'] = $FBA_fee;
         $this->ajaxReturn($data);
     }
 
     //获取汇率，如果数据库中有当日汇率，则取出。没有的话，使用yahoo提供的接口。
-    public function getExchangeRate($from_Currency,$to_Currency){
+    private function getExchangeRate($from_Currency,$to_Currency){
         $date = date('Y-m-d');//获取今日日期
 
         //取出今日保存的汇率;
@@ -208,7 +248,7 @@ class SkuDetailController extends Controller {
     }
 
     //获取实时汇率，数据由雅虎提供. 例：欧元,人民币 = 7.x
-    public function getExchangeRateFromYahoo($from_Currency,$to_Currency){
+    private function getExchangeRateFromYahoo($from_Currency,$to_Currency){
         //URL编码
         $from_Currency = urlencode($from_Currency);
         $to_Currency = urlencode($to_Currency);
@@ -229,7 +269,7 @@ class SkuDetailController extends Controller {
     }
 
     //根据长宽高和重量选择FBA基础服务费费用
-    public function Fba_delivery_fee($length,$width,$height,$weight){
+    private function fbaDeliveryFee($length,$width,$height,$weight){
         $Fba_Model = M('FbaFee');
         //将三个体积参数排序，按从大到小作为长宽高
         $arr = array($length,$width,$height);
@@ -280,6 +320,15 @@ class SkuDetailController extends Controller {
         }
 
         return $Fee_array;
+    }
+
+    //计算毛利、毛利率、平台佣金等费用
+    public function test1(){
+        $data = array();
+        $data['status'] = 1;
+        $data['message'] = 'success';
+
+        $sale_price = I('post.');
     }
 
     public function test(){
