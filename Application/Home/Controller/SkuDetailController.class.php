@@ -11,6 +11,7 @@ class SkuDetailController extends Controller {
     public function index(){
         $SKU_MODEL = M('SkuDetail');
         $data = $SKU_MODEL->select();
+
         $this->assign('volist',$data);
         $this->display('Sku:index');
     }
@@ -120,7 +121,6 @@ class SkuDetailController extends Controller {
         if ($sku_id == 0){
             $this->error("id不能为空","index",0);
         }
-        $domain_arr = I('request.domain_arr');
 
         $SKU_MODEL = M('SkuDetail');
         $sku_data  = $SKU_MODEL->where("id=".$sku_id)->find();
@@ -131,33 +131,53 @@ class SkuDetailController extends Controller {
             $sku_data['volumn_weight'] = (floatval($sku_data['length']) * floatval($sku_data['width']) * floatval($sku_data['height'])) / 6000;
             $sku_data['paolv'] = floatval($sku_data['volumn_weight'] / $sku_data['weight'] * 1000);
             $sku_data['paolv'] = round($sku_data['paolv'],2);
+
             //比较体积重与实重。以大的计算
             $weight = $sku_data['volumn_weight'] > $sku_data['weight'] ? $sku_data['volumn_weight'] : $sku_data['weight'];
             $sku_data['toucheng_price'] = $weight * 40 / 1000;//FBA头程费用
-            $FBA_fee = self::Fba_delivery_fee($sku_data['length'],$sku_data['width'],$sku_data['height'],$sku_data['weight'],$domain_arr);
+
+            //FBA基础服务费
+            $FBA_fee = self::Fba_delivery_fee($sku_data['length'],$sku_data['width'],$sku_data['height'],$sku_data['weight']);
 
             foreach ($FBA_fee as $k => &$v){
                 //获取汇率
                 if ($v['sale_domain'] == '英国'){
-                    $Rate  = floatval(self::getExchangeRate("GBP","CNY"));
+                    $Rate = floatval(self::getExchangeRate("GBP","CNY"));
+                    $v['price_sign'] = $v['price']."£";
                 }else if ($v['sale_domain'] == '德国' || $v['sale_domain'] == '法国' || $v['sale_domain'] == '意大利' || $v['sale_domain'] == '西班牙'){
                     $Rate = floatval(self::getExchangeRate("EUR","CNY"));
+                    $v['price_sign'] = $v['price']."€";
+                }else if ($v['sale_domain'] == '美国'){
+                    $Rate = floatval(self::getExchangeRate("USD","CNY"));
+                    $v['price_sign'] = $v['price']."$";
+                }else if ($v['sale_domain'] == '加拿大'){
+                    $Rate = floatval(self::getExchangeRate("CAD","CNY"));
+                    $v['price_sign'] = $v['price']."C$";
+                }else if ($v['sale_domain'] == '墨西哥'){
+                    $Rate = floatval(self::getExchangeRate("MXI","CNY"));
+                    $v['price_sign'] = $v['price']."$";
+                }else if ($v['sale_domain'] == '日本'){
+                    $Rate = floatval(self::getExchangeRate("JPY","CNY"));
+                    $v['price_sign'] = $v['price']."$";
                 }
 
-                $v['FBA_CNY'] = floatval($v['price'] * $Rate);//FBA基础服务费换算成人民币
+                //FBA基础服务费换算成人民币
+                $v['FBA_CNY'] = floatval($v['price'] * $Rate);
+                //计算固定成本总价
                 $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
+                //取小数点后两位
                 $v['sum_foreign'] = round($v['sum'] / $Rate,2);
                 $v['FBA_CNY'] = round($v['FBA_CNY'],2);
             }
         }
 
-        $this->assign('sku_data',$sku_data);
-        $this->assign('FBA_fee',$FBA_fee);
-
-        $this->display('Sku:calculate');
-
+        $data = array();
+        $data['sku_data'] = $sku_data;
+        $data['FBA_fee'] = $FBA_fee;
+        $this->ajaxReturn($data);
     }
 
+    //获取汇率，如果数据库中有当日汇率，则取出。没有的话，使用yahoo提供的接口。
     public function getExchangeRate($from_Currency,$to_Currency){
         $date = date('Y-m-d');//获取今日日期
 
@@ -209,7 +229,7 @@ class SkuDetailController extends Controller {
     }
 
     //根据长宽高和重量选择FBA基础服务费费用
-    public function Fba_delivery_fee($length,$width,$height,$weight,$domain_arr){
+    public function Fba_delivery_fee($length,$width,$height,$weight){
         $Fba_Model = M('FbaFee');
         //将三个体积参数排序，按从大到小作为长宽高
         $arr = array($length,$width,$height);
@@ -232,8 +252,6 @@ class SkuDetailController extends Controller {
             $this->error("该商品为大件尺寸，赞不支持计算FBA成本");
         }
 
-        $condition = array();
-        $condition['sale_domain'] = array('in',$domain_arr);
         $fbafee_array = $Fba_Model->select();
         $First_Fee  = array();
         //找出第一个符合条件的明细，即找出对应的价格。
@@ -264,9 +282,12 @@ class SkuDetailController extends Controller {
         return $Fee_array;
     }
 
-    public function test()
-    {
-        self::Fba_delivery_fee(44,23,10,400);
+    public function test(){
+        $data = '{"a":1,"b":2,"c":3,"d":4,"e":5}';
+        $changeh = json_decode($data,true);
+
+        var_dump($changeh);
+        exit();
     }
 
 }
