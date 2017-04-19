@@ -21,4 +21,7 @@ export default {
 .left{
   text-align: left;
 }
+.contain{
+  padding: 20px;
+}
 </style>

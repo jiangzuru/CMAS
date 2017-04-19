@@ -1,5 +1,9 @@
 <template>
-  <div class="edit-sku">
+  <div class="edit-sku contain">
+    <el-row>
+      <h1 class="left title">{{titleStatus}}SKU</h1>
+    </el-row>
+
     <el-form :model="form" label-width="250px">
 
       <el-form-item label="Sku">
@@ -57,8 +61,9 @@ export default {
   name: 'editSku',
   data () {
     return {
+        titleStatus:'新增',
+        sku_id:-1,
         form:{
-          id:-1,
           sku:'',
           weight: "1.00",
           length: "1.00",
@@ -78,19 +83,26 @@ export default {
           let {type,...form} = this.form;
           type = type.join(',')
           let url='';
-          if(form.id == -1){
+          if(this.sku_id == -1){
               url = '/home/skuDetail/save';
           }else{
               url = '/home/skuDetail/update'
+              this.form.id = this.sku_id;
           }
 
-          this.$http({
-              url:url,
-              params:{
+//          this.$http({
+//              url:url,
+//              params:{
+//                  ...form,
+//                  type
+//              }
+//          })
+          this.$http.post(url,
+              {
                   ...form,
                   type
               }
-          })
+          )
           .then((res)=>{
             if (res.body.status == 1){
                 //success
@@ -114,11 +126,14 @@ export default {
       }
   },
   mounted(){
-      let id = this.$route.params.id;
+      let sku_id = this.$route.params.id;
       let sku = this.$route.params.sku;
-      this.form.id = id;
+      this.sku_id = sku_id;
       this.form.sku = sku;
-      if(id > -1) this.skuChangeAble = false
+      if(sku_id > -1) {
+          this.skuChangeAble = false
+          this.titleStatus = '编辑'
+      }
 
   }
 }
@@ -126,4 +141,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .edit-sku .title{
+    font-size: 1.5em;
+    margin:20px;
+  }
 </style>

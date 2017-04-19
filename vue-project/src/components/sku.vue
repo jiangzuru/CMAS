@@ -1,5 +1,5 @@
 <template>
-    <div class="sku">
+    <div class="sku contain">
         <div class="left title">
             <h1>SKU管理</h1>
         </div>
@@ -15,7 +15,6 @@
                         prop="sku"
                         label="SKU"
                         sortable
-                        width="100"
                 >
                     <template scope="scope">
                         <el-button @click="showDetail(scope.row.id)" type="text" size="small">
@@ -81,7 +80,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <div style="text-align: left">
+            <div style="text-align: left;margin-top: 30px">
                 <el-button type="primary" @click="toEditSku(-1,0)">新增</el-button>
             </div>
         </div>
@@ -116,11 +115,11 @@
                             </el-input>
                         </el-col>
                     </el-row>
-                    <el-row>
-                        <el-button>搜索</el-button>
+                    <el-row style="text-align: right">
+                        <el-button type='primary' @click="getProfitCalc" >搜索</el-button>
                     </el-row>
-
-                    <el-row>
+                    <!--固定成本表格-->
+                    <el-row style="margin: 30px auto;">
                         <el-table
                                 :data="selectedFbaFee"
                                 border
@@ -194,6 +193,53 @@
                         </el-table>
 
                     </el-row clas style>
+                    <!--可变成本表格-->
+                    <el-row>
+                        <el-table
+                                :data="profitCalc"
+                                border
+                                style="width: 100%"
+                                max-height="500"
+                        >
+
+                            <el-table-column
+                                    prop="sale_domain"
+                                    label="站点"
+                                    sortable
+                                    width="180">
+                            </el-table-column>
+                            <el-table-column
+                                    label="售价"
+                                    sortable
+                                    prop="price"
+                                    width="180">
+                            </el-table-column>
+                            <el-table-column
+                                    label="毛利"
+                                    sortable
+                                    :formatter="function(row) {
+                                      return row.profit_rmb+'('+row.profit+')'
+                                    }"
+                                    width="180">
+                            </el-table-column>
+                            <el-table-column
+                                    label="毛利率"
+                                    sortable
+                                    prop="profit_rate"
+                                    width="180">
+                            </el-table-column>
+                            <el-table-column
+                                    label="投入产出比"
+                                    sortable
+                                    :formatter="function(row) {
+                                      return '1:'+row.io_rate;
+                                    }"
+                                    width="180">
+                            </el-table-column>
+
+                        </el-table>
+
+                    </el-row clas style>
 
                 </el-col>
             </el-row>
@@ -202,11 +248,9 @@
 </template>
 
 <script>
-    import ElButton from "../../node_modules/element-ui/packages/button/src/button";
     const countryOptions = ['英国', '法国', '德国', '意大利', '西班牙', '美国', '加拿大', '墨西哥', '日本'];
 
     export default {
-        components: {ElButton},
         name: 'sku',
         data () {
             return {
@@ -218,11 +262,13 @@
                 checkedCountries: countryOptions,
                 countriesFee: {},
                 fbaFee: [],
-                fbaFeeSkuData: []
+                fbaFeeSkuData: [],
+                profitCalc:[]
             }
         },
         computed: {
             selectedFbaFee(){
+
                 var a = this.checkedCountries;
                 let b = this.fbaFee.filter(function (item, index) {
                     if (a.indexOf(item.sale_domain) > -1) {
@@ -287,8 +333,10 @@
                     }
                 })
                     .then((res) => {
+                    if(res.body.status == 1){
                         this.fbaFee = res.body.FBA_fee
                         this.fbaFeeSkuData = res.body.sku_data
+                    }
                     })
             },
             toEditSku(id, sku){
@@ -345,6 +393,27 @@
                             });
                         }
                         return res.body.status;
+                    })
+            },
+            getProfitCalc(){
+                let postData = {};
+                for(let i in this.countriesFee){
+                    if(this.countriesFee[i] > 0){
+                        postData[i] = this.countriesFee[i]
+                    }
+                }
+
+                this.$http.post(
+                    '/home/skuDetail/profitCalc',
+                    {
+                        id:this.showDetailId,
+                        ...postData
+                    }
+                )
+                    .then(res=>{
+                        if(res.body.status == 1){
+                            this.profitCalc = res.body.data;
+                        }
                     })
             }
         },
