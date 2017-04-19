@@ -165,7 +165,6 @@ class SkuDetailController extends Controller {
         $sale_price = I('post.');
         unset($sale_price['id']);
         $sale_domain = array_keys($sale_price);
-
         if (!$sale_price){
             $this->ajaxReturn(['status'=>0,'message'=>'请输入价格']);
         }
@@ -175,61 +174,62 @@ class SkuDetailController extends Controller {
 
         $rate = 0.15;
         $i = 0;
+        $profit_fee = array();
         foreach ($fix_cost['FBA_fee'] as $k=>&$v){
             $domain = $v['sale_domain'];
-            $data[$i]['sale_domain'] = $v['sale_domain'];
-            $data[$i]['price'] = floatval($sale_price[$domain]);//在某站点的售价
+            $profit_fee[$i]['sale_domain'] = $v['sale_domain'];
+            $profit_fee[$i]['price'] = floatval($sale_price[$domain]);//在某站点的售价
 
             //佣金
             $commission_rate = 0.15;
-            $data[$i]['commission'] = floatval($data[$i]['price'] * $commission_rate);//佣金
+            $profit_fee[$i]['commission'] = floatval($profit_fee[$i]['price'] * $commission_rate);//佣金
 
             //银行提款手续费
             $withdraw_rate = 0.02;
-            $data[$i]['withdraw_fee'] = floatval((1-$commission_rate)*$data[$i]['price']*$withdraw_rate);
+            $profit_fee[$i]['withdraw_fee'] = floatval((1-$commission_rate)*$profit_fee[$i]['price']*$withdraw_rate);
 
             //退款耗损
             $refund_rate = 0.05;
-            $data[$i]['refund'] = floatval($data[$i]['price']*$refund_rate);
+            $profit_fee[$i]['refund'] = floatval($profit_fee[$i]['price']*$refund_rate);
 
             //毛利,毛利率
-            $data[$i]['profit_rmb']  = floatval(($data[$i]['price']-$data[$i]['commission']-$data[$i]['withdraw_fee']-$data[$i]['refund'])*$v['change_rate']-$v['sum']);
-            $data[$i]['profit']      = floatval($data[$i]['profit_rmb'] / $v['change_rate']);
-            $data[$i]['profit_rate'] = floatval($data[$i]['profit_rmb'] /($data[$i]['price'] * $v['change_rate']));
+            $profit_fee[$i]['profit_rmb']  = floatval(($profit_fee[$i]['price']-$profit_fee[$i]['commission']-$profit_fee[$i]['withdraw_fee']-$profit_fee[$i]['refund'])*$v['change_rate']-$v['sum']);
+            $profit_fee[$i]['profit']      = floatval($profit_fee[$i]['profit_rmb'] / $v['change_rate']);
+            $profit_fee[$i]['profit_rate'] = floatval($profit_fee[$i]['profit_rmb'] /($profit_fee[$i]['price'] * $v['change_rate']));
 
             //投入产出比
-            $data[$i]['io_rate'] = floatval($data[$i]['profit_rmb'] / ($v['sum'] - $v['FBA_CNY']));
+            $profit_fee[$i]['io_rate'] = floatval($profit_fee[$i]['profit_rmb'] / ($v['sum'] - $v['FBA_CNY']));
 
             //取小数点后两位
-            $data[$i]['profit_rmb']   = round($data[$i]['profit_rmb'],2);
-            $data[$i]['profit']       = round($data[$i]['profit'],2);
-            $data[$i]['profit_rate']  = (round($data[$i]['profit_rate'],4)*100)."%";
-            $data[$i]['io_rate']      = round($data[$i]['io_rate'],2);
+            $profit_fee[$i]['profit_rmb']   = round($profit_fee[$i]['profit_rmb'],2);
+            $profit_fee[$i]['profit']       = round($profit_fee[$i]['profit'],2);
+            $profit_fee[$i]['profit_rate']  = (round($profit_fee[$i]['profit_rate'],4)*100)."%";
+            $profit_fee[$i]['io_rate']      = round($profit_fee[$i]['io_rate'],2);
 
             //根据站点计算外币价格及添加货币符号
             if ($domain == '英国'){
-                $data[$i]['price'] .= "£";
-                $data[$i]['profit'] .= "£";
+                $profit_fee[$i]['price'] .= "£";
+                $profit_fee[$i]['profit'] .= "£";
             }elseif ($domain == '德国' || $domain == '法国' || $domain == '意大利' || $domain == '西班牙'){
-                $data[$i]['price'] .= "€";
-                $data[$i]['profit'] .= "€";
+                $profit_fee[$i]['price'] .= "€";
+                $profit_fee[$i]['profit'] .= "€";
             }elseif ($domain == '美国'){
-                $data[$i]['price'] .= "$";
-                $data[$i]['profit'] .= "$";
+                $profit_fee[$i]['price'] .= "$";
+                $profit_fee[$i]['profit'] .= "$";
             }elseif ($domain == '加拿大'){
-                $data[$i]['price'] .= "C$";
-                $data[$i]['profit'] .= "C$";
+                $profit_fee[$i]['price'] .= "C$";
+                $profit_fee[$i]['profit'] .= "C$";
             }elseif ($domain == '日本'){
-                $data[$i]['price'] .= "¥";
-                $data[$i]['profit'] .= "¥";
+                $profit_fee[$i]['price'] .= "¥";
+                $profit_fee[$i]['profit'] .= "¥";
             }elseif ($domain == '墨西哥'){
-                $data[$i]['price'] .= "$";
-                $data[$i]['profit'] .= "$";
+                $profit_fee[$i]['price'] .= "$";
+                $profit_fee[$i]['profit'] .= "$";
             }
 
             $i++;
         }
-
+        $data['data'] = $profit_fee;
         $this->ajaxReturn($data);
     }
 
