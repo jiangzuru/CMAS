@@ -7,7 +7,7 @@ CREATE TABLE `think_sku_detail` (
   `height` decimal(11,2)  NOT NULL COMMENT '高度',
   `buy_price` decimal(11,2) NOT NULL COMMENT '进货价',
   `logistics_type` tinyint(1) NOT NULL DEFAULT 1 COMMENT '物流方式，1：直邮，2：海外FBA',
-  `package_price` decimal(11,2) NOT NULL DEFAULT 1 COMMENT '包装成本',
+  `package_price` decimal(11,2) NOT NULL DEFAULT 0 COMMENT '包装成本',
   `domestic_logistics_price` decimal(11,2) NOT NULL DEFAULT 0 COMMENT '国内运费',
   `is_electronic` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0:不带电 1:带电',
   `is_powder` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0:不是粉末 1:是粉末',

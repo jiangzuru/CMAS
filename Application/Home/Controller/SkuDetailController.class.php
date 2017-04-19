@@ -131,8 +131,6 @@ class SkuDetailController extends Controller {
     public function calculate(){
         $sku_id = intval(I('request.id'));
         $data = array();
-        $data['status'] = 1;
-        $data['message'] = 'success';
 
         if ($sku_id == 0){
             $data['status'] = 0;
@@ -140,80 +138,15 @@ class SkuDetailController extends Controller {
             $this->ajaxReturn($data);
         }
 
-        $SKU_MODEL = M('SkuDetail');
-        $sku_data  = $SKU_MODEL->where("id=".$sku_id)->find();
-
-        if ($sku_data['logistics_type'] == 1){//直邮
-            $sku_data['logistics_price'] = floatval($sku_data['weight'] * 60 / 1000);//直邮的物流费用，只计算重量
-        } elseif($sku_data['logistics_type'] == 2){//FBA
-            $sku_data['volumn_weight'] = (floatval($sku_data['length']) * floatval($sku_data['width']) * floatval($sku_data['height'])) / 6000;
-            $sku_data['paolv'] = floatval($sku_data['volumn_weight'] / $sku_data['weight'] * 1000);
-            $sku_data['paolv'] = round($sku_data['paolv'],2);
-
-            //比较体积重与实重。以大的计算
-            $weight = $sku_data['volumn_weight'] > $sku_data['weight'] ? $sku_data['volumn_weight'] : $sku_data['weight'];
-            $sku_data['toucheng_price'] = $weight * 40 / 1000;//FBA头程费用
-
-            //FBA基础服务费
-            $FBA_fee = self::fbaDeliveryFee($sku_data['length'],$sku_data['width'],$sku_data['height'],$sku_data['weight']);
-
-            foreach ($FBA_fee as $k => &$v){
-                //获取汇率
-                if ($v['sale_domain'] == '英国'){
-                    $Rate = floatval(self::getExchangeRate("GBP","CNY"));
-                    $v['price_sign'] = $v['price']."£";
-                    //计算固定成本总价
-                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
-                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
-                    $v['sum_foreign'] .= '£';
-                }else if ($v['sale_domain'] == '德国' || $v['sale_domain'] == '法国' || $v['sale_domain'] == '意大利' || $v['sale_domain'] == '西班牙'){
-                    $Rate = floatval(self::getExchangeRate("EUR","CNY"));
-                    $v['price_sign'] = $v['price']."€";
-                    //计算固定成本总价
-                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
-                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
-                    $v['sum_foreign'] .= '€';
-                }else if ($v['sale_domain'] == '美国'){
-                    $Rate = floatval(self::getExchangeRate("USD","CNY"));
-                    $v['price_sign'] = $v['price']."$";
-                    //计算固定成本总价
-                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
-                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
-                    $v['sum_foreign'] .= '$';
-
-                }else if ($v['sale_domain'] == '加拿大'){
-                    $Rate = floatval(self::getExchangeRate("CAD","CNY"));
-                    $v['price_sign'] = $v['price']."C$";
-                    //计算固定成本总价
-                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
-                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
-                    $v['sum_foreign'] .= 'C$';
-                }else if ($v['sale_domain'] == '墨西哥'){
-                    $Rate = floatval(self::getExchangeRate("MXI","CNY"));
-                    $v['price_sign'] = $v['price']."$";
-                    //计算固定成本总价
-                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
-                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
-                    $v['sum_foreign'] .= '$';
-
-                }else if ($v['sale_domain'] == '日本'){
-                    $Rate = floatval(self::getExchangeRate("JPY","CNY"));
-                    $v['price_sign'] = $v['price']."¥";
-                    //计算固定成本总价
-                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
-                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
-                    $v['sum_foreign'] .= '¥';
-                }
-
-                //FBA基础服务费换算成人民币
-                $v['FBA_CNY'] = floatval($v['price'] * $Rate);
-                $v['FBA_CNY'] = round($v['FBA_CNY'],2);
-                $v['sum']     = round($v['sum'],2);
-            }
+        $data = $this->fixedCost($sku_id);
+//        var_dump($data);exit();
+        if ($data){
+            $data['status'] = 1;
+            $data['message'] = '计算成功';
+        }else{
+            $data['status'] = 0;
+            $data['message'] = '计算失败';
         }
-
-        $data['sku_data'] = $sku_data;
-        $data['FBA_fee'] = $FBA_fee;
         $this->ajaxReturn($data);
     }
 
@@ -269,8 +202,10 @@ class SkuDetailController extends Controller {
     }
 
     //根据长宽高和重量选择FBA基础服务费费用
-    private function fbaDeliveryFee($length,$width,$height,$weight){
+    private function fbaDeliveryFee($length,$width,$height,$weight,$sale_domain){
         $Fba_Model = M('FbaFee');
+        $data = array();
+
         //将三个体积参数排序，按从大到小作为长宽高
         $arr = array($length,$width,$height);
         for ($m = 0; $m < 3; $m++){
@@ -289,10 +224,19 @@ class SkuDetailController extends Controller {
         $height = $arr[2];
 
         if ($length > 45 || $width > 34 || $height > 26 || $weight > 12000){
-            $this->error("该商品为大件尺寸，赞不支持计算FBA成本");
+            $data['status'] = 0;
+            $data['message'] = "该商品为大件尺寸，赞不支持计算FBA成本";
+            $this->ajaxReturn($data);
         }
 
-        $fbafee_array = $Fba_Model->select();
+        if ($sale_domain){
+            $condition = array();
+            $condition['sale_domain'] = array('in',$sale_domain);
+            $fbafee_array = $Fba_Model->where($condition)->select();
+        }else{
+            $fbafee_array = $Fba_Model->select();
+        }
+
         $First_Fee  = array();
         //找出第一个符合条件的明细，即找出对应的价格。
         foreach ($fbafee_array as $k=>$v){
@@ -310,6 +254,7 @@ class SkuDetailController extends Controller {
 
         $Fee_array = array();
         $i = 0;
+        //使用该条件，找到其他国家的对应的FBA价格
         foreach ($fbafee_array as $k=>$v){
             if($v['low_weight'] == $First_Fee['low_weight'] && $v['high_weight'] == $First_Fee['high_weight']
                 && $v['low_length'] == $First_Fee['low_length'] && $v['high_length'] == $First_Fee['high_length']){
@@ -318,17 +263,145 @@ class SkuDetailController extends Controller {
                 $i += 1;
             }
         }
-
         return $Fee_array;
     }
 
+    //计算固定成本
+    private function fixedCost($id,$sale_domain=false){
+        $SKU_MODEL = M('SkuDetail');
+        $sku_data  = $SKU_MODEL->where("id=".$id)->find();
+        $data = array();
+        if (!$sku_data){
+            $data['status'] = 0;
+            $data['message'] = 'sku不存在';
+            $this->ajaxReturn($data);
+        }
+
+        if ($sku_data['logistics_type'] == 1){//直邮
+            $sku_data['logistics_price'] = floatval($sku_data['weight'] * 60 / 1000);//直邮的物流费用，只计算重量
+        } elseif($sku_data['logistics_type'] == 2){//FBA
+            $sku_data['volumn_weight'] = (floatval($sku_data['length']) * floatval($sku_data['width']) * floatval($sku_data['height'])) / 6000;
+            $sku_data['paolv'] = floatval($sku_data['volumn_weight'] / $sku_data['weight'] * 1000);
+            $sku_data['paolv'] = round($sku_data['paolv'],2);
+
+            //比较体积重与实重。以大的计算
+            $weight = $sku_data['volumn_weight'] > $sku_data['weight'] ? $sku_data['volumn_weight'] : $sku_data['weight'];
+            $sku_data['toucheng_price'] = $weight * 40 / 1000;//FBA头程费用
+
+            //FBA基础服务费
+            $FBA_fee = self::fbaDeliveryFee($sku_data['length'],$sku_data['width'],$sku_data['height'],$sku_data['weight'],$sale_domain);
+
+            foreach ($FBA_fee as $k => &$v){
+                //获取汇率
+                if ($v['sale_domain'] == '英国'){
+                    $Rate = floatval(self::getExchangeRate("GBP","CNY"));
+                    $v['price_sign'] = $v['price']."£";
+                    //计算固定成本总价
+                    $v['FBA_CNY'] = floatval($v['price'] * $Rate);
+                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
+                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
+                    $v['sum_foreign'] .= '£';
+                }else if ($v['sale_domain'] == '德国' || $v['sale_domain'] == '法国' || $v['sale_domain'] == '意大利' || $v['sale_domain'] == '西班牙'){
+                    $Rate = floatval(self::getExchangeRate("EUR","CNY"));
+                    $v['price_sign'] = $v['price']."€";
+                    //计算固定成本总价
+                    $v['FBA_CNY'] = floatval($v['price'] * $Rate);
+                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
+                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
+                    $v['sum_foreign'] .= '€';
+                }else if ($v['sale_domain'] == '美国'){
+                    $Rate = floatval(self::getExchangeRate("USD","CNY"));
+                    $v['price_sign'] = $v['price']."$";
+                    //计算固定成本总价
+                    $v['FBA_CNY'] = floatval($v['price'] * $Rate);
+                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
+                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
+                    $v['sum_foreign'] .= '$';
+
+                }else if ($v['sale_domain'] == '加拿大'){
+                    $Rate = floatval(self::getExchangeRate("CAD","CNY"));
+                    $v['price_sign'] = $v['price']."C$";
+                    //计算固定成本总价
+                    $v['FBA_CNY'] = floatval($v['price'] * $Rate);
+                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
+                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
+                    $v['sum_foreign'] .= 'C$';
+                }else if ($v['sale_domain'] == '墨西哥'){
+                    $Rate = floatval(self::getExchangeRate("MXI","CNY"));
+                    $v['price_sign'] = $v['price']."$";
+                    //计算固定成本总价
+                    $v['FBA_CNY'] = floatval($v['price'] * $Rate);
+                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
+                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
+                    $v['sum_foreign'] .= '$';
+
+                }else if ($v['sale_domain'] == '日本'){
+                    $Rate = floatval(self::getExchangeRate("JPY","CNY"));
+                    $v['price_sign'] = $v['price']."¥";
+                    //计算固定成本总价
+                    $v['FBA_CNY'] = floatval($v['price'] * $Rate);
+                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
+                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
+                    $v['sum_foreign'] .= '¥';
+                }
+
+                //FBA基础服务费换算成人民币
+                $v['FBA_CNY'] = round($v['FBA_CNY'],2);
+                $v['sum']     = round($v['sum'],2);
+                $v['change_rate'] = $Rate;
+            }
+        }
+
+        $data['sku_data'] = $sku_data;
+        $data['FBA_fee'] = $FBA_fee;
+        return $data;
+    }
+
     //计算毛利、毛利率、平台佣金等费用
-    public function test1(){
+    public function profit_calc(){
         $data = array();
         $data['status'] = 1;
         $data['message'] = 'success';
 
-        $sale_price = I('post.');
+        $sale_price = I('post.sale_domain');
+        $sale_domain = array_keys($sale_price);
+
+        $sku_id = I('post.id');
+        if (intval($sku_id) == 0){
+            $this->ajaxReturn(['status'=>0,'message'=>'sku_id不能为0']);
+        }
+        if (!$sale_price){
+            $this->ajaxReturn(['status'=>0,'message'=>'请输入价格']);
+        }
+
+        //固定成本
+        $fix_cost = $this->fixedCost($sku_id,$sale_domain);
+
+        $rate = 0.15;
+        foreach ($fix_cost['FBA_fee'] as $k=>&$v){
+            $domain = $v['sale_domain'];
+            $data['sale_domain'] = $v['sale_domain'];
+            $data['price'] = floatval($sale_price[$domain]);//在某站点的售价
+
+            //佣金
+            $commission_rate = 0.15;
+            $data['commission'] = floatval($data['price'] * $commission_rate);//佣金
+
+            //银行提款手续费
+            $withdraw_rate = 0.02;
+            $data['withdraw_fee'] = floatval((1-$commission_rate)*$data['price']*$withdraw_rate);
+
+            //退款耗损
+            $refund_rate = 0.05;
+            $data['refund'] = floatval($data['price']*$refund_rate);
+
+            //毛利,毛利率
+            $data['profit_rmb'] = floatval(($data['price']-$data['commission']-$data['withdraw_fee']-$data['refund'])*$v['change_rate']-$v['sum']);
+            $data['profit_rate'] = floatval($data['profit_rmb'] /($data['price'] * $v['change_rate']));
+
+            //投入产出比
+            $data['io_rate'] = floatval($data['profit_rmb'] / ($v['sum'] - $v['FBA_CNY']));
+        }
     }
 
     public function test(){
