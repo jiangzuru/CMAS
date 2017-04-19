@@ -150,6 +150,89 @@ class SkuDetailController extends Controller {
         $this->ajaxReturn($data);
     }
 
+    //计算毛利、毛利率、平台佣金等费用
+    public function profitCalc(){
+        $data = array();
+        $data['status'] = 1;
+        $data['message'] = 'success';
+
+
+        $sku_id = I('post.id');
+        if (intval($sku_id) == 0){
+            $this->ajaxReturn(['status'=>0,'message'=>'sku_id不能为0']);
+        }
+
+        $sale_price = I('post.');
+        unset($sale_price['id']);
+        $sale_domain = array_keys($sale_price);
+
+        if (!$sale_price){
+            $this->ajaxReturn(['status'=>0,'message'=>'请输入价格']);
+        }
+
+        //固定成本
+        $fix_cost = $this->fixedCost($sku_id,$sale_domain);
+
+        $rate = 0.15;
+        $i = 0;
+        foreach ($fix_cost['FBA_fee'] as $k=>&$v){
+            $domain = $v['sale_domain'];
+            $data[$i]['sale_domain'] = $v['sale_domain'];
+            $data[$i]['price'] = floatval($sale_price[$domain]);//在某站点的售价
+
+            //佣金
+            $commission_rate = 0.15;
+            $data[$i]['commission'] = floatval($data[$i]['price'] * $commission_rate);//佣金
+
+            //银行提款手续费
+            $withdraw_rate = 0.02;
+            $data[$i]['withdraw_fee'] = floatval((1-$commission_rate)*$data[$i]['price']*$withdraw_rate);
+
+            //退款耗损
+            $refund_rate = 0.05;
+            $data[$i]['refund'] = floatval($data[$i]['price']*$refund_rate);
+
+            //毛利,毛利率
+            $data[$i]['profit_rmb']  = floatval(($data[$i]['price']-$data[$i]['commission']-$data[$i]['withdraw_fee']-$data[$i]['refund'])*$v['change_rate']-$v['sum']);
+            $data[$i]['profit']      = floatval($data[$i]['profit_rmb'] / $v['change_rate']);
+            $data[$i]['profit_rate'] = floatval($data[$i]['profit_rmb'] /($data[$i]['price'] * $v['change_rate']));
+
+            //投入产出比
+            $data[$i]['io_rate'] = floatval($data[$i]['profit_rmb'] / ($v['sum'] - $v['FBA_CNY']));
+
+            //取小数点后两位
+            $data[$i]['profit_rmb']   = round($data[$i]['profit_rmb'],2);
+            $data[$i]['profit']       = round($data[$i]['profit'],2);
+            $data[$i]['profit_rate']  = (round($data[$i]['profit_rate'],4)*100)."%";
+            $data[$i]['io_rate']      = round($data[$i]['io_rate'],2);
+
+            //根据站点计算外币价格及添加货币符号
+            if ($domain == '英国'){
+                $data[$i]['price'] .= "£";
+                $data[$i]['profit'] .= "£";
+            }elseif ($domain == '德国' || $domain == '法国' || $domain == '意大利' || $domain == '西班牙'){
+                $data[$i]['price'] .= "€";
+                $data[$i]['profit'] .= "€";
+            }elseif ($domain == '美国'){
+                $data[$i]['price'] .= "$";
+                $data[$i]['profit'] .= "$";
+            }elseif ($domain == '加拿大'){
+                $data[$i]['price'] .= "C$";
+                $data[$i]['profit'] .= "C$";
+            }elseif ($domain == '日本'){
+                $data[$i]['price'] .= "¥";
+                $data[$i]['profit'] .= "¥";
+            }elseif ($domain == '墨西哥'){
+                $data[$i]['price'] .= "$";
+                $data[$i]['profit'] .= "$";
+            }
+
+            $i++;
+        }
+
+        $this->ajaxReturn($data);
+    }
+
     //获取汇率，如果数据库中有当日汇率，则取出。没有的话，使用yahoo提供的接口。
     private function getExchangeRate($from_Currency,$to_Currency){
         $date = date('Y-m-d');//获取今日日期
@@ -355,53 +438,6 @@ class SkuDetailController extends Controller {
         $data['sku_data'] = $sku_data;
         $data['FBA_fee'] = $FBA_fee;
         return $data;
-    }
-
-    //计算毛利、毛利率、平台佣金等费用
-    public function profit_calc(){
-        $data = array();
-        $data['status'] = 1;
-        $data['message'] = 'success';
-
-        $sale_price = I('post.sale_domain');
-        $sale_domain = array_keys($sale_price);
-
-        $sku_id = I('post.id');
-        if (intval($sku_id) == 0){
-            $this->ajaxReturn(['status'=>0,'message'=>'sku_id不能为0']);
-        }
-        if (!$sale_price){
-            $this->ajaxReturn(['status'=>0,'message'=>'请输入价格']);
-        }
-
-        //固定成本
-        $fix_cost = $this->fixedCost($sku_id,$sale_domain);
-
-        $rate = 0.15;
-        foreach ($fix_cost['FBA_fee'] as $k=>&$v){
-            $domain = $v['sale_domain'];
-            $data['sale_domain'] = $v['sale_domain'];
-            $data['price'] = floatval($sale_price[$domain]);//在某站点的售价
-
-            //佣金
-            $commission_rate = 0.15;
-            $data['commission'] = floatval($data['price'] * $commission_rate);//佣金
-
-            //银行提款手续费
-            $withdraw_rate = 0.02;
-            $data['withdraw_fee'] = floatval((1-$commission_rate)*$data['price']*$withdraw_rate);
-
-            //退款耗损
-            $refund_rate = 0.05;
-            $data['refund'] = floatval($data['price']*$refund_rate);
-
-            //毛利,毛利率
-            $data['profit_rmb'] = floatval(($data['price']-$data['commission']-$data['withdraw_fee']-$data['refund'])*$v['change_rate']-$v['sum']);
-            $data['profit_rate'] = floatval($data['profit_rmb'] /($data['price'] * $v['change_rate']));
-
-            //投入产出比
-            $data['io_rate'] = floatval($data['profit_rmb'] / ($v['sum'] - $v['FBA_CNY']));
-        }
     }
 
     public function test(){
