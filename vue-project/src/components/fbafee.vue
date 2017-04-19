@@ -1,6 +1,8 @@
 <template>
-    <div>
-        <div>FBA基础服务费</div>
+    <div class="fbafee">
+        <div class="left title">
+            <h1>FBA基础服务费</h1>
+        </div>
         <div>
             <el-table
                     :data="fbaFeeData"
@@ -13,7 +15,7 @@
                         label="尺寸（cm）"
                         sortable
                         :formatter="sizeFormatter"
-                        width="180">
+                >
                 </el-table-column>
                 <el-table-column
                         prop="high_weight"
@@ -80,4 +82,8 @@ export default {
 </script>
 
 <style scoped>
+    .fbafee .title{
+        font-size: 1.5em;
+        margin:20px;
+    }
 </style>

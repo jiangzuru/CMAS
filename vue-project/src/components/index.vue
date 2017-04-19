@@ -1,8 +1,7 @@
 <template>
 <div>
-      <div style="background: #48576a;text-align: left;font-size: 30px;color: #fff">后台管理系统</div>
-      <el-row>
-          <el-col :xs="0" :sm="4" :md="4" :lg="4">
+      <el-row :style="{minHeight: dHeight+'px'}">
+          <el-col :xs="0" :sm="4" :md="4" :lg="4" style="height: 100%;background: #000" :style="{minHeight: dHeight+'px'}">
               <div class="">
                   <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
                            theme="dark" style="border-radius: 0px">
@@ -27,7 +26,12 @@
               </div>
           </el-col>
           <el-col :xs="24" :sm="20" :md="20" :lg="20">
+              <el-row>
+                <div style="background: #48576a;text-align: left;font-size: 30px;color: #fff">后台管理系统</div>
+              </el-row>
+              <el-row>
               <router-view></router-view>
+              </el-row>
           </el-col>
       </el-row>
   </div>
@@ -38,6 +42,7 @@ export default {
   name: 'index',
   data () {
     return {
+        dHeight:window.innerHeight
     }
   },
   methods: {
