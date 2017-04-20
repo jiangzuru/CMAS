@@ -42,11 +42,18 @@ CREATE TABLE `think_logistics`(
 	`id` int(11) NOT NULL AUTO_INCREMENT,
 	`name` varchar(256) NOT NULL COMMENT '物流名称',
 	`rank` tinyint(1) NOT NULL DEFAULT 1 COMMENT '所在级别',
-	`pid` int(11) NOT NULL COMMENT '父级别id',
+	`pid` int(11) NOT NULL DEFAULT 0 COMMENT '父级别id',
 	`special_type` varchar(20) NOT NULL COMMENT '是否特殊物品。0.普通，1.带电产品 2.粉末 3.液体',
 	`only_weight` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否计算体积重 0:不计算, 1:计算',
-	`price` decimal(4,2) NOT NULL COMMENT '每kg运输价格',
-	`volume_number` int(11) NOT NULL COMMENT '体积重系数',
+	`price` decimal(4,2) NOT NULL DEFAULT 0 COMMENT '每kg运输价格',
+	`volume_number` int(11) NOT NULL DEFAULT 0 COMMENT '体积重系数',
 	`destination` varchar(256) NOT NULL COMMENT '目的地',
+	PRIMARY KEY(`id`)
+)ENGINE=innoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `think_setting`(
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`name` varchar(128) NOT NULL COMMENT '变量名',
+	`value` decimal(11,4) NOT NULL COMMENT '变量值',
 	PRIMARY KEY(`id`)
 )ENGINE=innoDB DEFAULT CHARSET=utf8;
