@@ -8,7 +8,7 @@ namespace Home\Controller;
 use Think\Controller;
 class LogisticsController extends Controller {
     public function index(){
-        $Logistic_MODEL = M('Logistic');
+        $Logistic_MODEL = M('Logistics');
         $data = $Logistic_MODEL->select();
         if($data){
             $this->ajaxReturn(['status'=>1,'message'=>'success','data'=>$data]);
