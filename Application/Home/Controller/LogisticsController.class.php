@@ -17,11 +17,50 @@ class LogisticsController extends Controller {
         }
     }
 
+    public function getLogisticsData(){
+        $Logistic_MODEL = M('Logistics');
+        $data = $Logistic_MODEL->select();
+        if($data){
+            $Logistic_data = array();
+            foreach ($data as $v){
+                $temp_array = array();
+                if ($v['rank'] == 1){
+                    $temp_array['value'] = $v['id'];
+                    $temp_array['label'] = $v['name'];
+                    $Logistic_data[] = $temp_array;
+                }elseif ($v['rank'] == 2){
+                    $temp_array['value'] = $v['id'];
+                    foreach ($Logistic_data as &$vv){
+                        if ($vv['value'] == $v['pid']){
+                            $temp_array['value'] = $v['id'];
+                            $temp_array['label'] = $v['name'];
+                            $vv['children'][] = $temp_array;
+                        }
+                    }
+                }elseif($v['rank'] == 3){
+                    $temp_array['value'] = $v['id'];
+                    $temp_array['label'] = $v['name'];
+                    foreach ($Logistic_data as &$grandfa){
+                        foreach ($grandfa['children'] as &$father){
+                            if ($v['pid'] == $father['value']){
+                                $father['children'][] = $temp_array;
+                            }
+                        }
+                    }
+                }
+            }
+            $this->ajaxReturn(['status'=>1,'message'=>'success','data'=>$Logistic_data]);
+        }else{
+            $this->ajaxReturn(['status'=>0,'message'=>'数据库连接出错']);
+        }
+    }
+
     //新增物流方式
     public function save(){
         $information = I('request.');
         $Model = M('Logistics');
-        $result = $Model->save();
+        $result = $Model->add($information);
+
         if ($result){
             $this->ajaxReturn(['status'=>1,'message'=>'success']);
         }else{

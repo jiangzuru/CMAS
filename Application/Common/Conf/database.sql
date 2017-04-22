@@ -57,3 +57,12 @@ CREATE TABLE `think_setting`(
 	`value` decimal(11,4) NOT NULL COMMENT '变量值',
 	PRIMARY KEY(`id`)
 )ENGINE=innoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `think_commission`(
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`name` varchar(128) NOT NULL COMMENT '类目名称',
+	`value` decimal(5,4) NOT NULL COMMENT '佣金费率',
+	`lowest` decimal(5,4) NOT NULL DEFAULT 0 COMMENT '最低佣金',
+	`sale_domain` varchar(128) NOT NULL COMMENT '销售站点',
+	PRIMARY KEY(`id`)
+)ENGINE=innoDB DEFAULT CHARSET=utf8;
