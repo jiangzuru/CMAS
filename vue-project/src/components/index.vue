@@ -14,7 +14,7 @@
                               <el-menu-item index="1-2">fba基础服务费</el-menu-item>
                           </router-link>
                           <router-link to="/index/logistic">
-                              <el-menu-item index="1-3">logistic</el-menu-item>
+                              <el-menu-item index="1-3">物流管理</el-menu-item>
                           </router-link>
                       </el-submenu>
                       <el-submenu index="2">

@@ -1,13 +1,18 @@
 <template>
   <div class="edit-sku contain">
     <el-row>
-      <h1 class="left title">{{titleStatus}}SKU</h1>
+      <!--<el-col :span="2">-->
+      <!--<el-button @click="goBackHistory" type="primary">返回</el-button>-->
+      <!--</el-col>-->
+      <el-col :span="22">
+      <h1 class="left title">{{ form.id==''?'新增':'编辑'}}SKU</h1>
+      </el-col>
     </el-row>
 
     <el-form :model="form" label-width="250px">
 
       <el-form-item label="Sku">
-        <el-input v-model="form.sku" :disabled="!skuChangeAble"></el-input>
+        <el-input v-model="form.sku" :disabled="!(form.id == 0)"></el-input>
       </el-form-item>
       <el-form-item label="重量(g)">
         <el-input v-model="form.weight"></el-input>
@@ -33,15 +38,24 @@
 
 
       <el-form-item label="物流方式" style="text-align: left">
-        <el-radio-group v-model="form.logistics_type">
-          <el-radio label="1">直邮</el-radio>
-          <el-radio label="2">FBA</el-radio>
-        </el-radio-group>
+        <!--<el-radio-group v-model="form.logistics_type">-->
+          <!--<el-radio label="1">直邮</el-radio>-->
+          <!--<el-radio label="2">FBA</el-radio>-->
+        <!--</el-radio-group>-->
+
+        <el-cascader
+                :options="logisticOption"
+                v-model="logistics_type"
+                expand-trigger="hover"
+        >
+        </el-cascader>
+
+
       </el-form-item>
 
 
       <el-form-item label="特殊属性" style="text-align: left">
-        <el-checkbox-group v-model="form.type">
+        <el-checkbox-group v-model="type">
           <el-checkbox label="1" name="type">电子产品</el-checkbox>
           <el-checkbox label="2" name="type">粉末</el-checkbox>
           <el-checkbox label="3" name="type">液体</el-checkbox>
@@ -49,57 +63,57 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">保存</el-button>
-        <el-button>取消</el-button>
+        <el-button type="success" @click="onSubmit">保存</el-button>
+        <el-button type="danger" @click="goBackHistory">取消</el-button>
+        <el-button type="info">成本试算</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+  import {mapState} from 'vuex'
 export default {
   name: 'editSku',
   data () {
     return {
-        titleStatus:'新增',
-        sku_id:-1,
-        form:{
-          sku:'',
-          weight: "1.00",
-          length: "1.00",
-          width: "1.00",
-          height: "1.00",
-          buy_price: "1.00",
-          domestic_logistics_price: "1.00",
-          package_price: "1.00",
-          logistics_type: "1",
-          type:[]
-        },
-        skuChangeAble:true
+        logisticOption:[],
+        logistics_type:[],
+//        form:{
+//          id:''
+//          sku:'',
+//          weight: "",
+//          length: "",
+//          width: "",
+//          height: "",
+//          buy_price: "",
+//          domestic_logistics_price: "",
+//          package_price: "",
+//          logistics_type: "",
+//          type:[]
+//        },
+        type:[],
     }
   },
+    computed:{
+        ...mapState({
+            form:state=>state.manager.editSkuData
+        })
+    },
   methods:{
       onSubmit(){
-          let {type,...form} = this.form;
-          type = type.join(',')
+          let type = this.type.join(',')
           let url='';
-          if(this.sku_id == -1){
+          if(this.form.id == ''){
               url = '/home/skuDetail/save';
           }else{
               url = '/home/skuDetail/update'
               this.form.id = this.sku_id;
           }
-
-//          this.$http({
-//              url:url,
-//              params:{
-//                  ...form,
-//                  type
-//              }
-//          })
+          this.form.logistics_type = this.logistics_type[2];
           this.$http.post(url,
               {
-                  ...form,
+                  ...this.form,
                   type
               }
           )
@@ -123,18 +137,26 @@ export default {
                 });
             }
           })
-      }
+      },
+      goBackHistory(){
+          this.$router.go(-1);
+      },
+      getLogisticsData(){
+          this.$http({
+              url:'/home/logistics/getLogisticsData'
+          }).then(res=>{
+              console.log(res)
+              if(res.body.status == 1){
+                  console.log(res.body.data)
+                  this.logisticOption = res.body.data
+
+
+              }
+          })
+      },
   },
   mounted(){
-      let sku_id = this.$route.params.id;
-      let sku = this.$route.params.sku;
-      this.sku_id = sku_id;
-      this.form.sku = sku;
-      if(sku_id > -1) {
-          this.skuChangeAble = false
-          this.titleStatus = '编辑'
-      }
-
+    this.getLogisticsData()
   }
 }
 </script>

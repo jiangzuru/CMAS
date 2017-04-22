@@ -75,198 +75,43 @@
                         label="操作"
                         width="180">
                     <template scope="scope">
-                        <el-button @click="toEditSku(scope.row.id,scope.row.sku)">编辑</el-button>
+                        <el-button @click="toEditSku(scope.row)">编辑</el-button>
                         <el-button @click="deleteConfirm(scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
             <div style="text-align: left;margin-top: 30px">
-                <el-button type="primary" @click="toEditSku(-1,0)">新增</el-button>
+                <el-button type="primary" @click="toEditSku(false)">新增</el-button>
             </div>
         </div>
-        <!-- 弹出表格-->
-        <div v-if="showDetailId" class="skuDetail">
-            <div class="background" @click="hideSkuDetail">
+    <sku-detail></sku-detail>
 
-            </div>
-            <el-row type="flex" justify="center" style="top: 10%;width: 80%;margin: auto;">
-                <el-col :span="24" class="context">
-
-                    <el-row>
-                        <el-col :span="4">
-                            <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll"
-                                         @change="handleCheckAllChange">全选
-                            </el-checkbox>
-                        </el-col>
-                        <el-col :span="20">
-                            <el-checkbox-group v-model="checkedCountries" @change="handleCheckedcountriesChange"
-                                               style="text-align: left">
-                                <el-checkbox v-for="(city ,index) in countries" :label="city" :key="index"
-                                             style="margin-left: 15px">{{city}}
-                                </el-checkbox>
-                            </el-checkbox-group>
-                        </el-col>
-                    </el-row>
-
-                    <el-row :gutter="10">
-                        <el-col :span="6" v-for="(item,index) in countries" :key="index">
-                            <el-input placeholder="请输入内容" v-model="countriesFee[item]">
-                                <template slot="prepend">{{item}}</template>
-                            </el-input>
-                        </el-col>
-                    </el-row>
-                    <el-row style="text-align: right">
-                        <el-button type='primary' @click="getProfitCalc" >搜索</el-button>
-                    </el-row>
-                    <!--固定成本表格-->
-                    <el-row style="margin: 30px auto;">
-                        <el-table
-                                :data="selectedFbaFee"
-                                border
-                                style="width: 100%"
-                                max-height="500"
-                        >
-
-                            <el-table-column
-                                    prop="sale_domain"
-                                    label="站点"
-                                    sortable
-                                    width="180">
-                            </el-table-column>
-                            <el-table-column
-                                    label="FBA基础服务费"
-                                    sortable
-                                    :formatter="function(row) {
-                                      return row.FBA_CNY+'('+row.price_sign+')'
-                                    }"
-                                    width="180">
-                            </el-table-column>
-                            <el-table-column
-                                    label="抛率"
-                                    sortable
-                                    :formatter="function(row) {
-                                      return fbaFeeSkuData.paolv
-                                    }"
-                                    width="180">
-                            </el-table-column>
-                            <el-table-column
-                                    label="采购成本"
-                                    sortable
-                                    :formatter="function(row){
-                                        return fbaFeeSkuData.buy_price
-                                    }"
-                                    width="180">
-                            </el-table-column>
-                            <el-table-column
-                                    label="国内端运费"
-                                    sortable
-                                    :formatter="function (row) {
-                                      return fbaFeeSkuData.domestic_logistics_price
-                                    }"
-                                    width="180">
-                            </el-table-column>
-                            <el-table-column
-                                    label="FBA头程费用"
-                                    sortable
-                                    :formatter="function (row) {
-                                      return fbaFeeSkuData.toucheng_price
-                                    }"
-                                    width="180">
-                            </el-table-column>
-                            <el-table-column
-                                    label="包装成本"
-                                    sortable
-                                    :formatter="function (row) {
-                                      return fbaFeeSkuData.package_price
-                                    }"
-                                    width="180">
-                            </el-table-column>
-                            <el-table-column
-                                    label="总成本"
-                                    sortable
-                                    :formatter="function (row) {
-                                      return row.sum+'('+row.sum_foreign+')'
-                                    }"
-                                    width="180">
-                            </el-table-column>
-
-                        </el-table>
-
-                    </el-row clas style>
-                    <!--可变成本表格-->
-                    <el-row>
-                        <el-table
-                                :data="profitCalc"
-                                border
-                                style="width: 100%"
-                                max-height="500"
-                        >
-
-                            <el-table-column
-                                    prop="sale_domain"
-                                    label="站点"
-                                    sortable
-                                    width="180">
-                            </el-table-column>
-                            <el-table-column
-                                    label="售价"
-                                    sortable
-                                    prop="price"
-                                    width="180">
-                            </el-table-column>
-                            <el-table-column
-                                    label="毛利"
-                                    sortable
-                                    :formatter="function(row) {
-                                      return row.profit_rmb+'('+row.profit+')'
-                                    }"
-                                    width="180">
-                            </el-table-column>
-                            <el-table-column
-                                    label="毛利率"
-                                    sortable
-                                    prop="profit_rate"
-                                    width="180">
-                            </el-table-column>
-                            <el-table-column
-                                    label="投入产出比"
-                                    sortable
-                                    :formatter="function(row) {
-                                      return '1:'+row.io_rate;
-                                    }"
-                                    width="180">
-                            </el-table-column>
-
-                        </el-table>
-
-                    </el-row clas style>
-
-                </el-col>
-            </el-row>
-        </div>
     </div>
 </template>
 
 <script>
-    const countryOptions = ['英国', '法国', '德国', '意大利', '西班牙', '美国', '加拿大', '墨西哥', '日本'];
-
+import {mapState,mapMutations} from 'vuex'
+    import skuDetail from '@/components/skuDetail'
     export default {
         name: 'sku',
+        components:{skuDetail},
         data () {
             return {
                 skuData: [],
                 showDetailId: 0,
-                countries: countryOptions,
-                isIndeterminate: true,
-                checkAll: true,
-                checkedCountries: countryOptions,
-                countriesFee: {},
-                fbaFee: [],
-                fbaFeeSkuData: [],
-                profitCalc:[]
+//                isIndeterminate: true,
+//                checkAll: true,
+//                countriesFee: {},
+//                fbaFee: [],
+//                fbaFeeSkuData: [],
+//                profitCalc:[],
+//                loading1:true
             }
         },
         computed: {
+//            ...mapState({
+//                countries:state=>state.manager.countriesOption
+//            }),
             selectedFbaFee(){
 
                 var a = this.checkedCountries;
@@ -280,6 +125,10 @@
             }
         },
         methods: {
+            ...mapMutations([
+                'updateEditSkuData',
+                'updateSkuDetail'
+            ]),
             getSkuData(){
                 this.$http({
                     url: '/home/skuDetail/getSkuData',
@@ -309,38 +158,27 @@
                 }
             },
             showDetail(id){
-                this.showDetailId = id;
-                this.getCalculateById(id)
-            },
-            hideSkuDetail(){
-                this.showDetailId = 0
+                this.updateSkuDetail({skuDetail:{isShow:true,id:id}})
+//                this.showDetailId = id;
+//                this.getCalculateById(id)
             },
 
-            handleCheckAllChange(event) {
-                this.checkedCountries = event.target.checked ? countryOptions : [];
-                this.isIndeterminate = false;
-            },
-            handleCheckedcountriesChange(value) {
-                let checkedCount = value.length;
-                this.checkAll = checkedCount === this.countries.length;
-                this.isIndeterminate = checkedCount > 0 && checkedCount < this.countries.length;
-            },
-            getCalculateById(id){
-                this.$http({
-                    url: '/home/skuDetail/calculate',
-                    params: {
-                        id: id
-                    }
-                })
-                    .then((res) => {
-                    if(res.body.status == 1){
-                        this.fbaFee = res.body.FBA_fee
-                        this.fbaFeeSkuData = res.body.sku_data
-                    }
-                    })
-            },
-            toEditSku(id, sku){
-                this.$router.push({path: '/index/editSku/' + id + '/' + sku})
+//            handleCheckAllChange(event) {
+//                this.checkedCountries = event.target.checked ? countryOptions : [];
+//                this.isIndeterminate = false;
+//            },
+//            handleCheckedcountriesChange(value) {
+//                let checkedCount = value.length;
+//                this.checkAll = checkedCount === this.countries.length;
+//                this.isIndeterminate = checkedCount > 0 && checkedCount < this.countries.length;
+//            },
+            toEditSku(row){
+                if(row){
+                    this.updateEditSkuData({skuData:row})
+                }else{
+                    this.updateEditSkuData()
+                }
+                this.$router.push({path: '/index/editSku'})
             },
             deleteConfirm(row){
 
@@ -395,27 +233,6 @@
                         return res.body.status;
                     })
             },
-            getProfitCalc(){
-                let postData = {};
-                for(let i in this.countriesFee){
-                    if(this.countriesFee[i] > 0){
-                        postData[i] = this.countriesFee[i]
-                    }
-                }
-
-                this.$http.post(
-                    '/home/skuDetail/profitCalc',
-                    {
-                        id:this.showDetailId,
-                        ...postData
-                    }
-                )
-                    .then(res=>{
-                        if(res.body.status == 1){
-                            this.profitCalc = res.body.data;
-                        }
-                    })
-            }
         },
         mounted(){
             this.getSkuData();

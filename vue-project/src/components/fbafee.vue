@@ -41,19 +41,22 @@
                         width="180">
 
                     <template scope="scope">
-                        <el-button @click="toEditSku(scope.row.id,scope.row.sku)">编辑</el-button>
+                        <el-button @click="toEditFba(scope.row)">编辑</el-button>
                         <el-button @click="deleteConfirm(scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
         </div>
         <div class="left" style="margin-top: 20px">
-            <el-button type="primary" @click="toEditFba" >新增</el-button>
+            <el-button type="primary" @click="toEditFba(false)" >新增</el-button>
         </div>
     </div>
 </template>
 
 <script>
+
+import {mapState, mapMutations} from 'vuex'
+
 export default {
   name: 'sku',
   data () {
@@ -62,6 +65,9 @@ export default {
     }
   },
   methods: {
+      ...mapMutations([
+          'updateEditFbaFeeData'
+      ]),
       getFbafeeData(){
           this.$http({
               url: '/home/FbaFee/getFbafeeData',
@@ -80,9 +86,64 @@ export default {
       sizeFormatter(row){
           return row.high_length+'*'+row.high_width+'*'+row.high_height;
       },
-      toEditFba(){
-          console.log(11)
+      toEditFba(row){
+          if(row){
+              this.updateEditFbaFeeData({fbaFeeData:row});
+          }else{
+              this.updateEditFbaFeeData()
+          }
           this.$router.push({path:'/index/editFba'})
+      },
+      deleteFba(id){
+          return this.$http({
+              url: '/home/fbaFee/delete',
+              params: {
+                  id: id
+              }
+          })
+              .then((res) => {
+                  if (res.body.status == 1) {
+//                            this.$notify({
+//                                title: '成功',
+//                                message: '删除成功',
+//                                type: 'success'
+//                            });
+                      this.fbaFeeData = this.fbaFeeData.filter(function (item,index) {
+                          if(item.id == id) return false;
+                          return true
+                      })
+                  } else {
+                      this.$notify({
+                          title: '失败',
+                          message: res.body.message,
+                          type: 'error'
+                      });
+                  }
+                  return res.body.status;
+              })
+      },
+      deleteConfirm(row){
+          this.$confirm('确定删除?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+          }).then(() => {
+              this.deleteFba(row.id)
+                  .then((status)=>{
+                      if(status == 1){
+
+                          this.$message({
+                              type: 'success',
+                              message: '删除成功!'
+                          });
+                      }
+                  })
+          }).catch(() => {
+              this.$message({
+                  type: 'info',
+                  message: '已取消删除'
+              });
+          });
       },
       weightSortMethod(a,b){
           return parseInt(a.high_weight )>parseInt( b.high_weight);

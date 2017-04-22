@@ -60,38 +60,37 @@
         <el-input v-model="form.price"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">保存</el-button>
-        <el-button>取消</el-button>
+        <el-button type="success" @click="onSubmit">保存</el-button>
+        <el-button type="danger" @click="goBackHistory">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+  import {mapState} from 'vuex'
 export default {
-  name: 'editSku',
+  name: 'editFba',
   data () {
     return {
-        sku_id:-1,
-        form:{
-            low_length:0,
-            high_length: 0,
-            low_width: 0,
-            high_width: 0,
-            low_height: 0,
-            high_height: 0,
-            low_weight: 0,
-            high_weight: 0,
-            sale_domain: 0,
-            package_weight:0,
-            price:0
-        },
-        skuChangeAble:true
     }
   },
+    computed:{
+        ...mapState({
+            form: state=>state.manager.editFbafeeData
+        }),
+    },
   methods:{
       onSubmit(){
-          this.$http.post('/home/fbaFee/save',
+          let url = '';
+          if(this.form.id == ''){
+              url='/home/fbaFee/save'
+          }else {
+              url='/home/fbaFee/update'
+          }
+
+
+          this.$http.post(url,
               {
                   ...this.form,
               }
@@ -116,7 +115,11 @@ export default {
                 });
             }
           })
-      }
+      },
+
+      goBackHistory(){
+          this.$router.go(-1);
+      },
   },
   mounted(){
 

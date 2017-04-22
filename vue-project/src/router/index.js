@@ -6,6 +6,8 @@ import Fbafee from  '@/components/fbafee'
 import EditSku from '@/components/editSku'
 import EditFba from '@/components/editFba'
 import Logistic from '@/components/logistic'
+import EditLogistic from '@/components/editLogistic'
+
 Vue.use(Router)
 
 export default new Router({
@@ -30,7 +32,7 @@ export default new Router({
                   component:Fbafee
               },
               {
-                  path:'editSku/:id/:sku',
+                  path:'editSku',
                   name:'editSku',
                   component:EditSku
               },
@@ -43,6 +45,11 @@ export default new Router({
                   path:'logistic',
                   name:'logistic',
                   component:Logistic
+              },
+              {
+                  path:'editLogistic',
+                  name:'editLogistic',
+                  component:EditLogistic
               }
           ]
       }
