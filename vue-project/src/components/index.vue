@@ -19,7 +19,7 @@
                       </el-submenu>
                       <el-submenu index="2">
                       <template slot="title">配置</template>
-                      <router-link to="/index/setting">
+                      <router-link to="/setting/constSetting">
                           <el-menu-item index="2-1">常量配置</el-menu-item>
                       </router-link>
                   </el-submenu>
@@ -30,10 +30,12 @@
           </el-col>
           <el-col :xs="24" :sm="20" :md="20" :lg="20">
               <el-row>
-                <div style="background: #48576a;text-align: left;font-size: 30px;color: #fff">后台管理系统</div>
+                <div style="background: #48576a;text-align: left;font-size: 30px;color: #fff;height:50px">后台管理系统</div>
               </el-row>
               <el-row>
+                  <div style="background: #ccc;" :style="{minHeight: dHeight-50+'px'}">
               <router-view></router-view>
+                  </div>
               </el-row>
           </el-col>
       </el-row>

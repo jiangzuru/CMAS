@@ -1,5 +1,6 @@
 <template>
   <div class="edit-fba contain">
+    <el-card>
     <h1 class="left title">新增FBA基础服务费细则</h1>
     <el-form :model="form" label-width="250px">
 
@@ -64,6 +65,7 @@
         <el-button type="danger" @click="goBackHistory">取消</el-button>
       </el-form-item>
     </el-form>
+    </el-card>
   </div>
 </template>
 

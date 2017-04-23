@@ -23,7 +23,7 @@ store.registerModule('manager', {
             height:'',
             id:'',
             length:'',
-            logistics_type:'',
+            logistics_type:[],
             package_price:'',
             sku:'',
             weight:'',

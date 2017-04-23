@@ -116,6 +116,8 @@
                                 border
                                 style="width: 100%"
                                 max-height="500"
+                                v-loading="loading2"
+                                element-loading-text="拼命加载中"
                         >
 
                             <el-table-column
@@ -174,6 +176,7 @@ import {mapState,mapMutations} from 'vuex'
                 checkedCountries: [],
                 countriesFee: {},
                 loading1:true,
+                loading2:false,
                 fbaFee: [],
                 fbaFeeSkuData: [],
                 profitCalc:[],
@@ -234,6 +237,7 @@ import {mapState,mapMutations} from 'vuex'
                     })
             },
             getProfitCalc(){
+                this.loading2 = true;
                 let postData = {};
                 for(let i in this.countriesFee){
                     if(this.countriesFee[i] > 0){
@@ -251,6 +255,7 @@ import {mapState,mapMutations} from 'vuex'
                         if(res.body.status == 1){
                             this.profitCalc = res.body.data;
                         }
+                        this.loading2 = false
                     })
             }
         },

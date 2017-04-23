@@ -1,5 +1,6 @@
 <template>
     <div class="logistic contain">
+        <el-card>
         <h1 class="left title">物流管理</h1>
 
             <div>
@@ -65,7 +66,7 @@
                     <el-button type="primary" @click="toEditLogistic(false)">新增</el-button>
                 </div>
             </div>
-
+        </el-card>
     </div>
 </template>
 

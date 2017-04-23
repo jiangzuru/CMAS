@@ -1,5 +1,6 @@
 <template>
     <div class="sku contain">
+        <el-card>
         <div class="left title">
             <h1>SKU管理</h1>
         </div>
@@ -9,6 +10,9 @@
                     border
                     style="width: 100%"
                     max-height="500"
+
+                    v-loading="loadingTable"
+                    element-loading-text="拼命加载中"
 
             >
                 <el-table-column
@@ -86,6 +90,7 @@
         </div>
     <sku-detail></sku-detail>
 
+        </el-card>
     </div>
 </template>
 
@@ -99,13 +104,7 @@ import {mapState,mapMutations} from 'vuex'
             return {
                 skuData: [],
                 showDetailId: 0,
-//                isIndeterminate: true,
-//                checkAll: true,
-//                countriesFee: {},
-//                fbaFee: [],
-//                fbaFeeSkuData: [],
-//                profitCalc:[],
-//                loading1:true
+                loadingTable:true,
             }
         },
         computed: {
@@ -141,6 +140,7 @@ import {mapState,mapMutations} from 'vuex'
                             } else {
                                 //TODO
                             }
+                        this.loadingTable = false
                         }
                     )
             },
@@ -153,25 +153,14 @@ import {mapState,mapMutations} from 'vuex'
                         return 'FBA';
                         break;
                     default:
-                        return 'sha?';
+                        return '?';
                         break;
                 }
             },
             showDetail(id){
                 this.updateSkuDetail({skuDetail:{isShow:true,id:id}})
-//                this.showDetailId = id;
-//                this.getCalculateById(id)
             },
 
-//            handleCheckAllChange(event) {
-//                this.checkedCountries = event.target.checked ? countryOptions : [];
-//                this.isIndeterminate = false;
-//            },
-//            handleCheckedcountriesChange(value) {
-//                let checkedCount = value.length;
-//                this.checkAll = checkedCount === this.countries.length;
-//                this.isIndeterminate = checkedCount > 0 && checkedCount < this.countries.length;
-//            },
             toEditSku(row){
                 if(row){
                     this.updateEditSkuData({skuData:row})
@@ -214,11 +203,6 @@ import {mapState,mapMutations} from 'vuex'
                 })
                     .then((res) => {
                         if (res.body.status == 1) {
-//                            this.$notify({
-//                                title: '成功',
-//                                message: '删除成功',
-//                                type: 'success'
-//                            });
                              this.skuData = this.skuData.filter(function (item,index) {
                                 if(item.id == id) return false;
                                 return true

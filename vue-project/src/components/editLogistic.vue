@@ -1,5 +1,6 @@
 <template>
     <div class="edit-fba contain">
+        <el-card>
         <h1 class="left title">{{form.id==''?'新增':'编辑'}}物流管理细则</h1>
 
         <div style="margin: 20px auto">
@@ -56,6 +57,7 @@
             <el-button type="danger" @click="goBackHistory">取消</el-button>
             </el-form-item>
         </el-form>
+        </el-card>
     </div>
 </template>
 
