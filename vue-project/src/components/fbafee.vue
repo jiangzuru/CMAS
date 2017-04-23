@@ -1,5 +1,6 @@
 <template>
     <div class="fbafee contain">
+        <el-card>
         <div class="left title">
             <h1>FBA基础服务费</h1>
         </div>
@@ -9,6 +10,9 @@
                     border
                     style="width: 100%"
                     max-height="500"
+
+                    v-loading="loadingTable"
+                    element-loading-text="拼命加载中"
             >
                 <el-table-column
                         prop="size"
@@ -50,6 +54,7 @@
         <div class="left" style="margin-top: 20px">
             <el-button type="primary" @click="toEditFba(false)" >新增</el-button>
         </div>
+        </el-card>
     </div>
 </template>
 
@@ -61,7 +66,8 @@ export default {
   name: 'sku',
   data () {
     return {
-        fbaFeeData:[]
+        fbaFeeData:[],
+        loadingTable:true,
     }
   },
   methods: {
@@ -80,6 +86,7 @@ export default {
                   }else {
                       //TODO
                   }
+              this.loadingTable = false
               }
           )
       },
