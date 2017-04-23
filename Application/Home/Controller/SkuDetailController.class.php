@@ -52,24 +52,24 @@ class SkuDetailController extends Controller {
 
         //传值检查
         if (intval($sku_data['weight']) <= 0){
-            $this->ajaxRetuen(['status'=>0,'message'=>'重量不能小等于0']);
+            $this->ajaxReturn(['status'=>0,'message'=>'重量不能小等于0']);
         }
         if (intval($sku_data['length']) <= 0 || intval($sku_data['width']) <= 0 || intval($sku_data['height']) <= 0){
-            $this->ajaxRetuen(['status'=>0,'message'=>'长宽高不能小等于0']);
+            $this->ajaxReturn(['status'=>0,'message'=>'长宽高不能小等于0']);
         }
         if (intval($sku_data['buy_price']) <= 0){
-            $this->ajaxRetuen(['status'=>0,'message'=>'成本价不能小等于0']);
+            $this->ajaxReturn(['status'=>0,'message'=>'成本价不能小等于0']);
         }
         if (intval($sku_data['domestic_logistics_price']) < 0){
-            $this->ajaxRetuen(['status'=>0,'message'=>'国内端运费不能小于0']);
+            $this->ajaxReturn(['status'=>0,'message'=>'国内端运费不能小于0']);
         }
         if (intval($sku_data['logistics_type']) == 0){
-            $this->ajaxRetuen(['status'=>0,'message'=>'物流方式不能为空']);
+            $this->ajaxReturn(['status'=>0,'message'=>'物流方式不能为空']);
         }
 
         $SKU_MODEL = M('SkuDetail');
         if ($SKU_MODEL->create()){
-            $result = $SKU_MODEL->add($data);
+            $result = $SKU_MODEL->add($sku_data);
             if ($result){
                 $this->ajaxReturn($data);
             }else{
@@ -125,19 +125,19 @@ class SkuDetailController extends Controller {
 
             //传值检查
             if (intval($sku_data['weight']) <= 0){
-                $this->ajaxRetuen(['status'=>0,'message'=>'重量不能小等于0']);
+                $this->ajaxReturn(['status'=>0,'message'=>'重量不能小等于0']);
             }
             if (intval($sku_data['length']) <= 0 || intval($sku_data['width']) <= 0 || intval($sku_data['height']) <= 0){
-                $this->ajaxRetuen(['status'=>0,'message'=>'长宽高不能小等于0']);
+                $this->ajaxReturn(['status'=>0,'message'=>'长宽高不能小等于0']);
             }
             if (intval($sku_data['buy_price']) <= 0){
-                $this->ajaxRetuen(['status'=>0,'message'=>'成本价不能小等于0']);
+                $this->ajaxReturn(['status'=>0,'message'=>'成本价不能小等于0']);
             }
             if (intval($sku_data['domestic_logistics_price']) < 0){
-                $this->ajaxRetuen(['status'=>0,'message'=>'国内端运费不能小于0']);
+                $this->ajaxReturn(['status'=>0,'message'=>'国内端运费不能小于0']);
             }
             if (intval($sku_data['logistics_type']) == 0){
-                $this->ajaxRetuen(['status'=>0,'message'=>'物流方式不能为空']);
+                $this->ajaxReturn(['status'=>0,'message'=>'物流方式不能为空']);
             }
         }else{
             $Model = M('SkuDetail');

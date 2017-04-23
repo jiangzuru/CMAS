@@ -36,48 +36,48 @@
                         prop="length"
                         label="长(cm)"
                         sortable
-                        width="100">
+                        width="120">
                 </el-table-column>
                 <el-table-column
                         prop="weight"
                         label="宽(cm)"
                         sortable
-                        width="100">
+                        width="120">
                 </el-table-column>
                 <el-table-column
                         prop="height"
                         label="高(cm)"
                         sortable
-                        width="100">
+                        width="120">
                 </el-table-column>
                 <el-table-column
                         prop="buy_price"
-                        label="成本价(元)"
+                        label="成本(元)"
                         sortable
-                        width="180">
+                        width="120">
                 </el-table-column>
-                <el-table-column
-                        prop="logistics_type"
-                        label="物流方式"
-                        sortable
-                        width="180"
-                        :formatter="logisticeTypeFormatter">
-                </el-table-column>
+                <!--<el-table-column-->
+                        <!--prop="logistics_type"-->
+                        <!--label="物流方式"-->
+                        <!--sortable-->
+                        <!--width="180"-->
+                        <!--:formatter="logisticeTypeFormatter">-->
+                <!--</el-table-column>-->
                 <el-table-column
                         prop="domestic_logistics_price"
-                        label="国内物流费用(元)"
+                        label="物流(元)"
                         sortable
-                        width="180">
+                        width="120">
                 </el-table-column>
                 <el-table-column
                         prop="package_price"
-                        label="包装成本(元)"
+                        label="包材(元)"
                         sortable
-                        width="180">
+                        width="120">
                 </el-table-column>
                 <el-table-column
                         label="操作"
-                        width="180">
+                        width="200">
                     <template scope="scope">
                         <el-button @click="toEditSku(scope.row)">编辑</el-button>
                         <el-button @click="deleteConfirm(scope.row)">删除</el-button>
@@ -136,7 +136,6 @@ import {mapState,mapMutations} from 'vuex'
                     .then((res) => {
                             if (res.body.status == 1) {
                                 this.skuData = res.body.data
-                                console.log(this.skuData)
                             } else {
                                 //TODO
                             }
