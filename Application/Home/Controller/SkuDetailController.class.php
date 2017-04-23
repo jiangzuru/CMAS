@@ -6,6 +6,8 @@
  */
 namespace Home\Controller;
 use Think\Controller;
+use Think\Model;
+
 class SkuDetailController extends Controller {
     //SKU列表页
     public function index(){
@@ -27,23 +29,6 @@ class SkuDetailController extends Controller {
         }
     }
 
-    //进入新增SKU页
-    public function add(){
-        $this->display('Sku:add');
-    }
-
-    //进入SKU编辑页 参数：id
-    public function edit(){
-        $id = intval(I('request.id'));
-        if ($id == 0){
-            $this->error("id不能为空","index.php/Home/SkuDetail/index",0);
-        }
-        $SKU_MODEL = M('SkuDetail');
-        $data = $SKU_MODEL->where('id='.$id)->find();
-        $this->assign('data',$data);
-        $this->display('Sku:edit');
-    }
-
     //删除SKU 参数：id
     public function delete(){
         $id = intval(I('request.id'));
@@ -61,22 +46,25 @@ class SkuDetailController extends Controller {
 
     //新增SKU
     public function save(){
-        $data = $_REQUEST;
+        $sku_data = I('request.');
         $data['status'] = 1;
         $data['message']  = 'success';
 
         //传值检查
-        if (intval($_REQUEST['weight']) <= 0){
-            $this->error("重量不能小等于0");
+        if (intval($sku_data['weight']) <= 0){
+            $this->ajaxRetuen(['status'=>0,'message'=>'重量不能小等于0']);
         }
-        if (intval($_REQUEST['length']) <= 0 || intval($_REQUEST['width']) <= 0 || intval($_REQUEST['height']) <= 0){
-            $this->error("长宽高不能小等于0");
+        if (intval($sku_data['length']) <= 0 || intval($sku_data['width']) <= 0 || intval($sku_data['height']) <= 0){
+            $this->ajaxRetuen(['status'=>0,'message'=>'长宽高不能小等于0']);
         }
-        if (intval($_REQUEST['buy_price']) <= 0){
-            $this->error("成本价不能小等于0");
+        if (intval($sku_data['buy_price']) <= 0){
+            $this->ajaxRetuen(['status'=>0,'message'=>'成本价不能小等于0']);
         }
-        if (intval($_REQUEST['domestic_logistics_price']) < 0){
-            $this->error("国内端运费不能小于0");
+        if (intval($sku_data['domestic_logistics_price']) < 0){
+            $this->ajaxRetuen(['status'=>0,'message'=>'国内端运费不能小于0']);
+        }
+        if (intval($sku_data['logistics_type']) == 0){
+            $this->ajaxRetuen(['status'=>0,'message'=>'物流方式不能为空']);
         }
 
         $SKU_MODEL = M('SkuDetail');
@@ -133,12 +121,30 @@ class SkuDetailController extends Controller {
         $data = array();
 
         if ($sku_id == 0){
-            $data['status'] = 0;
-            $data['message'] = 'sku_id不能为空';
-            $this->ajaxReturn($data);
+            $sku_data = I('request.');
+
+            //传值检查
+            if (intval($sku_data['weight']) <= 0){
+                $this->ajaxRetuen(['status'=>0,'message'=>'重量不能小等于0']);
+            }
+            if (intval($sku_data['length']) <= 0 || intval($sku_data['width']) <= 0 || intval($sku_data['height']) <= 0){
+                $this->ajaxRetuen(['status'=>0,'message'=>'长宽高不能小等于0']);
+            }
+            if (intval($sku_data['buy_price']) <= 0){
+                $this->ajaxRetuen(['status'=>0,'message'=>'成本价不能小等于0']);
+            }
+            if (intval($sku_data['domestic_logistics_price']) < 0){
+                $this->ajaxRetuen(['status'=>0,'message'=>'国内端运费不能小于0']);
+            }
+            if (intval($sku_data['logistics_type']) == 0){
+                $this->ajaxRetuen(['status'=>0,'message'=>'物流方式不能为空']);
+            }
+        }else{
+            $Model = M('SkuDetail');
+            $sku_data = $Model->where('id='.$sku_id)->find();
         }
 
-        $data = $this->fixedCost($sku_id);
+        $data = $this->fixedCost($sku_data);
 //        var_dump($data);exit();
         if ($data){
             $data['status'] = 1;
@@ -156,13 +162,16 @@ class SkuDetailController extends Controller {
         $data['status'] = 1;
         $data['message'] = 'success';
 
-
         $sku_id = I('post.id');
+        $sale_price = I('post.');
         if (intval($sku_id) == 0){
-            $this->ajaxReturn(['status'=>0,'message'=>'sku_id不能为0']);
+            $sku_data = I('post.sku_data');
+            unset($sale_price['sku_data']);
+        }else{
+            $SkuModel = M('SkuDetail');
+            $sku_data = $SkuModel->where('id='.$sku_id);
         }
 
-        $sale_price = I('post.');
         unset($sale_price['id']);
         $sale_domain = array_keys($sale_price);
         if (!$sale_price){
@@ -170,9 +179,8 @@ class SkuDetailController extends Controller {
         }
 
         //固定成本
-        $fix_cost = $this->fixedCost($sku_id,$sale_domain);
+        $fix_cost = $this->fixedCost($sku_data,$sale_domain);
 
-        $rate = 0.15;
         $i = 0;
         $profit_fee = array();
         foreach ($fix_cost['FBA_fee'] as $k=>&$v){
@@ -350,9 +358,10 @@ class SkuDetailController extends Controller {
     }
 
     //计算固定成本
-    private function fixedCost($id,$sale_domain=false){
-        $SKU_MODEL = M('SkuDetail');
-        $sku_data  = $SKU_MODEL->where("id=".$id)->find();
+    private function fixedCost($sku_data,$sale_domain=false){
+//        $SKU_MODEL = M('SkuDetail');
+//        $sku_data  = $SKU_MODEL->where("id=".$id)->find();
+
         $data = array();
         if (!$sku_data){
             $data['status'] = 0;

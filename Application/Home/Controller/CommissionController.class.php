@@ -70,7 +70,7 @@ class CommissionController extends Controller {
         }
         $Model = M('Commission');
 
-        $result = $Model->where('id=')->delete();
+        $result = $Model->where('id='.$id)->delete();
         if ($result){
             $this->ajaxReturn(['status'=>1,'message'=>'success']);
         }else{

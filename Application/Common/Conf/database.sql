@@ -6,7 +6,7 @@ CREATE TABLE `think_sku_detail` (
   `width` decimal(11,2) NOT NULL COMMENT '宽度',
   `height` decimal(11,2)  NOT NULL COMMENT '高度',
   `buy_price` decimal(11,2) NOT NULL COMMENT '进货价',
-  `logistics_type` tinyint(1) NOT NULL DEFAULT 1 COMMENT '物流方式，1：直邮，2：海外FBA',
+  `logistics_type` int(11) NOT NULL DEFAULT 1 COMMENT '物流方式，1：直邮，2：海外FBA',
   `package_price` decimal(11,2) NOT NULL DEFAULT 0 COMMENT '包装成本',
   `domestic_logistics_price` decimal(11,2) NOT NULL DEFAULT 0 COMMENT '国内运费',
   `special_type` varchar(20) NOT NULL DEFAULT 0 COMMENT '是否特殊物品。0.普通，1.带电产品 2.粉末 3.液体',

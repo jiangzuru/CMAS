@@ -26,8 +26,8 @@ class SettingController extends Controller{
         $Model = M('Setting');
         $data = I('request.');
 
-        if (trim($data.name) != '' && $data.value != ''){
-            $result = $Model->add($data);
+        if (trim($data['name']) != '' && $data['value'] != ''){
+            $result = $Model->save($data);
             if ($result){
                 $root = array(['status'=>1,'message'=>'success']);
                 $this->ajaxReturn($root);
