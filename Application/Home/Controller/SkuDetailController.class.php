@@ -145,7 +145,6 @@ class SkuDetailController extends Controller {
         }
 
         $data = $this->fixedCost($sku_data);
-//        var_dump($data);exit();
         if ($data){
             $data['status'] = 1;
             $data['message'] = '计算成功';
@@ -369,16 +368,24 @@ class SkuDetailController extends Controller {
             $this->ajaxReturn($data);
         }
 
-        if ($sku_data['logistics_type'] == 1){//直邮
-            $sku_data['logistics_price'] = floatval($sku_data['weight'] * 60 / 1000);//直邮的物流费用，只计算重量
-        } elseif($sku_data['logistics_type'] == 2){//FBA
-            $sku_data['volumn_weight'] = (floatval($sku_data['length']) * floatval($sku_data['width']) * floatval($sku_data['height'])) / 6000;
+        //获取物流费用信息，包括物流方式与物流价格
+        $map['id'] = $sku_data['logistics_type'];
+        $LogisticModel = M('Logistics');
+        $logistic_data = $LogisticModel->where($map)->find();
+
+        if ($logistic_data['only_weight'] == 1){//直邮
+            $logistic_data['price'] = floatval($logistic_data['price']);//每公斤价格
+            $sku_data['logistics_price'] = floatval($sku_data['weight'] * $logistic_data['price'] / 1000);//直邮的物流费用，只计算重量
+        } elseif($logistic_data['only_weight'] == 0){//FBA
+            $logistic_data['volume_number'] = intval($logistic_data['volume_number']);//体积重系数
+            $logistic_data['price'] = floatval($logistic_data['price']);//每公斤价格
+            $sku_data['volumn_weight'] = (floatval($sku_data['length']) * floatval($sku_data['width']) * floatval($sku_data['height'])) / $logistic_data['volume_number'];
             $sku_data['paolv'] = floatval($sku_data['volumn_weight'] / $sku_data['weight'] * 1000);
             $sku_data['paolv'] = round($sku_data['paolv'],2);
 
             //比较体积重与实重。以大的计算
             $weight = $sku_data['volumn_weight'] > $sku_data['weight'] ? $sku_data['volumn_weight'] : $sku_data['weight'];
-            $sku_data['toucheng_price'] = $weight * 40 / 1000;//FBA头程费用
+            $sku_data['toucheng_price'] = $weight * $logistic_data['price'] / 1000;//FBA头程费用
 
             //FBA基础服务费
             $FBA_fee = self::fbaDeliveryFee($sku_data['length'],$sku_data['width'],$sku_data['height'],$sku_data['weight'],$sale_domain);
