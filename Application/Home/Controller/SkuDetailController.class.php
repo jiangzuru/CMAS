@@ -437,7 +437,7 @@ class SkuDetailController extends Controller {
         }
 //        var_dump($result_array);
 //        exit();
-
+        $result['sku_data'] = $sku_data;
         return $result_array;
     }
 
