@@ -101,7 +101,9 @@ class SkuDetailController extends Controller {
         }
         if (intval($data['domestic_logistics_price']) < 0){
             $this->error("国内端运费不能小于0");
+
         }
+
 
         $SKU_MODEL = M('SkuDetail');
         $res = $SKU_MODEL->where("id=".$data['id'])->save($data);
@@ -135,9 +137,6 @@ class SkuDetailController extends Controller {
             }
             if (intval($sku_data['domestic_logistics_price']) < 0){
                 $this->ajaxReturn(['status'=>0,'message'=>'国内端运费不能小于0']);
-            }
-            if (intval($sku_data['logistics_type']) == 0){
-                $this->ajaxReturn(['status'=>0,'message'=>'物流方式不能为空']);
             }
         }else{
             $Model = M('SkuDetail');
@@ -291,9 +290,22 @@ class SkuDetailController extends Controller {
         return $data[1];
     }
 
-    //根据长宽高和重量选择FBA基础服务费费用
-    private function fbaDeliveryFee($length,$width,$height,$weight,$sale_domain){
-        $Fba_Model = M('FbaFee');
+//        public function getExchangeRateFromYahoo2(){
+//        header("Content-type: text/html; charset=utf-8");
+//        $file = fopen('http://download.finance.yahoo.com/d/quotes.csv?e=.csv&f=sl1d1t1&s=EURCNY=x','r');	//参数s=EURCNY, 欧元换人民币, 根据需要更换
+//        while ($data = fgetcsv($file))      //读取CSV文件里的每一行内容
+//        {
+//            $goods_list[] = $data;
+//        }
+//        $shijian = $goods_list[0][2] .' '. $goods_list[0][3];  	//根据 quotes.csv文件得到的数据, 当前时间 在3,4列位置
+//        $huilv = $goods_list[0][1];         					//根据 quotes.csv文件得到的数据, 汇率 在2列位置
+//        echo "当前时间: $shijian, 1欧元可换: $huilv 元人民币<BR>";
+//        fclose($file);
+//    }
+
+    //根据长宽高和重量选择海外仓基础服务费费用
+    private function overseaDeliveryFee($length,$width,$height,$weight,$sale_domain){
+        $overseaModel = M('overseaFee');
         $data = array();
 
         //将三个体积参数排序，按从大到小作为长宽高
@@ -313,23 +325,19 @@ class SkuDetailController extends Controller {
         $width  = $arr[1];
         $height = $arr[2];
 
-        if ($length > 45 || $width > 34 || $height > 26 || $weight > 12000){
-            $data['status'] = 0;
-            $data['message'] = "该商品为大件尺寸，赞不支持计算FBA成本";
-            $this->ajaxReturn($data);
-        }
-
         if ($sale_domain){
             $condition = array();
-            $condition['sale_domain'] = array('in',$sale_domain);
-            $fbafee_array = $Fba_Model->where($condition)->select();
-        }else{
-            $fbafee_array = $Fba_Model->select();
+            $condition['sale_domain'] = $sale_domain;
+            $overseafee_array = $overseaModel->where($condition)->select();
         }
 
-        $First_Fee  = array();
+        if (!$overseafee_array){
+            return 0;
+        }
+
+        $oversea_Fee  = array();
         //找出第一个符合条件的明细，即找出对应的价格。
-        foreach ($fbafee_array as $k=>$v){
+        foreach ($overseafee_array as $k=>$v){
             $total_weight = 0;
             $total_weight = $weight + $v['package_weight'];
             if ($total_weight < $v['low_weight'] || $total_weight > $v['high_weight']){//如果重量不匹配，直接跳过
@@ -338,26 +346,17 @@ class SkuDetailController extends Controller {
             if ($length > $v['high_length'] || $width > $v['high_width'] || $height > $v['high_height']){
                 continue;
             }
-            $First_Fee = $v;
-            break;
+            $temp_Fee = array();
+            $temp_Fee['type_name'] = $v['type_name'];
+            $temp_Fee['price'] = $v['price'];
+            array_push($oversea_Fee,$temp_Fee);
         }
 
-        $Fee_array = array();
-        $i = 0;
-        //使用该条件，找到其他国家的对应的FBA价格
-        foreach ($fbafee_array as $k=>$v){
-            if($v['low_weight'] == $First_Fee['low_weight'] && $v['high_weight'] == $First_Fee['high_weight']
-                && $v['low_length'] == $First_Fee['low_length'] && $v['high_length'] == $First_Fee['high_length']){
-                $Fee_array[$i]['sale_domain'] = $v['sale_domain'];
-                $Fee_array[$i]['price'] = $v['price'];
-                $i += 1;
-            }
-        }
-        return $Fee_array;
+        return $oversea_Fee;
     }
 
     //计算固定成本
-    private function fixedCost($sku_data,$sale_domain=false){
+    private function fixedCost($sku_data){
 //        $SKU_MODEL = M('SkuDetail');
 //        $sku_data  = $SKU_MODEL->where("id=".$id)->find();
 
@@ -368,100 +367,89 @@ class SkuDetailController extends Controller {
             $this->ajaxReturn($data);
         }
 
-        //获取物流费用信息，包括物流方式与物流价格
-        $map['id'] = $sku_data['logistics_type'];
-        $LogisticModel = M('Logistics');
-        $logistic_data = $LogisticModel->where($map)->find();
+        //一些配置系数,包括默认体积重系数,退款耗损率等
+        $settingModel = M('setting');
+        $volume_number = intval($settingModel->where("name='体积重系数'")->getField('value'));//体积重系数
 
-        if ($logistic_data['only_weight'] == 1){//直邮
-            $logistic_data['price'] = floatval($logistic_data['price']);//每公斤价格
-            $sku_data['logistics_price'] = floatval($sku_data['weight'] * $logistic_data['price'] / 1000);//直邮的物流费用，只计算重量
-        } elseif($logistic_data['only_weight'] == 0){//FBA
-            $logistic_data['volume_number'] = intval($logistic_data['volume_number']);//体积重系数
-            $logistic_data['price'] = floatval($logistic_data['price']);//每公斤价格
-            $sku_data['volumn_weight'] = (floatval($sku_data['length']) * floatval($sku_data['width']) * floatval($sku_data['height'])) / $logistic_data['volume_number'];
-            $sku_data['paolv'] = floatval($sku_data['volumn_weight'] / $sku_data['weight'] * 1000);
-            $sku_data['paolv'] = round($sku_data['paolv'],2);
+        $sku_data['volumn_weight'] = (floatval($sku_data['length']) * floatval($sku_data['width']) * floatval($sku_data['height'])) / $volume_number;
+        $sku_data['paolv'] = floatval($sku_data['volumn_weight'] / $sku_data['weight'] * 1000);//计算抛率
+        $sku_data['paolv'] = round($sku_data['paolv'],2);
+        $sku_data['refund_rate'] = floatval($settingModel->where("name='退款率'")->getField('value'));//退款率
 
-            //比较体积重与实重。以大的计算
-            $weight = $sku_data['volumn_weight'] > $sku_data['weight'] ? $sku_data['volumn_weight'] : $sku_data['weight'];
-            $sku_data['toucheng_price'] = $weight * $logistic_data['price'] / 1000;//FBA头程费用
+        //取出站点数据
+        $nationModel = M('nation');
+        $nation_data = $nationModel->select();
 
-            //FBA基础服务费
-            $FBA_fee = self::fbaDeliveryFee($sku_data['length'],$sku_data['width'],$sku_data['height'],$sku_data['weight'],$sale_domain);
+        $commissionModel = M('commission');
+        $logisticsModel  = M('logistics');
 
-            foreach ($FBA_fee as $k => &$v){
-                //获取汇率
-                if ($v['sale_domain'] == '英国'){
-                    $Rate = floatval(self::getExchangeRate("GBP","CNY"));
-                    $v['price_sign'] = $v['price']."£";
-                    //计算固定成本总价
-                    $v['FBA_CNY'] = floatval($v['price'] * $Rate);
-                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
-                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
-                    $v['sum_foreign'] .= '£';
-                }else if ($v['sale_domain'] == '德国' || $v['sale_domain'] == '法国' || $v['sale_domain'] == '意大利' || $v['sale_domain'] == '西班牙'){
-                    $Rate = floatval(self::getExchangeRate("EUR","CNY"));
-                    $v['price_sign'] = $v['price']."€";
-                    //计算固定成本总价
-                    $v['FBA_CNY'] = floatval($v['price'] * $Rate);
-                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
-                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
-                    $v['sum_foreign'] .= '€';
-                }else if ($v['sale_domain'] == '美国'){
-                    $Rate = floatval(self::getExchangeRate("USD","CNY"));
-                    $v['price_sign'] = $v['price']."$";
-                    //计算固定成本总价
-                    $v['FBA_CNY'] = floatval($v['price'] * $Rate);
-                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
-                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
-                    $v['sum_foreign'] .= '$';
+        $map = array();
+        $map['name'] = $sku_data['sort_name'];
+        foreach ($nation_data as &$nation){
+            $nation['exchange_rate'] = self::getExchangeRate($nation['exchange_name'],'CNY');//查汇率
+            $map['sale_domain'] = $nation['name'];
+            //该sku在某站点的佣金数据
+//            $commission_data = $commissionModel->where($map)->field('value,lowest')->find();
+            $commission_data['value'] = 0.15;//临时数据
+            $commission_data['lowest'] = 0.5;//临时数据
 
-                }else if ($v['sale_domain'] == '加拿大'){
-                    $Rate = floatval(self::getExchangeRate("CAD","CNY"));
-                    $v['price_sign'] = $v['price']."C$";
-                    //计算固定成本总价
-                    $v['FBA_CNY'] = floatval($v['price'] * $Rate);
-                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
-                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
-                    $v['sum_foreign'] .= 'C$';
-                }else if ($v['sale_domain'] == '墨西哥'){
-                    $Rate = floatval(self::getExchangeRate("MXI","CNY"));
-                    $v['price_sign'] = $v['price']."$";
-                    //计算固定成本总价
-                    $v['FBA_CNY'] = floatval($v['price'] * $Rate);
-                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
-                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
-                    $v['sum_foreign'] .= '$';
-
-                }else if ($v['sale_domain'] == '日本'){
-                    $Rate = floatval(self::getExchangeRate("JPY","CNY"));
-                    $v['price_sign'] = $v['price']."¥";
-                    //计算固定成本总价
-                    $v['FBA_CNY'] = floatval($v['price'] * $Rate);
-                    $v['sum'] = $sku_data['buy_price'] + $sku_data['toucheng_price'] + $sku_data['package_price'] + $v['FBA_CNY'];
-                    $v['sum_foreign'] = round($v['sum'] / $Rate,2);
-                    $v['sum_foreign'] .= '¥';
-                }
-
-                //FBA基础服务费换算成人民币
-                $v['FBA_CNY'] = round($v['FBA_CNY'],2);
-                $v['sum']     = round($v['sum'],2);
-                $v['change_rate'] = $Rate;
-            }
+            $nation['commission_rate'] = floatval($commission_data['value']);
+            $nation['commission_lowest'] = floatval($commission_data['lowest']);
         }
 
-        $data['sku_data'] = $sku_data;
-        $data['FBA_fee'] = $FBA_fee;
-        return $data;
+        $result_array = array();
+        //每个站点的不同物流方式价格
+        foreach ($nation_data as $nation){
+            $temp_array = array();
+            $temp_array = $nation;
+
+            //查找合适的物流方式
+            $map = array();
+            $map['destination'] = $nation['name'];
+            $map['rank'] = 3;
+            $map['special_type'] = array('like',"%".$sku_data['special_type']."%");
+            $logistics_data = array();
+            $logistics_data = $logisticsModel->where($map)->select();
+
+            if($logistics_data){
+                foreach ($logistics_data as $v){
+                    $temp_array['logistics_name'] = $v['name'];//物流方式名称
+                    if ($v['is_oversea'] == 0){//直邮费用
+                        $temp_array['logistics_price'] = floatval($logistics_data['price'] * $sku_data['weight']);//直邮费用
+                        array_push($result_array,$temp_array);
+                    }else{//海外仓费用
+                        $oversea_data = array();//海外仓数据
+                        $oversea_data['volunme_weight'] = (floatval($sku_data['length']) * floatval($sku_data['width']) * floatval($sku_data['height']))/$logistics_data['volume_number'];
+                        $weight = $oversea_data['volume_weight'] > $sku_data['weight'] ? $oversea_data['volume_weight'] : $sku_data['weight'];
+                        $temp_array['logistics_price'] = $weight * $logistics_data['price'] / 1000;//海外仓头程费用
+
+                        //海外仓服务费
+                        $oversea_fee = self::overseaDeliveryFee($sku_data['length'],$sku_data['width'],$sku_data['height'],$sku_data['weight'],$nation['name']);
+                        foreach ($oversea_fee as $kk=>$vv){
+                            $temp_array['oversea_name'] = $vv['type_name'];
+                            $temp_array['oversea_fee']  = $vv['price'];
+                            array_push($result_array,$temp_array);
+                        }
+                    }
+                }
+            }
+
+        }
+//        var_dump($result_array);
+//        exit();
+
+        return $result_array;
     }
 
     public function test(){
-        $data = '{"a":1,"b":2,"c":3,"d":4,"e":5}';
-        $changeh = json_decode($data,true);
+        $Model = M('SkuDetail');
+        $sku_data = $Model->where('id=19')->find();
+        self::fixedCost($sku_data);
 
-        var_dump($changeh);
-        exit();
+
+
     }
+
+
 
 }
