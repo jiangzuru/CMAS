@@ -33,7 +33,7 @@
                 <div style="background: #48576a;text-align: left;font-size: 30px;color: #fff;height:50px">后台管理系统</div>
               </el-row>
               <el-row>
-                  <div style="background: #ccc;" :style="{minHeight: dHeight-50+'px'}">
+                  <div style="background: #fff;" :style="{minHeight: dHeight-50+'px'}">
               <router-view></router-view>
                   </div>
               </el-row>

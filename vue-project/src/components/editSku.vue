@@ -115,7 +115,7 @@ export default {
             buy_price:[{ required: true, message: '请输入进货简价', trigger: 'blur' }],
             domestic_logistics_price:[{ required: true, message: '请输入国内端运费', trigger: 'blur' }],
             package_price:[{ required: true, message: '请输入包装成本', trigger: 'blur' }],
-            logistics_type:[{ validator:validate_logistice_type, trigger: 'blur' }],
+//            logistics_type:[{ validator:validate_logistice_type, trigger: 'blur' }],
 
         }
 
@@ -143,6 +143,7 @@ export default {
               this.form.id = this.sku_id;
           }
           this.form.logistics_type = this.logistics_type[2];
+          console.log()
           this.$http.post(url,
               {
                   ...this.form,
