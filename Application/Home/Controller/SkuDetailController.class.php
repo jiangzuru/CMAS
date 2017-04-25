@@ -154,7 +154,7 @@ class SkuDetailController extends Controller {
         $this->ajaxReturn($data);
     }
 
-    //计算毛利、毛利率、平台佣金等费用
+    //给出物流和海外仓等费用
     private function fixedCost($sku_data){
 //        $SKU_MODEL = M('SkuDetail');
 //        $sku_data  = $SKU_MODEL->where("id=".$id)->find();
@@ -206,7 +206,7 @@ class SkuDetailController extends Controller {
 
             //查找合适的物流方式
             $map = array();
-            $map['destination'] = $nation['name'];
+            $map['destination'] = array('like',"%".$nation['name']."%");//$nation['name']
             $map['rank'] = 3;
             $map['special_type'] = array('like',"%".$sku_data['special_type']."%");
             $logistics_data = array();
@@ -214,9 +214,11 @@ class SkuDetailController extends Controller {
 
             if($logistics_data){
                 foreach ($logistics_data as $v){
+                    $temp_array['oversea_name'] = '';
+                    $temp_array['oversea_fee']  = '';
                     $temp_array['logistics_name'] = $v['name'];//物流方式名称
                     $temp_array['logistics_id'] = $v['id'];//物流方式ID
-                    if ($v['is_oversea'] == 0){//直邮费用
+                    if (intval($v['is_oversea']) == 0){//直邮费用
                         $temp_array['logistics_price'] = floatval($v['price'] * $sku_data['weight'] / 1000);//直邮费用
                         array_push($result_array['data'],$temp_array);
                     }else{//海外仓费用
@@ -235,7 +237,6 @@ class SkuDetailController extends Controller {
                     }
                 }
             }
-
         }
         $result_array['sku_data'] = $sku_data;
         return $result_array;
