@@ -212,18 +212,17 @@ class SkuDetailController extends Controller {
             $logistics_data = array();
             $logistics_data = $logisticsModel->where($map)->select();
 
-
             if($logistics_data){
                 foreach ($logistics_data as $v){
                     $temp_array['logistics_name'] = $v['name'];//物流方式名称
                     if ($v['is_oversea'] == 0){//直邮费用
-                        $temp_array['logistics_price'] = floatval($logistics_data['price'] * $sku_data['weight']);//直邮费用
+                        $temp_array['logistics_price'] = floatval($v['price'] * $sku_data['weight'] / 1000);//直邮费用
                         array_push($result_array['data'],$temp_array);
                     }else{//海外仓费用
                         $oversea_data = array();//海外仓数据
                         $oversea_data['volunme_weight'] = (floatval($sku_data['length']) * floatval($sku_data['width']) * floatval($sku_data['height']))/$logistics_data['volume_number'];
                         $weight = $oversea_data['volume_weight'] > $sku_data['weight'] ? $oversea_data['volume_weight'] : $sku_data['weight'];
-                        $temp_array['logistics_price'] = $weight * $logistics_data['price'] / 1000;//海外仓头程费用
+                        $temp_array['logistics_price'] = $weight * $v['price'] / 1000;//海外仓头程费用
 
                         //海外仓服务费
                         $oversea_fee = self::overseaDeliveryFee($sku_data['length'],$sku_data['width'],$sku_data['height'],$sku_data['weight'],$nation['name']);
@@ -237,8 +236,8 @@ class SkuDetailController extends Controller {
             }
 
         }
-//        var_dump($result_array);
-//        exit();
+        var_dump($result_array);
+        exit();
         $result_array['sku_data'] = $sku_data;
         return $result_array;
     }
