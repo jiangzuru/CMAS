@@ -155,7 +155,6 @@ class SkuDetailController extends Controller {
     }
 
     //计算毛利、毛利率、平台佣金等费用
-
     private function fixedCost($sku_data){
 //        $SKU_MODEL = M('SkuDetail');
 //        $sku_data  = $SKU_MODEL->where("id=".$id)->find();
@@ -175,6 +174,7 @@ class SkuDetailController extends Controller {
         $sku_data['paolv'] = floatval($sku_data['volumn_weight'] / $sku_data['weight'] * 1000);//计算抛率
         $sku_data['paolv'] = round($sku_data['paolv'],2);
         $sku_data['refund_rate'] = floatval($settingModel->where("name='退款率'")->getField('value'));//退款率
+        $sku_data['withdraw_rate'] = floatval($settingModel->where("name='提现率'")->getField('value'));//退款率
 
         //取出站点数据
         $nationModel = M('nation');
@@ -357,7 +357,6 @@ class SkuDetailController extends Controller {
         return $oversea_Fee;
     }
 
-    //计算固定成本
     public function profitCalc(){
         $data = array();
         $data['status'] = 1;
