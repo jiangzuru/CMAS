@@ -76,7 +76,7 @@ export default {
       ]),
       getFbafeeData(){
           this.$http({
-              url: '/home/FbaFee/getFbafeeData',
+              url: '/home/overseaFee/getOverseaFeeData',
               params: {
               }
           })
@@ -103,7 +103,7 @@ export default {
       },
       deleteFba(id){
           return this.$http({
-              url: '/home/fbaFee/delete',
+              url: '/home/overseaFee/delete',
               params: {
                   id: id
               }

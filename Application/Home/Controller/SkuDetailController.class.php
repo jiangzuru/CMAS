@@ -215,6 +215,7 @@ class SkuDetailController extends Controller {
             if($logistics_data){
                 foreach ($logistics_data as $v){
                     $temp_array['logistics_name'] = $v['name'];//物流方式名称
+                    $temp_array['logistics_id'] = $v['id'];//物流方式ID
                     if ($v['is_oversea'] == 0){//直邮费用
                         $temp_array['logistics_price'] = floatval($v['price'] * $sku_data['weight'] / 1000);//直邮费用
                         array_push($result_array['data'],$temp_array);

@@ -21,7 +21,7 @@
                         sortable
                 >
                     <template scope="scope">
-                        <el-button @click="showDetail(scope.row.id)" type="text" size="small">
+                        <el-button @click="showDetail(scope.row)" type="text" size="small">
                             {{scope.row.sku}}
                         </el-button>
                     </template>
@@ -156,8 +156,9 @@ import {mapState,mapMutations} from 'vuex'
                         break;
                 }
             },
-            showDetail(id){
-                this.updateSkuDetail({skuDetail:{isShow:true,id:id}})
+            showDetail(row){
+                row.isShow = true;
+                this.updateSkuDetail({skuDetail:row})
             },
 
             toEditSku(row){
