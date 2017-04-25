@@ -1,16 +1,16 @@
 <?php
 /*
- * FBA基础服务费管理模块，增删改查
+ * 海外仓基础服务费管理模块，增删改查
  * @author jiangzuru
  * @date 2017.04.05
  */
 namespace Home\Controller;
 use Think\Controller;
-class FbaFeeController extends Controller {
-    //Fba基础服务费收费细则详细页
-    public function getFbafeeData(){
-        $FbaModel = M('FbaFee');
-        $data = $FbaModel->select();
+class OverseaFeeController extends Controller {
+    //海外仓基础服务费收费细则详细页
+    public function getOverseaFeeData(){
+        $overseaModel = M('overseaFee');
+        $data = $overseaModel->select();
         if($data){
             $this->ajaxReturn(['error'=>0,'message'=>'success','data'=>$data]);
         }else{
@@ -35,9 +35,9 @@ class FbaFeeController extends Controller {
             $this->ajaxReturn(['status'=>0,'message'=>'费用不能小等于0']);
         }
 
-        $FBA_MODEL = M('FbaFee');
-        if ($FBA_MODEL->create()){
-            $result = $FBA_MODEL->add($data);
+        $overseaModel = M('overseaFee');
+        if ($overseaModel->create()){
+            $result = $overseaModel->add($data);
             if ($result){
                 $this->ajaxReturn(['status'=>1,'message'=>'新增细则成功']);
             }else{
@@ -67,9 +67,9 @@ class FbaFeeController extends Controller {
             $this->ajaxReturn(['status'=>0,'message'=>'费用不能小等于0']);
         }
 
-        $FBA_MODEL = M('FbaFee');
-        if ($FBA_MODEL->create()){
-            $result = $FBA_MODEL->where('id='.$data['id'])->save($data);
+        $overseaModel = M('overseaFee');
+        if ($overseaModel->create()){
+            $result = $overseaModel->where('id='.$data['id'])->save($data);
             if ($result){
                 $this->ajaxReturn(['status'=>1,'message'=>'保存更新成功']);
             }else{
@@ -86,7 +86,7 @@ class FbaFeeController extends Controller {
             $this->ajaxReturn(['status'=>0,'message'=>'id不能为空']);
         }
 
-        $Model = M('FbaFee');
+        $Model = M('overseaFee');
         $result = $Model->where('id='.$id)->delete();
         if ($result){
             $this->ajaxReturn(['status'=>1,'message'=>'删除成功']);

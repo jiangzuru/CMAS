@@ -361,7 +361,6 @@ class SkuDetailController extends Controller {
     }
 
     //计算固定成本
-
     public function profitCalc(){
         $data = array();
         $data['status'] = 1;
@@ -450,9 +449,6 @@ class SkuDetailController extends Controller {
         $Model = M('SkuDetail');
         $sku_data = $Model->where('id=19')->find();
         self::fixedCost($sku_data);
-
-
-
     }
 
 
