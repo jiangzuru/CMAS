@@ -77,38 +77,57 @@
                             <el-table-column
                                     prop="name"
                                     label="站点"
-                                    width="180">
+                                    width="100">
                             </el-table-column>
                             <el-table-column
                                     label="物流方式"
                                     prop="logistics_name"
-                                    width="180">
+                            >
+                            </el-table-column>
+                            <el-table-column
+                                    label="总成本"
+                                    sortable
+                                    prop="totalCost"
+                                    :formatter="formatterTotalCost"
+                                    width="100">
                             </el-table-column>
                             <el-table-column
                                     label="物流成本"
                                     sortable
                                     prop="logistics_price"
-                                    width="180">
+                                    width="120">
                             </el-table-column>
 
                             <!--:sort-method="sortHandle_logistics_price"-->
                             <el-table-column
                                     label="海外仓"
                                     prop="oversea_name"
-                                    width="180">
+                                    width="100">
+                            </el-table-column>
+                            <el-table-column
+                                    label="海外仓费用"
+                                    prop="oversea_fee"
+                                    width="120"
+                                    :formatter="function (row) {
+                                        if (row.oversea_fee){
+                                            return row.oversea_fee + row.dollar_logo
+                                        }
+                                      return ''
+                                    }"
+                            >
                             </el-table-column>
                             <el-table-column
                                     label="售价"
                                     prop="price"
                                     sortable
-                                    width="180"
+                                    width="100"
                                     :formatter="formatterprice">
 
                             </el-table-column>
                             <el-table-column
                                     label="毛利"
                                     sortable
-                                    width="180"
+                                    width="100"
                                     prop="profit"
                                     :formatter="formatterProfit">
                             </el-table-column>
@@ -116,14 +135,14 @@
                                     label="毛利率"
                                     sortable
                                     prop="profitMargin"
-                                    width="180"
+                                    width="100"
                                     :formatter="formatterProfitMargin">
                             </el-table-column>
                             <el-table-column
                                     label="资金利用率"
                                     sortable
                                     prop="utilizationRatio"
-                                    width="180"
+                                    width="140"
                                     :formatter="formatterUtilizationRatio">
                             </el-table-column>
                             <el-table-column
@@ -131,28 +150,21 @@
                                     sortable
                                     prop="refounLoss"
                                     :formatter="formatterRefounLoss"
-                                    width="180">
+                                    width="120">
                             </el-table-column>
                             <el-table-column
                                     label="提现费"
                                     sortable
                                     prop="withdrawals"
                                     :formatter="formatterWithdrawals"
-                                    width="180">
+                                    width="100">
                             </el-table-column>
                             <el-table-column
                                     label="佣金"
                                     sortable
                                     prop="commission"
                                     :formatter="formatterCommission"
-                                    width="180">
-                            </el-table-column>
-                            <el-table-column
-                                    label="总成本"
-                                    sortable
-                                    prop="totalCost"
-                                    :formatter="formatterTotalCost"
-                                    width="180">
+                                    width="100">
                             </el-table-column>
                         </el-table>
                     </el-row>
@@ -262,26 +274,48 @@ import {mapState,mapMutations} from 'vuex'
             },
             formatterprice(row){
                     if(this.calculation[row.id].hasOwnProperty('price')){
-                        return parseFloat(this.calculation[row.id].price).toFixed(2)
+                        let dollarLogo = '';
+                        let exchangeRate;
+                        for (let i in this.feeData){
+                            if(this.feeData[i].id == row.id){
+                                dollarLogo = this.feeData[i].dollar_logo;
+                                exchangeRate = parseFloat(this.feeData[i].exchange_rate);
+                                break;
+                            }
+                        }
+
+
+                        return ((parseFloat(this.calculation[row.id].price)/exchangeRate).toFixed(2))+dollarLogo;
                     }
                     return ''
             },
             formatterProfit(row){
                 if(this.calculation[row.id].hasOwnProperty('price')){
-                    return this.calculation[row.id].profit.toFixed(2)
+
+                    let dollarLogo = '';
+                    let exchangeRate;
+                    for (let i in this.feeData){
+                        if(this.feeData[i].id == row.id){
+                            dollarLogo = this.feeData[i].dollar_logo;
+                            exchangeRate = parseFloat(this.feeData[i].exchange_rate);
+                            break;
+                        }
+                    }
+
+                    return ((this.calculation[row.id].profit/exchangeRate).toFixed(2))+dollarLogo+'——'+(this.calculation[row.id].profit.toFixed(2))+"￥"
                 }
                 return ''
 
             },
             formatterProfitMargin(row){
                 if(this.calculation[row.id].hasOwnProperty('price')){
-                    return this.calculation[row.id].profitMargin.toFixed(2)
+                    return ((this.calculation[row.id].profitMargin*100).toFixed(2)) + '%'
                 }
                 return ''
             },
             formatterUtilizationRatio(row){
                 if(this.calculation[row.id].hasOwnProperty('price')){
-                    return parseFloat(this.calculation[row.id].utilizationRatio.toFixed(2))
+                    return '1/'+(parseFloat(this.calculation[row.id].utilizationRatio.toFixed(2)))
                 }
                 return ''
             },
@@ -351,8 +385,8 @@ import {mapState,mapMutations} from 'vuex'
             skuDetail(newVal,oldVal){
                 if(newVal.id != oldVal.id) this.getCalculateById(newVal.id)
             },
-            expectPrice(newVal,oldVal){
-                if(newVal == '') return
+            expectPrice(v,oldVal){
+                if(v == '') return
                 this.expectProfit = ''
                 this.expectProfitMargin = ''
                 this.expectUtilizationRatio = ''
@@ -361,6 +395,7 @@ import {mapState,mapMutations} from 'vuex'
                     let a = this.feeData.filter(item=>{
                         return item.id == i
                     })
+                    let newVal = parseFloat(a[0].exchange_rate ) * v
                     temp[i] = {
                         price:newVal,
                         refounLoss:this.fixedCostData.refund_rate * newVal,
@@ -371,10 +406,10 @@ import {mapState,mapMutations} from 'vuex'
                         })(),
                     };
 
-                    temp[i].withdrawals = (temp[i].price -temp[i].commission)* 0.01 ;
+                    temp[i].withdrawals = (temp[i].price -temp[i].commission)* this.fixedCostData.withdraw_rate ;
                     temp[i].totalCost = parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
                         +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price)+
-                        (parseFloat(a[0]).oversea_fee?parseFloat(a[0].oversea_fee):0)+
+                        (parseFloat(a[0]).oversea_fee_rmb?parseFloat(a[0].oversea_fee_rmb):0)+
                         temp[i].commission + temp[i].refounLoss+temp[i].withdrawals;
                     temp[i].profit = temp[i].price - temp[i].totalCost;
                     temp[i].profitMargin = temp[i].profit / temp[i].price;
@@ -399,8 +434,8 @@ import {mapState,mapMutations} from 'vuex'
                     temp[i].profit = parseFloat(v)
                     temp[i].price = (parseFloat(v)+ parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
                         +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price)+
-                        (parseFloat(a[0]).oversea_fee?parseFloat(a[0].oversea_fee):0))
-                        /(1-parseFloat(this.fixedCostData.refund_rate)-(1-parseFloat(a[0].commission_rate))*0.01-parseFloat(a[0].commission_rate));
+                        (parseFloat(a[0]).oversea_fee_rmb?parseFloat(a[0].oversea_fee_rmb):0))
+                        /(1-parseFloat(this.fixedCostData.refund_rate)-(1-parseFloat(a[0].commission_rate))*this.fixedCostData.withdraw_rate-parseFloat(a[0].commission_rate));
 
 
 
@@ -410,7 +445,7 @@ import {mapState,mapMutations} from 'vuex'
                         let commission_lowest = a[0].commission_lowest;
                         return commission_rate*v > commission_lowest ? commission_rate*v : commission_lowest
                     })();
-                    temp[i].withdrawals = (temp[i].price - temp[i].refounLoss)*0.01;
+                    temp[i].withdrawals = (temp[i].price - temp[i].refounLoss)*this.fixedCostData.withdraw_rate;
                     temp[i].totalCost = temp[i].price - temp[i].profit;
                     temp[i].profitMargin = temp[i].profit / temp[i].price;
                     temp[i].utilizationRatio = (parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.domestic_logistics_price)
@@ -427,6 +462,7 @@ import {mapState,mapMutations} from 'vuex'
                 this.expectUtilizationRatio = ''
 
                 let temp = {}
+                v = v/100;
                 for (let i in this.calculation){
                     let a = this.feeData.filter(item=>{
                         return item.id == i
@@ -435,8 +471,8 @@ import {mapState,mapMutations} from 'vuex'
                     temp[i].profitMargin = parseFloat(v)
                     temp[i].price = (parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
                         +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price)+
-                        (parseFloat(a[0]).oversea_fee?parseFloat(a[0].oversea_fee):0))
-                        /(1-parseFloat(this.fixedCostData.refund_rate)-(1-parseFloat(a[0].commission_rate))*0.01
+                        (parseFloat(a[0]).oversea_fee_rmb?parseFloat(a[0].oversea_fee_rmb):0))
+                        /(1-parseFloat(this.fixedCostData.refund_rate)-(1-parseFloat(a[0].commission_rate))*this.fixedCostData.withdraw_rate
                         -parseFloat(a[0].commission_rate) -temp[i].profitMargin);
 
                     temp[i].profit = temp[i].profitMargin * temp[i].price
@@ -447,7 +483,7 @@ import {mapState,mapMutations} from 'vuex'
                         let commission_lowest = a[0].commission_lowest;
                         return commission_rate*v > commission_lowest ? commission_rate*v : commission_lowest
                     })();
-                    temp[i].withdrawals = (temp[i].price - temp[i].refounLoss)*0.01;
+                    temp[i].withdrawals = (temp[i].price - temp[i].refounLoss)*this.fixedCostData.withdraw_rate;
                     temp[i].totalCost = temp[i].price - temp[i].profit;
                     temp[i].utilizationRatio = (parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.domestic_logistics_price)
                         +parseFloat(this.fixedCostData.package_price) +parseFloat(a[0].logistics_price))/(temp[i].profit);
@@ -480,8 +516,8 @@ import {mapState,mapMutations} from 'vuex'
 
                     temp[i].price = (temp[i].profit+ parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
                         +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price)+
-                        (parseFloat(a[0]).oversea_fee?parseFloat(a[0].oversea_fee):0))
-                        /(1-parseFloat(this.fixedCostData.refund_rate)-(1-parseFloat(a[0].commission_rate))*0.01-parseFloat(a[0].commission_rate));
+                        (parseFloat(a[0]).oversea_fee_rmb?parseFloat(a[0].oversea_fee_rmb):0))
+                        /(1-parseFloat(this.fixedCostData.refund_rate)-(1-parseFloat(a[0].commission_rate))*this.fixedCostData.withdraw_rate-parseFloat(a[0].commission_rate));
 
 
                     temp[i].profitMargin = temp[i].profit / temp[i].price;
@@ -491,7 +527,7 @@ import {mapState,mapMutations} from 'vuex'
                         let commission_lowest = a[0].commission_lowest;
                         return commission_rate*v > commission_lowest ? commission_rate*v : commission_lowest
                     })();
-                    temp[i].withdrawals = (temp[i].price - temp[i].refounLoss)*0.01;
+                    temp[i].withdrawals = (temp[i].price - temp[i].refounLoss)*this.fixedCostData.withdraw_rate;
                     temp[i].totalCost = temp[i].price - temp[i].profit;
 
                 }
