@@ -216,6 +216,7 @@ class SkuDetailController extends Controller {
                 foreach ($logistics_data as $v){
                     $temp_array['oversea_name'] = '';
                     $temp_array['oversea_fee']  = '';
+                    $temp_array['oversea_fee_rmb'] = '';
                     $temp_array['logistics_name'] = $v['name'];//物流方式名称
                     $temp_array['logistics_id'] = $v['id'];//物流方式ID
                     if (intval($v['is_oversea']) == 0){//直邮费用
@@ -232,6 +233,7 @@ class SkuDetailController extends Controller {
                         foreach ($oversea_fee as $kk=>$vv){
                             $temp_array['oversea_name'] = $vv['type_name'];
                             $temp_array['oversea_fee']  = $vv['price'];
+                            $temp_array['oversea_fee_rmb'] = floatval($vv['price']) * floatval($temp_array['exchange_rate']);
                             array_push($result_array['data'],$temp_array);
                         }
                     }
