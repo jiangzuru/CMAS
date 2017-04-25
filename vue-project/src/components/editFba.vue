@@ -86,9 +86,9 @@ export default {
       onSubmit(){
           let url = '';
           if(this.form.id == ''){
-              url='/home/fbaFee/save'
+              url='/home/overseaFee/save'
           }else {
-              url='/home/fbaFee/update'
+              url='/home/overseaFee/update'
           }
 
 
