@@ -1,8 +1,10 @@
 <template>
   <div class="edit-fba contain">
+    <el-row type="flex" justify="center">
+      <el-col :span="16">
     <el-card>
     <h1 class="left title">新增FBA基础服务费细则</h1>
-    <el-form :model="form" label-width="250px">
+    <el-form :model="form" label-width="150px">
 
       <el-form-item label="长度(cm)">
         <el-col :span="11">
@@ -66,6 +68,8 @@
       </el-form-item>
     </el-form>
     </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 

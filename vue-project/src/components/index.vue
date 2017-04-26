@@ -1,7 +1,12 @@
 <template>
 <div>
+
+    <el-row>
+        <div style="background: #48576a;text-align: left;font-size: 30px;color: #fff;height:50px" id="main-title">后台管理系统</div>
+    </el-row>
       <el-row :style="{minHeight: dHeight+'px'}">
-          <el-col :xs="0" :sm="4" :md="4" :lg="4" style="height: 100%;background: #000" :style="{minHeight: dHeight+'px'}">
+
+          <el-col :xs="0" :sm="4" :md="4" :lg="4" :style="{minHeight: dHeight+'px',background: '#000'}" >
               <div class="">
                   <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
                            theme="dark" style="border-radius: 0px">
@@ -30,10 +35,7 @@
           </el-col>
           <el-col :xs="24" :sm="20" :md="20" :lg="20">
               <el-row>
-                <div style="background: #48576a;text-align: left;font-size: 30px;color: #fff;height:50px">后台管理系统</div>
-              </el-row>
-              <el-row>
-                  <div style="background: #fff;" :style="{minHeight: dHeight-50+'px'}">
+                  <div style="background: #fff;overflow-y:scroll" :style="{height: dHeight+'px'}">
               <router-view></router-view>
                   </div>
               </el-row>
@@ -43,11 +45,13 @@
 </template>
 
 <script>
-export default {
+
+
+    export default {
   name: 'index',
   data () {
     return {
-        dHeight:window.innerHeight
+        dHeight:window.innerHeight-50
     }
   },
   methods: {

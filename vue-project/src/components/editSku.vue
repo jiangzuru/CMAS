@@ -57,6 +57,12 @@
       </el-form-item>
 
 
+      <el-form-item label="是否海外头程仓" class="left">
+        <el-radio-group v-model="form.is_oversea">
+        <el-radio label="1">是</el-radio>
+        <el-radio label="0">否</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item label="特殊属性" style="text-align: left">
         <el-checkbox-group v-model="type">
           <el-checkbox label="1" name="type">电子产品</el-checkbox>
@@ -65,11 +71,20 @@
         </el-checkbox-group>
       </el-form-item>
 
+
+      <el-form-item label="品类">
+        <el-select v-model="form.commission">
+          <el-option v-for="(item,index) in commissionList" :key="index" :value="item.name"></el-option>
+        </el-select>
+      </el-form-item>
+
       <el-form-item>
         <el-button type="success" @click="onSubmit">保存</el-button>
         <el-button type="danger" @click="goBackHistory">取消</el-button>
         <el-button type="info">成本试算</el-button>
       </el-form-item>
+
+
     </el-form>
     </el-card>
     </el-col>
@@ -91,19 +106,6 @@ export default {
     return {
         logisticOption:[],
         logistics_type:[],
-//        form:{
-//          id:''
-//          sku:'',
-//          weight: "",
-//          length: "",
-//          width: "",
-//          height: "",
-//          buy_price: "",
-//          domestic_logistics_price: "",
-//          package_price: "",
-//          logistics_type: "",
-//          type:[]
-//        },
         type:[],
 
         formRules:{
@@ -117,7 +119,9 @@ export default {
             package_price:[{ required: true, message: '请输入包装成本', trigger: 'blur' }],
 //            logistics_type:[{ validator:validate_logistice_type, trigger: 'blur' }],
 
-        }
+        },
+
+        commissionList:[]
 
     }
   },
@@ -187,9 +191,18 @@ export default {
               }
           })
       },
+      getCommissionData(){
+        return this.$http({
+            url:'/home/skuDetail/getCommissionData'
+        }).then(res=>{
+            console.log(res)
+            this.commissionList = res.body.data;
+        })
+      }
   },
   mounted(){
     this.getLogisticsData()
+      this.getCommissionData()
   }
 }
 </script>

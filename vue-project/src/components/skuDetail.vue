@@ -411,7 +411,6 @@ import {mapState,mapMutations} from 'vuex'
                             return commission_rate*newVal > commission_lowest ? commission_rate*newVal : commission_lowest
                         })(),
                     };
-console.log((parseFloat(a[0].oversea_fee_rmb) ? parseFloat(a[0].oversea_fee_rmb) : 0))
                     temp[i].withdrawals = (temp[i].price -temp[i].commission)* this.fixedCostData.withdraw_rate ;
                     temp[i].totalCost = parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
                         +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price)+
@@ -419,8 +418,8 @@ console.log((parseFloat(a[0].oversea_fee_rmb) ? parseFloat(a[0].oversea_fee_rmb)
                         temp[i].commission + temp[i].refounLoss+temp[i].withdrawals;
                     temp[i].profit = temp[i].price - temp[i].totalCost;
                     temp[i].profitMargin = temp[i].profit / temp[i].price;
-                    temp[i].utilizationRatio = (parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
-                        +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price))/(temp[i].profit);
+                    temp[i].utilizationRatio = (temp[i].profit)/(parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
+                        +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price));
 
                 }
                 this.calculation = temp;
@@ -454,8 +453,8 @@ console.log((parseFloat(a[0].oversea_fee_rmb) ? parseFloat(a[0].oversea_fee_rmb)
                     temp[i].withdrawals = (temp[i].price - temp[i].refounLoss)*this.fixedCostData.withdraw_rate;
                     temp[i].totalCost = temp[i].price - temp[i].profit;
                     temp[i].profitMargin = temp[i].profit / temp[i].price;
-                    temp[i].utilizationRatio = (parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.domestic_logistics_price)
-                        +parseFloat(this.fixedCostData.package_price) +parseFloat(a[0].logistics_price))/(temp[i].profit);
+                    temp[i].utilizationRatio = (temp[i].profit)/(parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.domestic_logistics_price)
+                        +parseFloat(this.fixedCostData.package_price) +parseFloat(a[0].logistics_price));
 
                 }
                 this.calculation = temp;
@@ -491,8 +490,8 @@ console.log((parseFloat(a[0].oversea_fee_rmb) ? parseFloat(a[0].oversea_fee_rmb)
                     })();
                     temp[i].withdrawals = (temp[i].price - temp[i].refounLoss)*this.fixedCostData.withdraw_rate;
                     temp[i].totalCost = temp[i].price - temp[i].profit;
-                    temp[i].utilizationRatio = (parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.domestic_logistics_price)
-                        +parseFloat(this.fixedCostData.package_price) +parseFloat(a[0].logistics_price))/(temp[i].profit);
+                    temp[i].utilizationRatio = (temp[i].profit)/(parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.domestic_logistics_price)
+                        +parseFloat(this.fixedCostData.package_price) +parseFloat(a[0].logistics_price));
 
                 }
                 this.calculation = temp;
@@ -515,8 +514,8 @@ console.log((parseFloat(a[0].oversea_fee_rmb) ? parseFloat(a[0].oversea_fee_rmb)
                     })
                     temp[i] = {}
                     temp[i].utilizationRatio = parseFloat(v)
-                    temp[i].profit = (parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.domestic_logistics_price)
-                        +parseFloat(this.fixedCostData.package_price) +parseFloat(a[0].logistics_price))/temp[i].utilizationRatio
+                    temp[i].profit = temp[i].utilizationRatio/(parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.domestic_logistics_price)
+                        +parseFloat(this.fixedCostData.package_price) +parseFloat(a[0].logistics_price))
 
 
 

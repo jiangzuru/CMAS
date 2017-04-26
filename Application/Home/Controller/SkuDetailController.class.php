@@ -29,6 +29,18 @@ class SkuDetailController extends Controller {
         }
     }
 
+    public function getCommissionData(){
+        $commissionModel = M('Commission');
+        $sort_name = $commissionModel->distinct(true)->field('name')->select();
+
+        if($sort_name){
+            $this->ajaxReturn(['status'=>1,'message'=>'success','data'=>$sort_name]);
+        }else{
+            $this->ajaxReturn(['status'=>0,'message'=>'数据库连接出错']);
+        }
+
+
+    }
     //删除SKU 参数：id
     public function delete(){
         $id = intval(I('request.id'));

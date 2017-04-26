@@ -27,7 +27,8 @@ store.registerModule('manager', {
             package_price:'',
             sku:'',
             weight:'',
-            width:''
+            width:'',
+            is_oversea:'    '
         },
         editFbafeeData:{
             high_height:'',
@@ -42,6 +43,7 @@ store.registerModule('manager', {
             package_weight:'',
             price:'',
             sale_domain:'',
+            commission:''
         },
         editLogisticData:{
             destination:'',
@@ -75,7 +77,9 @@ store.registerModule('manager', {
             package_price:'',
             sku:'',
             weight:'',
-            width:''
+            width:'',
+            is_oversea:'',
+            commission:''
         }}){
             state.editSkuData = payload.skuData;
         },

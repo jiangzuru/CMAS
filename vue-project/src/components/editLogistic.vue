@@ -1,5 +1,7 @@
 <template>
     <div class="edit-fba contain">
+        <el-row type="flex" justify="center">
+            <el-col :span="16">
         <el-card>
         <h1 class="left title">{{form.id==''?'新增':'编辑'}}物流管理细则</h1>
 
@@ -11,7 +13,7 @@
             </el-radio-group>
         </div>
 
-        <el-form :model="form" label-width="250px">
+        <el-form :model="form" label-width="150px">
             <el-form-item label="物流名称">
                 <el-input v-model="form.name"></el-input>
             </el-form-item>
@@ -28,8 +30,9 @@
                 </el-select>
             </el-form-item>
             <div v-if="radio == 3">
-            <el-form-item label="目的地">
-                <el-input v-model="form.destination"></el-input>
+            <el-form-item label="目的地" class="left">
+                <el-input v-model="form.destination" style="width: 250px;"></el-input>
+                <span>可以输入多个国家，以‘,’(半角逗号)分割</span>
             </el-form-item>
             <el-form-item label="是否计算体积重"  style="text-align: left">
                 <el-radio-group v-model="form.only_weight">
@@ -58,6 +61,8 @@
             </el-form-item>
         </el-form>
         </el-card>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
