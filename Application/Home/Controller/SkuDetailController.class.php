@@ -189,9 +189,7 @@ class SkuDetailController extends Controller {
             $nation['exchange_rate'] = self::getExchangeRate($nation['exchange_name'],'CNY');//查汇率
             $map['sale_domain'] = $nation['name'];
             //该sku在某站点的佣金数据
-//            $commission_data = $commissionModel->where($map)->field('value,lowest')->find();
-            $commission_data['value'] = 0.15;//临时数据
-            $commission_data['lowest'] = 0.5;//临时数据
+            $commission_data = $commissionModel->where($map)->field('value,lowest')->find();
 
             $nation['commission_rate'] = floatval($commission_data['value']);
             $nation['commission_lowest'] = floatval($commission_data['lowest']);
