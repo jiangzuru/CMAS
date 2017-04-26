@@ -50,7 +50,7 @@ store.registerModule('manager', {
             only_weight:'',
             pid:'',
             price:'',
-            rank:'1',
+            rank:'3',
             special_type:'',
             volume_number:'',
         },
@@ -103,7 +103,7 @@ store.registerModule('manager', {
             only_weight:'',
             pid:'',
             price:'',
-            rank:'1',
+            rank:'3',
             special_type:'',
             volume_number:'',
         }}){

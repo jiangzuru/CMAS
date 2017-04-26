@@ -67,7 +67,7 @@
         name: 'editLogistic',
         data () {
             return {
-                radio:1,
+                radio:3,
                 parentSelects:[]
             }
         },

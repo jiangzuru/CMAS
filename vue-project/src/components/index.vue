@@ -11,7 +11,7 @@
                               <el-menu-item index="1-1">SKU</el-menu-item>
                           </router-link>
                           <router-link to="/index/fbafee">
-                              <el-menu-item index="1-2">fba基础服务费</el-menu-item>
+                              <el-menu-item index="1-2">海外仓服务费</el-menu-item>
                           </router-link>
                           <router-link to="/index/logistic">
                               <el-menu-item index="1-3">物流管理</el-menu-item>

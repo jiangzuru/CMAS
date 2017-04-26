@@ -57,10 +57,15 @@
                     </el-row>
 
                     <el-row style="margin: 20px auto 5px auto;" :gutter="10">
-                        <el-col :span="3">期望售价: </el-col><el-col :span="3"><el-input v-model.lazy="expectPrice"></el-input></el-col>
-                        <el-col :span="3">期望毛利:</el-col><el-col :span="3"> <el-input v-model.lazy="expectProfit"></el-input></el-col>
-                        <el-col :span="3">期望毛利率:</el-col><el-col :span="3"> <el-input v-model.lazy="expectProfitMargin"></el-input></el-col>
-                        <el-col :span="4">期望资金利用率:</el-col><el-col :span="2"> <el-input v-model.lazy="expectUtilizationRatio"></el-input></el-col>
+                        <el-col :span="6"><el-input v-model.lazy="expectPrice">
+                            <template slot="prepend">期望售价:</template>
+                        </el-input></el-col>
+                        <el-col :span="6"><el-input v-model.lazy="expectProfit">
+                            <template slot="prepend">期望毛利:</template></el-input></el-col>
+                        <el-col :span="6"><el-input v-model.lazy="expectProfitMargin">
+                            <template slot="prepend">期望毛利率:</template></el-input></el-col>
+                        <el-col :span="6"><el-input v-model.lazy="expectUtilizationRatio">
+                            <template slot="prepend">期望资金利用率:</template></el-input></el-col>
                     </el-row>
                     <!--可变成本表格-->
                     <el-row>
@@ -82,6 +87,7 @@
                             <el-table-column
                                     label="物流方式"
                                     prop="logistics_name"
+                                    min-width="150"
                             >
                             </el-table-column>
                             <el-table-column
@@ -127,7 +133,7 @@
                             <el-table-column
                                     label="毛利"
                                     sortable
-                                    width="100"
+                                    width="180"
                                     prop="profit"
                                     :formatter="formatterProfit">
                             </el-table-column>
@@ -255,7 +261,6 @@ import {mapState,mapMutations} from 'vuex'
                     url:'/home/logistics/getLogisticsData'
                 }).then(res=>{
                     if(res.body.status == 1){
-                        console.log(res.body.data)
                         this.logisticOption = res.body.data
 
 
@@ -302,7 +307,7 @@ import {mapState,mapMutations} from 'vuex'
                         }
                     }
 
-                    return ((this.calculation[row.id].profit/exchangeRate).toFixed(2))+dollarLogo+'——'+(this.calculation[row.id].profit.toFixed(2))+"￥"
+                    return (this.calculation[row.id].profit.toFixed(2))+'('+((this.calculation[row.id].profit/exchangeRate).toFixed(2))+dollarLogo+')'
                 }
                 return ''
 
@@ -395,6 +400,7 @@ import {mapState,mapMutations} from 'vuex'
                     let a = this.feeData.filter(item=>{
                         return item.id == i
                     })
+                    console.log(a);
                     let newVal = parseFloat(a[0].exchange_rate ) * v
                     temp[i] = {
                         price:newVal,
@@ -405,11 +411,11 @@ import {mapState,mapMutations} from 'vuex'
                             return commission_rate*newVal > commission_lowest ? commission_rate*newVal : commission_lowest
                         })(),
                     };
-
+console.log((parseFloat(a[0].oversea_fee_rmb) ? parseFloat(a[0].oversea_fee_rmb) : 0))
                     temp[i].withdrawals = (temp[i].price -temp[i].commission)* this.fixedCostData.withdraw_rate ;
                     temp[i].totalCost = parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
                         +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price)+
-                        (parseFloat(a[0]).oversea_fee_rmb?parseFloat(a[0].oversea_fee_rmb):0)+
+                        (parseFloat(a[0].oversea_fee_rmb)?parseFloat(a[0].oversea_fee_rmb):0)+
                         temp[i].commission + temp[i].refounLoss+temp[i].withdrawals;
                     temp[i].profit = temp[i].price - temp[i].totalCost;
                     temp[i].profitMargin = temp[i].profit / temp[i].price;
