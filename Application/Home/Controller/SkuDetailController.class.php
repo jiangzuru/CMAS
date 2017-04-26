@@ -197,10 +197,12 @@ class SkuDetailController extends Controller {
 
         $result_array = array();
         $result_array['data'] = array();
+        $i = 0;
         //每个站点的不同物流方式价格
         foreach ($nation_data as $nation){
             $temp_array = array();
             $temp_array = $nation;
+
 
             //查找合适的物流方式
             $map = array();
@@ -219,6 +221,9 @@ class SkuDetailController extends Controller {
                     $temp_array['logistics_id'] = $v['id'];//物流方式ID
                     if (intval($v['is_oversea']) == 0){//直邮费用
                         $temp_array['logistics_price'] = floatval($v['price'] * $sku_data['weight'] / 1000);//直邮费用
+                        //加上标识id
+                        $temp_array['id'] = $i;
+                        $i++;
                         array_push($result_array['data'],$temp_array);
                     }else{//海外仓费用
                         $oversea_data = array();//海外仓数据
@@ -232,6 +237,9 @@ class SkuDetailController extends Controller {
                             $temp_array['oversea_name'] = $vv['type_name'];
                             $temp_array['oversea_fee']  = $vv['price'];
                             $temp_array['oversea_fee_rmb'] = floatval($vv['price']) * floatval($temp_array['exchange_rate']);
+                            //加上标识id
+                            $temp_array['id'] = $i;
+                            $i++;
                             array_push($result_array['data'],$temp_array);
                         }
                     }
