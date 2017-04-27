@@ -30,7 +30,7 @@ class CommissionController extends Controller {
         }
 
         $Model = M('Commission');
-        $result = $Model->save($information);
+        $result = $Model->add($information);
         if ($result){
             $this->ajaxReturn(['status'=>1,'message'=>'success']);
         }else{

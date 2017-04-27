@@ -8,7 +8,8 @@ import EditFba from '@/components/editFba'
 import Logistic from '@/components/logistic'
 import EditLogistic from '@/components/editLogistic'
 import ConstSetting from '@/components/constSetting'
-
+import Commission from '@/components/commission'
+import EditCommission from '@/components/editCommission'
 
 
 Vue.use(Router)
@@ -53,6 +54,16 @@ export default new Router({
                   path:'editLogistic',
                   name:'editLogistic',
                   component:EditLogistic
+              },
+              {
+                  path:'commission',
+                  name:'commission',
+                  component:Commission
+              },
+              {
+                  path:'editCommission',
+                  name:'editCommission',
+                  component:EditCommission
               }
           ]
       },

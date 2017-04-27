@@ -58,6 +58,13 @@ store.registerModule('manager', {
             volume_number:'',
             is_oversea:''
         },
+        editCommissionData:{
+            id:'',
+            lowest:'',
+            name:'',
+            sale_domain:'',
+            value:'',
+        },
     },
     mutations: {
         login(state, payload){
@@ -115,6 +122,14 @@ store.registerModule('manager', {
             is_oversea:''
         }}){
             state.editLogisticData = Object.assign({},state.editLogisticData,payload.logisticData)
+        },
+        updateEditCommissionData(state,payload={
+            id:'',
+            lowest:'',
+            name:'',
+            sale_domain:'',
+            value:''}){
+            state.eidtCommissionData = payload.commissionData;
         }
 
     },
