@@ -28,7 +28,8 @@ store.registerModule('manager', {
             sku:'',
             weight:'',
             width:'',
-            is_oversea:'    '
+            is_oversea:'',
+            commission:''
         },
         editFbafeeData:{
             high_height:'',
@@ -55,6 +56,7 @@ store.registerModule('manager', {
             rank:'3',
             special_type:'',
             volume_number:'',
+            is_oversea:''
         },
     },
     mutations: {
@@ -110,6 +112,7 @@ store.registerModule('manager', {
             rank:'3',
             special_type:'',
             volume_number:'',
+            is_oversea:''
         }}){
             state.editLogisticData = Object.assign({},state.editLogisticData,payload.logisticData)
         }

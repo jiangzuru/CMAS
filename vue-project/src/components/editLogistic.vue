@@ -34,22 +34,27 @@
                 <el-input v-model="form.destination" style="width: 250px;"></el-input>
                 <span>可以输入多个国家，以‘,’(半角逗号)分割</span>
             </el-form-item>
-            <el-form-item label="是否计算体积重"  style="text-align: left">
-                <el-radio-group v-model="form.only_weight">
-                    <el-radio label="0">不计算</el-radio>
-                    <el-radio label="1">计算</el-radio>
-                </el-radio-group>
-            </el-form-item>
+                <el-form-item label="是否计算体积重"  style="text-align: left">
+                    <el-radio-group v-model="form.only_weight">
+                        <el-radio label="0">不计算</el-radio>
+                        <el-radio label="1">计算</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="是否计海外头程"  style="text-align: left">
+                    <el-radio-group v-model="form.is_oversea">
+                        <el-radio label="0">否</el-radio>
+                        <el-radio label="1">是</el-radio>
+                    </el-radio-group>
+                </el-form-item>
             <el-form-item label="每千克运输价格">
                 <el-input></el-input>
             </el-form-item>
             <el-form-item label="特殊物品属性" style="text-align: left">
-                <el-radio-group v-model="form.special_type">
-                    <el-radio label="0" name="type">普通</el-radio>
-                    <el-radio label="1" name="type">电子产品</el-radio>
-                    <el-radio label="2" name="type">粉末</el-radio>
-                    <el-radio label="3" name="type">液体</el-radio>
-                </el-radio-group>
+                <el-checkbox-group v-model="type">
+                    <el-checkbox label="1" name="type">电子产品</el-checkbox>
+                    <el-checkbox label="2" name="type">粉末</el-checkbox>
+                    <el-checkbox label="3" name="type">液体</el-checkbox>
+                </el-checkbox-group>
             </el-form-item>
             <el-form-item label="体积重系数">
                 <el-input></el-input>
@@ -73,7 +78,8 @@
         data () {
             return {
                 radio:3,
-                parentSelects:[]
+                parentSelects:[],
+                type:[]
             }
         },
         computed:{
@@ -106,6 +112,7 @@
                     url='/home/logistics/update'
                 }
                 this.form.rank = this.radio
+                this.form.special_type = this.type.join(',')
                 this.$http.post(url,
                     {
                         ...this.form,
@@ -121,7 +128,7 @@
                                 type: 'success'
                             });
                             setTimeout(function () {
-//                                this.$router.push({path:'/index/fbafee'})
+                                this.$router.push({path:'/index/logistic'})
                             }.bind(this),1500)
                         }else{
                             this.$notify({

@@ -73,7 +73,7 @@
                                 :data="feeDataSelect"
                                 border
                                 style="width: 100%"
-                                max-height="500"
+                                max-height="300"
                                 v-loading="loading2"
                                 element-loading-text="拼命加载中"
                                 @sort-change="sortChangeHandle"
@@ -232,11 +232,11 @@ import {mapState,mapMutations} from 'vuex'
                 this.checkAll = checkedCount === this.countries.length;
                 this.isIndeterminate = checkedCount > 0 && checkedCount < this.countries.length;
             },
-            getCalculateById(id){
+            getCalculateByIdOrParam(param){
                 this.$http({
                     url: '/home/skuDetail/calculate',
                     params: {
-                        id: id
+                        ...param
                     }
                 })
                     .then((res) => {
@@ -384,13 +384,18 @@ import {mapState,mapMutations} from 'vuex'
         mounted(){
             this.checkedCountries = this.countries
             this.getLogisticsData();
-            this.getCalculateById(this.skuDetail.id)
+//            this.getCalculateByIdOrParam(this.skuDetail.id)
         },
         watch:{
             skuDetail(newVal,oldVal){
-                if(newVal.id != oldVal.id) this.getCalculateById(newVal.id)
+                if(newVal.id != oldVal.id || newVal.id == '0'){
+                    this.getCalculateByIdOrParam(newVal);return
+                }
+//                if(newVal.isShow){
+//                    this.getCalculateByIdOrParam();
+//                }
             },
-            expectPrice(v,oldVal){
+            expectPrice(v){
                 if(v == '') return
                 this.expectProfit = ''
                 this.expectProfitMargin = ''
@@ -400,23 +405,55 @@ import {mapState,mapMutations} from 'vuex'
                     let a = this.feeData.filter(item=>{
                         return item.id == i
                     })
-                    console.log(a);
                     let newVal = parseFloat(a[0].exchange_rate ) * v
-                    temp[i] = {
-                        price:newVal,
-                        refounLoss:this.fixedCostData.refund_rate * newVal,
-                        commission:(function () {
-                            let commission_rate = a[0].commission_rate;
-                            let commission_lowest = a[0].commission_lowest;
-                            return commission_rate*newVal > commission_lowest ? commission_rate*newVal : commission_lowest
-                        })(),
-                    };
+
+                    temp[i] = {}
+                    temp[i].price = newVal;
+                    temp[i].refounLoss = this.fixedCostData.refund_rate * newVal;
+                    temp[i].commission = (function () {
+                        let commission_rate = a[0].commission_rate;
+                        let commission_lowest = a[0].commission_lowest;
+                        return commission_rate*newVal > commission_lowest ? commission_rate*newVal : commission_lowest
+                    })()
+
+
+
                     temp[i].withdrawals = (temp[i].price -temp[i].commission)* this.fixedCostData.withdraw_rate ;
                     temp[i].totalCost = parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
                         +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price)+
                         (parseFloat(a[0].oversea_fee_rmb)?parseFloat(a[0].oversea_fee_rmb):0)+
                         temp[i].commission + temp[i].refounLoss+temp[i].withdrawals;
+
+
                     temp[i].profit = temp[i].price - temp[i].totalCost;
+
+
+
+
+
+                    temp[i].debug = (temp[i].price -
+
+                    (parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
+                    +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price)+
+                    (parseFloat(a[0].oversea_fee_rmb)?parseFloat(a[0].oversea_fee_rmb):0)+
+                    temp[i].commission + temp[i].refounLoss+temp[i].withdrawals)+
+
+
+
+                        parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
+                        +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price)+
+                        (parseFloat(a[0].oversea_fee_rmb)?parseFloat(a[0].oversea_fee_rmb):0))
+                        /(1-parseFloat(this.fixedCostData.refund_rate)-(1-parseFloat(a[0].commission_rate))*this.fixedCostData.withdraw_rate-parseFloat(a[0].commission_rate));
+
+//                    temp[i].test1 = parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
+//                        +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price)+
+//                        (parseFloat(a[0].oversea_fee_rmb)?parseFloat(a[0].oversea_fee_rmb):0)
+//                    temp[i].test2 = parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
+//                        +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price)
+
+
+
+
                     temp[i].profitMargin = temp[i].profit / temp[i].price;
                     temp[i].utilizationRatio = (temp[i].profit)/(parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
                         +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price));
@@ -433,23 +470,26 @@ import {mapState,mapMutations} from 'vuex'
                 let temp = {}
                 for (let i in this.calculation){
                     let a = this.feeData.filter(item=>{
+
                         return item.id == i
                     })
                     temp[i] = {}
                     temp[i].profit = parseFloat(v)
                     temp[i].price = (parseFloat(v)+ parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
                         +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price)+
-                        (parseFloat(a[0]).oversea_fee_rmb?parseFloat(a[0].oversea_fee_rmb):0))
+                        (parseFloat(a[0].oversea_fee_rmb)?parseFloat(a[0].oversea_fee_rmb):0))
                         /(1-parseFloat(this.fixedCostData.refund_rate)-(1-parseFloat(a[0].commission_rate))*this.fixedCostData.withdraw_rate-parseFloat(a[0].commission_rate));
 
-
+temp[i].debug = ((1-parseFloat(this.fixedCostData.refund_rate)-(1-parseFloat(a[0].commission_rate))*this.fixedCostData.withdraw_rate-parseFloat(a[0].commission_rate)))
 
                     temp[i].refounLoss = this.fixedCostData.refund_rate * temp[i].price;
                     temp[i].commission = (function () {
                         let commission_rate = a[0].commission_rate;
                         let commission_lowest = a[0].commission_lowest;
-                        return commission_rate*v > commission_lowest ? commission_rate*v : commission_lowest
+                        return commission_rate*temp[i].price > commission_lowest ? commission_rate*temp[i].price : commission_lowest
                     })();
+
+                    console.log(a[0].commission_rate)
                     temp[i].withdrawals = (temp[i].price - temp[i].refounLoss)*this.fixedCostData.withdraw_rate;
                     temp[i].totalCost = temp[i].price - temp[i].profit;
                     temp[i].profitMargin = temp[i].profit / temp[i].price;
@@ -476,7 +516,7 @@ import {mapState,mapMutations} from 'vuex'
                     temp[i].profitMargin = parseFloat(v)
                     temp[i].price = (parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
                         +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price)+
-                        (parseFloat(a[0]).oversea_fee_rmb?parseFloat(a[0].oversea_fee_rmb):0))
+                        (parseFloat(a[0].oversea_fee_rmb)?parseFloat(a[0].oversea_fee_rmb):0))
                         /(1-parseFloat(this.fixedCostData.refund_rate)-(1-parseFloat(a[0].commission_rate))*this.fixedCostData.withdraw_rate
                         -parseFloat(a[0].commission_rate) -temp[i].profitMargin);
 
@@ -514,14 +554,14 @@ import {mapState,mapMutations} from 'vuex'
                     })
                     temp[i] = {}
                     temp[i].utilizationRatio = parseFloat(v)
-                    temp[i].profit = temp[i].utilizationRatio/(parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.domestic_logistics_price)
+                    temp[i].profit = temp[i].utilizationRatio*(parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.domestic_logistics_price)
                         +parseFloat(this.fixedCostData.package_price) +parseFloat(a[0].logistics_price))
 
 
 
                     temp[i].price = (temp[i].profit+ parseFloat(this.fixedCostData.buy_price) +parseFloat(this.fixedCostData.package_price)
                         +parseFloat(this.fixedCostData.domestic_logistics_price) +parseFloat(a[0].logistics_price)+
-                        (parseFloat(a[0]).oversea_fee_rmb?parseFloat(a[0].oversea_fee_rmb):0))
+                        (parseFloat(a[0].oversea_fee_rmb)?parseFloat(a[0].oversea_fee_rmb):0))
                         /(1-parseFloat(this.fixedCostData.refund_rate)-(1-parseFloat(a[0].commission_rate))*this.fixedCostData.withdraw_rate-parseFloat(a[0].commission_rate));
 
 
@@ -537,10 +577,6 @@ import {mapState,mapMutations} from 'vuex'
 
                 }
                 this.calculation = temp;
-                console.log(this.calculation)
-
-
-
 
             },
             checkedCountries(){
