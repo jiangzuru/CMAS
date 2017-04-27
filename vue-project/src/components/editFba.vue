@@ -3,7 +3,7 @@
     <el-row type="flex" justify="center">
       <el-col :span="16">
     <el-card>
-    <h1 class="left title">新增FBA基础服务费细则</h1>
+    <h1 class="left title">新增海外仓服务费细则</h1>
     <el-form :model="form" label-width="150px">
 
       <el-form-item label="长度(cm)">

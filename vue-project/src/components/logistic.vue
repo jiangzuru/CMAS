@@ -15,13 +15,14 @@
                             prop="name"
                             label="名称"
                             sortable
+                            width="150"
                     >
                     </el-table-column>
                     <el-table-column
                             prop="destination"
                             label="目的地"
                             sortable
-                            width="150">
+                            width="">
                     </el-table-column>
                     <el-table-column
                             prop="price"
@@ -31,7 +32,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="special_type"
-                            label="特殊属性"
+                            label="物品属性"
                             sortable
                             :formatter="function (row) {
                               switch(row.special_type){

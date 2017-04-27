@@ -8,7 +8,7 @@
       <!--<el-button @click="goBackHistory" type="primary">返回</el-button>-->
       <!--</el-col>-->
       <el-col :span="22">
-      <h1 class="left title">{{ form.id==''?'新增':'编辑'}}SKU</h1>
+      <h1 class="left title">{{ (form.id==''||form.id == '0')?'新增':'编辑'}}SKU</h1>
       </el-col>
     </el-row>
 
@@ -40,29 +40,22 @@
       </el-form-item>
 
 
-      <el-form-item label="物流方式" prop="logistics_type" style="text-align: left">
-        <!--<el-radio-group v-model="form.logistics_type">-->
-          <!--<el-radio label="1">直邮</el-radio>-->
-          <!--<el-radio label="2">FBA</el-radio>-->
+      <!--<el-form-item label="物流方式" prop="logistics_type" style="text-align: left">-->
+        <!--<el-cascader-->
+                <!--:options="logisticOption"-->
+                <!--v-model="logistics_type"-->
+                <!--expand-trigger="hover"-->
+        <!--&gt;-->
+        <!--</el-cascader>-->
+      <!--</el-form-item>-->
+      <!--<el-form-item label="是否海外头程仓" class="left">-->
+        <!--<el-radio-group v-model="form.is_oversea">-->
+        <!--<el-radio label="1">是</el-radio>-->
+        <!--<el-radio label="0">否</el-radio>-->
         <!--</el-radio-group>-->
-
-        <el-cascader
-                :options="logisticOption"
-                v-model="logistics_type"
-                expand-trigger="hover"
-        >
-        </el-cascader>
+      <!--</el-form-item>-->
 
 
-      </el-form-item>
-
-
-      <el-form-item label="是否海外头程仓" class="left">
-        <el-radio-group v-model="form.is_oversea">
-        <el-radio label="1">是</el-radio>
-        <el-radio label="0">否</el-radio>
-        </el-radio-group>
-      </el-form-item>
       <el-form-item label="特殊属性" style="text-align: left">
         <el-checkbox-group v-model="type">
           <el-checkbox label="1" name="type">电子产品</el-checkbox>
@@ -72,7 +65,7 @@
       </el-form-item>
 
 
-      <el-form-item label="品类">
+      <el-form-item label="品类" class="left">
         <el-select v-model="form.commission">
           <el-option v-for="(item,index) in commissionList" :key="index" :value="item.name"></el-option>
         </el-select>
@@ -81,7 +74,7 @@
       <el-form-item>
         <el-button type="success" @click="onSubmit">保存</el-button>
         <el-button type="danger" @click="goBackHistory">取消</el-button>
-        <el-button type="info">成本试算</el-button>
+        <el-button type="info" @click="goTryCalculate">成本试算</el-button>
       </el-form-item>
 
 
@@ -89,11 +82,14 @@
     </el-card>
     </el-col>
     </el-row>
+
+    <sku-detail></sku-detail>
   </div>
 </template>
 
 <script>
-  import {mapState} from 'vuex'
+  import {mapState,mapMutations} from 'vuex'
+  import skuDetail from '@/components/skuDetail'
 export default {
   name: 'editSku',
   data () {
@@ -125,12 +121,16 @@ export default {
 
     }
   },
+    components:{skuDetail},
     computed:{
         ...mapState({
             form:state=>state.manager.editSkuData
         })
     },
   methods:{
+      ...mapMutations([
+          'updateSkuDetail'
+      ]),
       onSubmit(){
           var validate =false;
           this.$refs.ruleForm.validate(res=>{
@@ -198,10 +198,16 @@ export default {
             console.log(res)
             this.commissionList = res.body.data;
         })
+      },
+      goTryCalculate(){
+          this.form.isShow = true
+          this.form.id = '0'
+          this.updateSkuDetail({skuDetail:this.form})
+          console.log(this.form)
       }
   },
   mounted(){
-    this.getLogisticsData()
+//    this.getLogisticsData()
       this.getCommissionData()
   }
 }

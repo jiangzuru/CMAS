@@ -2,7 +2,7 @@
     <div class="fbafee contain">
         <el-card>
         <div class="left title">
-            <h1>FBA基础服务费</h1>
+            <h1>海外仓管理</h1>
         </div>
         <div>
             <el-table
@@ -14,6 +14,11 @@
                     v-loading="loadingTable"
                     element-loading-text="拼命加载中"
             >
+                <el-table-column
+                        prop="type_name"
+                        label="海外仓名"
+                >
+                </el-table-column>
                 <el-table-column
                         prop="size"
                         label="尺寸（cm）"
@@ -63,7 +68,7 @@
 import {mapState, mapMutations} from 'vuex'
 
 export default {
-  name: 'sku',
+  name: 'fbafee',
   data () {
     return {
         fbaFeeData:[],
