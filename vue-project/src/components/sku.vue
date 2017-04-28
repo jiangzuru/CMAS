@@ -5,8 +5,16 @@
             <h1>SKU管理</h1>
         </div>
         <div>
+            <el-row type="flex" justify="end">
+                <el-col :span="6">
+                <el-input type="text" v-model="searchStr" @keyup.enter.native="searchBtn"></el-input>
+                </el-col>
+                <el-col :span="2">
+                <el-button type="primary" @click="searchBtn">搜索</el-button>
+                </el-col>
+            </el-row>
             <el-table
-                    :data="skuData"
+                    :data="tableShowData"
                     border
                     style="width: 100%"
                     max-height="500"
@@ -88,7 +96,7 @@
                 <el-button type="primary" @click="toEditSku(false)">新增</el-button>
             </div>
         </div>
-    <sku-detail></sku-detail>
+    <sku-detail v-if="skuDetail.isShow"></sku-detail>
 
         </el-card>
     </div>
@@ -105,12 +113,15 @@ import {mapState,mapMutations} from 'vuex'
                 skuData: [],
                 showDetailId: 0,
                 loadingTable:true,
+                searchStr:'',
+                tableShowData:[]
             }
         },
         computed: {
-//            ...mapState({
-//                countries:state=>state.manager.countriesOption
-//            }),
+            ...mapState({
+                countries:state=>state.manager.countriesOption,
+                skuDetail:state=>state.manager.skuDetail
+            }),
             selectedFbaFee(){
 
                 var a = this.checkedCountries;
@@ -136,6 +147,7 @@ import {mapState,mapMutations} from 'vuex'
                     .then((res) => {
                             if (res.body.status == 1) {
                                 this.skuData = res.body.data
+                                this.tableShowData = this.skuData
                             } else {
                                 //TODO
                             }
@@ -203,7 +215,7 @@ import {mapState,mapMutations} from 'vuex'
                 })
                     .then((res) => {
                         if (res.body.status == 1) {
-                             this.skuData = this.skuData.filter(function (item,index) {
+                             this.tableShowData = this.tableShowData.filter(function (item,index) {
                                 if(item.id == id) return false;
                                 return true
                             })
@@ -217,6 +229,18 @@ import {mapState,mapMutations} from 'vuex'
                         return res.body.status;
                     })
             },
+            searchBtn(){
+                if(this.searchStr == ''){
+                    return this.tableShowData = this.skuData
+                }else{
+                    this.tableShowData = this.skuData.filter((item,index)=>{
+                        console.log(JSON.stringify(item))
+                        return JSON.stringify(item).toLowerCase().indexOf(this.searchStr.toLowerCase()) >= 0
+                    })
+                }
+
+
+            }
         },
         mounted(){
             this.getSkuData();

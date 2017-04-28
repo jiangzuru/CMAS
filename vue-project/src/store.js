@@ -44,7 +44,8 @@ store.registerModule('manager', {
             package_weight:'',
             price:'',
             sale_domain:'',
-            commission:''
+            commission:'',
+            type_name:''
         },
         editLogisticData:{
             destination:'',
@@ -106,6 +107,7 @@ store.registerModule('manager', {
             package_weight:'',
             price:'',
             sale_domain:'',
+            type_name:''
         }}){
             state.editFbafeeData = payload.fbaFeeData;
         },
