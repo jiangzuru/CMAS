@@ -4,9 +4,18 @@
         <div class="left title">
             <h1>海外仓管理</h1>
         </div>
+
+            <el-row type="flex" justify="end">
+                <el-col :span="6">
+                    <el-input type="text" v-model="searchStr" @keyup.enter.native="searchBtn"></el-input>
+                </el-col>
+                <el-col :span="2">
+                    <el-button type="primary" @click="searchBtn">搜索</el-button>
+                </el-col>
+            </el-row>
         <div>
             <el-table
-                    :data="fbaFeeData"
+                    :data="tableShowData"
                     border
                     style="width: 100%"
                     max-height="500"
@@ -73,6 +82,8 @@ export default {
     return {
         fbaFeeData:[],
         loadingTable:true,
+        searchStr:'',
+        tableShowData:[]
     }
   },
   methods: {
@@ -88,6 +99,7 @@ export default {
           .then((res)=>{
                   if(res.body.error == 0){
                       this.fbaFeeData = res.body.data
+                      this.tableShowData = this.fbaFeeData
                   }else {
                       //TODO
                   }
@@ -120,7 +132,7 @@ export default {
 //                                message: '删除成功',
 //                                type: 'success'
 //                            });
-                      this.fbaFeeData = this.fbaFeeData.filter(function (item,index) {
+                      this.tableShowData = this.tableShowData.filter(function (item,index) {
                           if(item.id == id) return false;
                           return true
                       })
@@ -162,6 +174,16 @@ export default {
       },
       filterTag(value, row) {
           return row.sale_domain === value;
+      },
+      searchBtn(){
+
+          if(this.searchStr == ''){
+              return this.tableShowData = this.fbaFeeData
+          }else{
+              this.tableShowData = this.fbaFeeData.filter((item,index)=>{
+                  return JSON.stringify(item).toLowerCase().indexOf(this.searchStr.toLowerCase()) >= 0
+              })
+          }
       }
   },
     mounted(){

@@ -32,6 +32,7 @@
                                     expand-trigger="hover"
                                     @change="changeFeaHandle"
                                     v-model="logisticSelect"
+                                    clearable
                             >
 
                                     <!--v-model="logistics_type"-->
@@ -245,16 +246,22 @@ import {mapState,mapMutations} from 'vuex'
                         let data = res.body.data;
                         this.feeData = data;
                         this.feeDataSelect = data
+                        let filterArr = [];
                         for (let i in data){
                             this.calculation[data[i].id] = {};
                             if (data[i].hasOwnProperty('oversea_name') ){
-                                this.overseaList.push({value:data[i].oversea_name})
+                                if(filterArr.indexOf(data[i].oversea_name) <0 ){
+                                    filterArr.push(data[i].oversea_name)
+                                    this.overseaList.push({value:data[i].oversea_name})
+                                }
                             }
 
                         }
                     }
                     this.loading1 = false;
-                    })
+                    }).then(()=>{
+                    this.expectProfit = 0
+                })
             },
             getLogisticsData(){
                 this.$http({
@@ -275,7 +282,6 @@ import {mapState,mapMutations} from 'vuex'
                         return this.calculation[a.id][prop]>this.calculation[b.id][prop];
                     return this.calculation[a.id][prop]<this.calculation[b.id][prop];
                 })
-                console.log(a)
             },
             formatterprice(row){
                     if(this.calculation[row.id].hasOwnProperty('price')){
@@ -356,7 +362,6 @@ import {mapState,mapMutations} from 'vuex'
             tableDataFilter(){
                 let a = this.checkedCountries
                 let temp = this.feeData.filter(item=>{
-                    console.log(item)
                     if (a.indexOf(item.name) > -1) {
                         return true
                     }
@@ -378,13 +383,16 @@ import {mapState,mapMutations} from 'vuex'
                 }
 
                 this.feeDataSelect = temp
+            },
+            resetInitData(){
+
             }
 
         },
         mounted(){
             this.checkedCountries = this.countries
             this.getLogisticsData();
-//            this.getCalculateByIdOrParam(this.skuDetail.id)
+            this.getCalculateByIdOrParam(this.skuDetail)
         },
         watch:{
             skuDetail(newVal,oldVal){
@@ -463,7 +471,7 @@ import {mapState,mapMutations} from 'vuex'
 
             },
             expectProfit(v){
-                if(v == '') return
+                if(v === '') return
                 this.expectPrice = ''
                 this.expectProfitMargin = ''
                 this.expectUtilizationRatio = ''
@@ -480,7 +488,6 @@ import {mapState,mapMutations} from 'vuex'
                         (parseFloat(a[0].oversea_fee_rmb)?parseFloat(a[0].oversea_fee_rmb):0))
                         /(1-parseFloat(this.fixedCostData.refund_rate)-(1-parseFloat(a[0].commission_rate))*this.fixedCostData.withdraw_rate-parseFloat(a[0].commission_rate));
 
-temp[i].debug = ((1-parseFloat(this.fixedCostData.refund_rate)-(1-parseFloat(a[0].commission_rate))*this.fixedCostData.withdraw_rate-parseFloat(a[0].commission_rate)))
 
                     temp[i].refounLoss = this.fixedCostData.refund_rate * temp[i].price;
                     temp[i].commission = (function () {
@@ -489,7 +496,6 @@ temp[i].debug = ((1-parseFloat(this.fixedCostData.refund_rate)-(1-parseFloat(a[0
                         return commission_rate*temp[i].price > commission_lowest ? commission_rate*temp[i].price : commission_lowest
                     })();
 
-                    console.log(a[0].commission_rate)
                     temp[i].withdrawals = (temp[i].price - temp[i].refounLoss)*this.fixedCostData.withdraw_rate;
                     temp[i].totalCost = temp[i].price - temp[i].profit;
                     temp[i].profitMargin = temp[i].profit / temp[i].price;

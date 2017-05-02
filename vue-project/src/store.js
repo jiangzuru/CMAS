@@ -57,7 +57,8 @@ store.registerModule('manager', {
             rank:'3',
             special_type:'',
             volume_number:'',
-            is_oversea:''
+            is_oversea:'',
+            deal_fee:''
         },
         editCommissionData:{
             id:'',
@@ -121,7 +122,8 @@ store.registerModule('manager', {
             rank:'3',
             special_type:'',
             volume_number:'',
-            is_oversea:''
+            is_oversea:'',
+            deal_fee:''
         }}){
             state.editLogisticData = Object.assign({},state.editLogisticData,payload.logisticData)
         },

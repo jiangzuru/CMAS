@@ -55,6 +55,10 @@
       </el-form-item>
 
 
+      <el-form-item label="海外仓名">
+        <el-input v-model="form.type_name"></el-input>
+      </el-form-item>
+
       <el-form-item label="亚马逊包装重量(g)">
         <el-input v-model="form.package_weight"></el-input>
       </el-form-item>
