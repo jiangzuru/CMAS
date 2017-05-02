@@ -49,7 +49,8 @@ CREATE TABLE `think_logistics`(
 	`price` decimal(4,2) NOT NULL DEFAULT 0 COMMENT '每kg运输价格',
 	`volume_number` int(11) NOT NULL DEFAULT 0 COMMENT '体积重系数',
 	`destination` varchar(256) NOT NULL COMMENT '目的地',
-	`is_oversea` tinyint(1) NOT NULL COMMENT DEFAULT 0 '是否是海外仓头程 0:不是 1:是',
+	`is_oversea` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否是海外仓头程 0:不是 1:是',
+	`deal_fee` decimal(4,2) NOT NULL DEFAULT 0 COMMENT '处理费',
 	PRIMARY KEY(`id`)
 )ENGINE=innoDB DEFAULT CHARSET=utf8;
 

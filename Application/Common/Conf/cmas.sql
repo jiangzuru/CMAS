@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2017-04-26 11:46:44
+Date: 2017-05-02 18:50:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,7 +26,7 @@ CREATE TABLE `think_change_rate` (
   `from_Currency` varchar(11) NOT NULL COMMENT '本币',
   `to_Currency` varchar(11) NOT NULL COMMENT '要兑换的币种',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of think_change_rate
@@ -65,6 +65,24 @@ INSERT INTO `think_change_rate` VALUES ('31', '6.8870', '2017-04-26', 'USD', 'CN
 INSERT INTO `think_change_rate` VALUES ('32', '5.0737', '2017-04-26', 'CAD', 'CNY');
 INSERT INTO `think_change_rate` VALUES ('33', '0.0000', '2017-04-26', 'MXI', 'CNY');
 INSERT INTO `think_change_rate` VALUES ('34', '0.0619', '2017-04-26', 'JPY', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('35', '8.8526', '2017-04-27', 'GBP', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('36', '7.5153', '2017-04-27', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('37', '6.8917', '2017-04-27', 'USD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('38', '5.0532', '2017-04-27', 'CAD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('39', '0.0000', '2017-04-27', 'MXI', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('40', '0.0618', '2017-04-27', 'JPY', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('41', '8.9189', '2017-04-28', 'GBP', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('42', '7.5083', '2017-04-28', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('43', '6.8976', '2017-04-28', 'USD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('44', '5.0500', '2017-04-28', 'CAD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('45', '0.0000', '2017-04-28', 'MXI', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('46', '0.0619', '2017-04-28', 'JPY', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('47', '8.8800', '2017-05-02', 'GBP', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('48', '7.5272', '2017-05-02', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('49', '6.8963', '2017-05-02', 'USD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('50', '5.0412', '2017-05-02', 'CAD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('51', '0.0000', '2017-05-02', 'MXI', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('52', '0.0615', '2017-05-02', 'JPY', 'CNY');
 
 -- ----------------------------
 -- Table structure for `think_commission`
@@ -247,25 +265,27 @@ CREATE TABLE `think_logistics` (
   `name` varchar(256) NOT NULL COMMENT '物流名称',
   `rank` tinyint(1) NOT NULL DEFAULT '1' COMMENT '所在级别',
   `pid` int(11) NOT NULL COMMENT '父级别id',
-  `special_type` varchar(20) NOT NULL COMMENT '是否特殊物品。0.普通，1.带电产品 2.粉末 3.液体',
+  `special_type` varchar(20) NOT NULL DEFAULT '0' COMMENT '是否特殊物品。0.普通，1.带电产品 2.粉末 3.液体',
   `only_weight` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否计算体积重 0:不计算, 1:计算',
   `price` decimal(4,2) NOT NULL COMMENT '每kg运输价格',
   `volume_number` int(11) NOT NULL COMMENT '体积重系数',
   `destination` varchar(256) NOT NULL COMMENT '目的地',
   `is_oversea` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否是海外仓头程 0:是 1:不是',
+  `deal_fee` decimal(4,2) NOT NULL DEFAULT '0.00' COMMENT '处理费',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of think_logistics
 -- ----------------------------
-INSERT INTO `think_logistics` VALUES ('1', 'FBA', '1', '0', '0', '0', '0.00', '0', '0', '0');
-INSERT INTO `think_logistics` VALUES ('2', '直邮', '1', '0', '0', '1', '0.00', '0', '0', '0');
-INSERT INTO `think_logistics` VALUES ('3', 'FBA-空运', '2', '1', '0', '0', '0.00', '0', '0', '0');
-INSERT INTO `think_logistics` VALUES ('4', '云途泛欧头程', '3', '3', '0', '0', '40.00', '6000', '德国,英国,法国,意大利,西班牙', '1');
-INSERT INTO `think_logistics` VALUES ('5', '云途', '2', '2', '0', '1', '0.00', '0', '0', '0');
-INSERT INTO `think_logistics` VALUES ('6', 'DHL英国', '3', '5', '0', '1', '60.00', '0', '英国', '0');
-INSERT INTO `think_logistics` VALUES ('7', '123', '3', '4', '01', '0', '0.00', '0', '456', '0');
+INSERT INTO `think_logistics` VALUES ('1', 'FBA', '1', '0', '0', '0', '0.00', '0', '0', '0', '0.00');
+INSERT INTO `think_logistics` VALUES ('2', '直邮', '1', '0', '0', '1', '0.00', '0', '0', '0', '0.00');
+INSERT INTO `think_logistics` VALUES ('3', 'FBA-空运', '2', '1', '0', '0', '0.00', '0', '0', '0', '0.00');
+INSERT INTO `think_logistics` VALUES ('4', '云途泛欧头程', '3', '3', '0', '0', '40.00', '6000', '德国,英国,法国,意大利,西班牙', '1', '0.00');
+INSERT INTO `think_logistics` VALUES ('5', '云途', '2', '2', '0', '1', '0.00', '0', '0', '0', '0.00');
+INSERT INTO `think_logistics` VALUES ('6', 'DHL英国', '3', '5', '0', '1', '60.00', '0', '英国', '0', '20.00');
+INSERT INTO `think_logistics` VALUES ('8', '云途德国专线挂号', '3', '5', '0', '1', '50.00', '0', '德国', '0', '20.00');
+INSERT INTO `think_logistics` VALUES ('9', '电饭锅', '3', '5', '1', '0', '0.00', '0', '美国,日本', '0', '0.00');
 
 -- ----------------------------
 -- Table structure for `think_nation`
@@ -451,13 +471,14 @@ CREATE TABLE `think_sku_detail` (
   `package_price` decimal(11,2) NOT NULL DEFAULT '0.00' COMMENT '包装成本',
   `special_type` varchar(20) NOT NULL DEFAULT '0' COMMENT '是否特殊物品。0.普通，1.带电产品 2.粉末 3.液体',
   `sort_name` varchar(50) NOT NULL COMMENT '品类名称',
+  `is_oversea` varchar(45) NOT NULL,
+  `commission` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of think_sku_detail
 -- ----------------------------
-INSERT INTO `think_sku_detail` VALUES ('19', 'XZ01HCBK01-F2', '500.00', '22.00', '22.00', '34.00', '11.00', '2.00', '2.00', '0', '所有其他分类');
-INSERT INTO `think_sku_detail` VALUES ('20', 'XZ01HCBK01-F3', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0', '所有其他分类');
-INSERT INTO `think_sku_detail` VALUES ('23', 'XZ12BL38-F1', '350.00', '26.00', '11.00', '5.00', '10.00', '3.00', '0.00', '1', '所有其他分类');
-INSERT INTO `think_sku_detail` VALUES ('24', 'DZZ1111', '500.00', '23.00', '23.00', '11.00', '11.00', '2.00', '1.00', '0', '所有其他分类');
+INSERT INTO `think_sku_detail` VALUES ('19', 'XZ01HCBK01-F2', '500.00', '22.00', '22.00', '34.00', '11.00', '2.00', '2.00', '0', '所有其他分类', '', '');
+INSERT INTO `think_sku_detail` VALUES ('23', 'XZ12BL38-F1', '350.00', '26.00', '11.00', '5.00', '10.00', '3.00', '0.00', '1', '所有其他分类', '', '');
+INSERT INTO `think_sku_detail` VALUES ('24', 'DZZ1111', '500.00', '23.00', '23.00', '11.00', '11.00', '2.00', '1.00', '0', '所有其他分类', '', '');

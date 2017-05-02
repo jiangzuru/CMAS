@@ -49,7 +49,6 @@ INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('工业�
 INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('工业工具和仪器 ', '0.1200', '0.5000', '德国');
 INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('珠宝首饰 ', '0.2000', '1.5000', '德国');
 INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('大型电器(不包含配件、微波炉以及抽油烟机)', '0.0700', '0.5000', '德国');
-INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('工业工具和仪器 ', '0.1200', '0.5000', '德国');
 INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('材料处理 ', '0.1200', '0.5000', '德国');
 INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('金属加工 ', '0.1200', '0.5000', '德国');
 INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('乐器和DJ', '0.1200', '0.5000', '德国');
@@ -60,4 +59,36 @@ INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('视频�
 INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('视频游戏机 ', '0.0800', '0', '德国');
 INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('钟表 ', '0.1500', '1.5000', '德国');
 INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('所有其他分类 ', '0.1500', '0.5000', '德国');
+
+
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('添加剂制造', '0.1200', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('亚马逊设备配件', '0.4500', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('大型电器(不包含配件、微波炉以及抽油烟机)', '0.0700', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('啤酒、葡萄酒和烈酒 ', '0.1000', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('图书、音乐、VHS、DVD ', '0.1500', '0.0000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('商业、工业和科学用品 ', '0.1500', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('自行车', '0.1500', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('汽车和摩托车 ', '0.1500', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('电脑 ', '0.0700', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('电脑配件', '0.1200', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('电视/音响', '0.0700', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('DIY 和工具', '0.1200', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('电视/音响配件', '0.1200', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('食品服务', '0.1500', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('食品', '0.1500', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('工业电气用品 ', '0.1200', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('工业工具和仪器 ', '0.1200', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('珠宝首饰 ', '0.2000', '1.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('材料处理 ', '0.1200', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('金属加工 ', '0.1200', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('乐器和DJ', '0.1200', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('运动户外', '0.1500', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('软件 ', '0.1500', '0', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('轮胎', '0.1000', '0.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('视频游戏', '0.1500', '0', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('视频游戏机 ', '0.0800', '0', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('钟表 ', '0.1500', '1.5000', '法国');
+INSERT INTO `think_commission` (name,value,lowest,sale_domain) VALUES ('所有其他分类 ', '0.1500', '0.5000', '法国');
+
+
 
