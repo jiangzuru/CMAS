@@ -65,7 +65,7 @@
 
 
       <el-form-item label="品类" class="left">
-        <el-select v-model="form.commission">
+        <el-select v-model="form.sort_name">
           <el-option v-for="(item,index) in commissionList" :key="index" :value="item.name"></el-option>
         </el-select>
       </el-form-item>

@@ -199,7 +199,6 @@ class SkuDetailController extends Controller {
             $map['sale_domain'] = $nation['name'];
             //该sku在某站点的佣金数据
             $commission_data = $commissionModel->where($map)->field('value,lowest')->find();
-
             $nation['commission_rate'] = floatval($commission_data['value']);
             $nation['commission_lowest'] = floatval($commission_data['lowest']);
         }
@@ -211,7 +210,6 @@ class SkuDetailController extends Controller {
         foreach ($nation_data as $nation){
             $temp_array = array();
             $temp_array = $nation;
-
 
             //查找合适的物流方式
             $map = array();
@@ -236,9 +234,10 @@ class SkuDetailController extends Controller {
                         array_push($result_array['data'],$temp_array);
                     }else{//海外仓费用
                         $oversea_data = array();//海外仓数据
-                        $oversea_data['volunme_weight'] = (floatval($sku_data['length']) * floatval($sku_data['width']) * floatval($sku_data['height']))/$logistics_data['volume_number'];
-                        $weight = $oversea_data['volume_weight'] > $sku_data['weight'] ? $oversea_data['volume_weight'] : $sku_data['weight'];
+                        $oversea_data['volume_weight'] = ($sku_data['length'] * $sku_data['width'] * $sku_data['height'] / $v['volume_number'] * 1000);
+                        $weight = $oversea_data['volume_weight']  > $sku_data['weight'] ? $oversea_data['volume_weight'] : $sku_data['weight'];
                         $temp_array['logistics_price'] = $weight * $v['price'] / 1000 + $v['deal_fee'];//海外仓头程费用
+                        $temp_array['logistics_price'] = round($temp_array['logistics_price'],2);
 
                         //海外仓服务费
                         $oversea_fee = self::overseaDeliveryFee($sku_data['length'],$sku_data['width'],$sku_data['height'],$sku_data['weight'],$nation['name']);
