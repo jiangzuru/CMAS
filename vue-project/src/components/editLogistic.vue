@@ -50,9 +50,9 @@
                 <el-input v-model="form.price"></el-input>
             </el-form-item>
             <el-form-item label="特殊物品属性" style="text-align: left">
-                <el-checkbox-group v-model="type">
+                <el-checkbox-group v-model="form.special_type">
                     <el-checkbox label="1" name="type">电子产品</el-checkbox>
-                    <el-checkbox label="2" name="type">粉液体末</el-checkbox>
+                    <el-checkbox label="2" name="type">粉液</el-checkbox>
                 </el-checkbox-group>
             </el-form-item>
                 <el-form-item label="体积重系数">
@@ -81,7 +81,6 @@
             return {
                 radio:3,
                 parentSelects:[],
-                type:[]
             }
         },
         computed:{
@@ -95,7 +94,6 @@
                'updateLogisticData'
             ]),
             changeRadioHandle(v,oldV){
-                console.log(oldV)
                 let arr = []
                 for(let i in this.logisticData){
                     if(this.logisticData[i].rank == (v-1)){
@@ -114,7 +112,7 @@
                     url='/home/logistics/update'
                 }
                 this.form.rank = this.radio
-                this.form.special_type = this.type.join(',')
+                this.form.special_type = this.form.special_type.join(',')
                 this.$http.post(url,
                     {
                         ...this.form,

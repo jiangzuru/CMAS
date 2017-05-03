@@ -28,8 +28,7 @@ store.registerModule('manager', {
             sku:'',
             weight:'',
             width:'',
-            is_oversea:'',
-            commission:''
+            special_type:['0']
         },
         editFbafeeData:{
             high_height:'',
@@ -55,7 +54,7 @@ store.registerModule('manager', {
             pid:'',
             price:'',
             rank:'3',
-            special_type:'',
+            special_type:["0"],
             volume_number:'',
             is_oversea:'',
             deal_fee:''
@@ -89,9 +88,11 @@ store.registerModule('manager', {
             sku:'',
             weight:'',
             width:'',
-            is_oversea:'',
-            commission:''
+            special_type:['0']
         }}){
+            if(typeof(payload.skuData.special_type) == "string"){
+                payload.skuData.special_type = payload.skuData.special_type.split(',')
+            }
             state.editSkuData = payload.skuData;
         },
 
@@ -120,11 +121,15 @@ store.registerModule('manager', {
             pid:'',
             price:'',
             rank:'3',
-            special_type:'',
+            special_type:["0"],
             volume_number:'',
             is_oversea:'',
             deal_fee:''
         }}){
+            if(typeof(payload.logisticData.special_type) == "string"){
+                payload.logisticData.special_type = payload.logisticData.special_type.split(',')
+            }
+
             state.editLogisticData = Object.assign({},state.editLogisticData,payload.logisticData)
         },
         updateEditCommissionData(state,payload={

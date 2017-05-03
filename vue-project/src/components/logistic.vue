@@ -43,16 +43,21 @@
                             label="物品属性"
                             sortable
                             :formatter="function (row) {
-                              switch(row.special_type){
-                                  case '0':
-                                      return '普通物品';
-                                  case '1':
-                                      return '电子产品'
-                                  case '2':
-                                      return '粉末'
-                                  case '3':
-                                      return '液体'
-                              }
+                                let arr = row.special_type.split(',')
+                                let res = '';
+                                if (arr.indexOf('1') >= 0) {
+                                    res += '电子产品'
+                                }
+                                if (arr.indexOf('2') >= 0) {
+                                    if(res !== ''){
+                                        res += ','
+                                    }
+                                    res += '粉末'
+                                }
+                                if (res == '') {
+                                    res =  '普通物品';
+                                }
+                                return res;
                             }"
                             width="200">
                     </el-table-column>

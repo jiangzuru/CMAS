@@ -57,7 +57,7 @@
 
 
       <el-form-item label="特殊属性" style="text-align: left">
-        <el-checkbox-group v-model="type">
+        <el-checkbox-group v-model="form.special_type">
           <el-checkbox label="1" name="type">电子产品</el-checkbox>
           <el-checkbox label="2" name="type">粉液</el-checkbox>
         </el-checkbox-group>
@@ -147,11 +147,10 @@ export default {
 //              this.form.id = this.sku_id;
           }
           this.form.logistics_type = this.logistics_type[2];
-          console.log()
+          this.form.special_type = this.form.special_type.join(',')
           this.$http.post(url,
               {
                   ...this.form,
-                  type
               }
           )
           .then((res)=>{
