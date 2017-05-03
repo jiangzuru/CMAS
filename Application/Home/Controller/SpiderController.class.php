@@ -10,8 +10,10 @@ use QL\QueryList;
 
 class SpiderController extends Controller{
     public function index(){
+        $html = 'http://hl.anseo.cn/';
         //采集某页面所有的超链接
-        $data = QueryList::Query('https://www.amazon.de/dp/B01IHH51D8?th=1',['link' => ['a','href']])->data;
+        $data = QueryList::Query($html,array(
+            'txt' => array('#inverse','text')))->getHtml();
         //打印结果
         var_dump($data);exit();
     }
