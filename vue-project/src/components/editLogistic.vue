@@ -40,25 +40,27 @@
                         <el-radio label="1">计算</el-radio>
                     </el-radio-group>
                 </el-form-item>
-                <el-form-item label="是否计海外头程"  style="text-align: left">
+                <el-form-item label="是否海外头程"  style="text-align: left">
                     <el-radio-group v-model="form.is_oversea">
                         <el-radio label="0">否</el-radio>
                         <el-radio label="1">是</el-radio>
                     </el-radio-group>
                 </el-form-item>
-            <el-form-item label="每千克运输价格">
-                <el-input></el-input>
+            <el-form-item  label="每千克运输价格">
+                <el-input v-model="form.price"></el-input>
             </el-form-item>
             <el-form-item label="特殊物品属性" style="text-align: left">
                 <el-checkbox-group v-model="type">
                     <el-checkbox label="1" name="type">电子产品</el-checkbox>
-                    <el-checkbox label="2" name="type">粉末</el-checkbox>
-                    <el-checkbox label="3" name="type">液体</el-checkbox>
+                    <el-checkbox label="2" name="type">粉液体末</el-checkbox>
                 </el-checkbox-group>
             </el-form-item>
-            <el-form-item label="体积重系数">
-                <el-input></el-input>
-            </el-form-item>
+                <el-form-item label="体积重系数">
+                    <el-input v-model="form.volume_number"></el-input>
+                </el-form-item>
+                <el-form-item label="处理费">
+                    <el-input v-model="form.deal_fee"></el-input>
+                </el-form-item>
             </div>
 <el-form-item>
             <el-button type="success" @click="onSubmit">保存</el-button>

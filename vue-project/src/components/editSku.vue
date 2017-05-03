@@ -59,8 +59,7 @@
       <el-form-item label="特殊属性" style="text-align: left">
         <el-checkbox-group v-model="type">
           <el-checkbox label="1" name="type">电子产品</el-checkbox>
-          <el-checkbox label="2" name="type">粉末</el-checkbox>
-          <el-checkbox label="3" name="type">液体</el-checkbox>
+          <el-checkbox label="2" name="type">粉液</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
 
@@ -83,7 +82,7 @@
     </el-col>
     </el-row>
 
-    <sku-detail></sku-detail>
+    <sku-detail v-if="skuDetail.isShow"></sku-detail>
   </div>
 </template>
 
@@ -124,7 +123,8 @@ export default {
     components:{skuDetail},
     computed:{
         ...mapState({
-            form:state=>state.manager.editSkuData
+            form:state=>state.manager.editSkuData,
+            skuDetail:state=>state.manager.skuDetail
         })
     },
   methods:{
@@ -144,7 +144,7 @@ export default {
               url = '/home/skuDetail/save';
           }else{
               url = '/home/skuDetail/update'
-              this.form.id = this.sku_id;
+//              this.form.id = this.sku_id;
           }
           this.form.logistics_type = this.logistics_type[2];
           console.log()
@@ -203,7 +203,6 @@ export default {
           this.form.isShow = true
           this.form.id = '0'
           this.updateSkuDetail({skuDetail:this.form})
-          console.log(this.form)
       }
   },
   mounted(){

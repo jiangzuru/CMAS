@@ -4,9 +4,18 @@
         <div class="left title">
             <h1>品类模块</h1>
         </div>
+
+            <el-row type="flex" justify="end">
+                <el-col :span="6">
+                    <el-input type="text" v-model="searchStr" @keyup.enter.native="searchBtn"></el-input>
+                </el-col>
+                <el-col :span="2">
+                    <el-button type="primary" @click="searchBtn">搜索</el-button>
+                </el-col>
+            </el-row>
         <div>
             <el-table
-                    :data="commissionData"
+                    :data="tableShowData"
                     border
                     style="width: 100%"
                     max-height="500"
@@ -64,7 +73,9 @@ import {mapState,mapMutations} from 'vuex'
         data () {
             return {
                 commissionData:[],
-                loadingTable:true
+                loadingTable:true,
+                searchStr:'',
+                tableShowData:[]
             }
         },
         computed: {
@@ -84,6 +95,7 @@ import {mapState,mapMutations} from 'vuex'
                     .then((res) => {
                             if (res.body.status == 1) {
                                 this.commissionData = res.body.data
+                                this.tableShowData = this.commissionData
                             } else {
                                 //TODO
                             }
@@ -134,7 +146,7 @@ import {mapState,mapMutations} from 'vuex'
                 })
                     .then((res) => {
                         if (res.body.status == 1) {
-                             this.commissionData = this.commissionData.filter(function (item,index) {
+                             this.tableShowData = this.tableShowData.filter(function (item,index) {
                                 if(item.id == id) return false;
                                 return true
                             })
@@ -148,6 +160,16 @@ import {mapState,mapMutations} from 'vuex'
                         return res.body.status;
                     })
             },
+            searchBtn(){
+
+                if(this.searchStr == ''){
+                    return this.tableShowData = this.commissionData
+                }else{
+                    this.tableShowData = this.commissionData.filter((item,index)=>{
+                        return JSON.stringify(item).toLowerCase().indexOf(this.searchStr.toLowerCase()) >= 0
+                    })
+                }
+            }
         },
         mounted(){
             this.getCommissionData();

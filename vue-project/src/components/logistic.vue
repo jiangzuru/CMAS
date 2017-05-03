@@ -3,9 +3,17 @@
         <el-card>
         <h1 class="left title">物流管理</h1>
 
+            <el-row type="flex" justify="end">
+                <el-col :span="6">
+                    <el-input type="text" v-model="searchStr" @keyup.enter.native="searchBtn"></el-input>
+                </el-col>
+                <el-col :span="2">
+                    <el-button type="primary" @click="searchBtn">搜索</el-button>
+                </el-col>
+            </el-row>
             <div>
                 <el-table
-                        :data="logisticData"
+                        :data="tableShowData"
                         border
                         style="width: 100%"
                         max-height="500"
@@ -52,7 +60,13 @@
                             prop="volume_number"
                             label="体积重系数"
                             sortable
-                            width="200">
+                            width="150">
+                    </el-table-column>
+                    <el-table-column
+                            prop="deal_fee"
+                            label="处理费"
+                            sortable
+                            width="120">
                     </el-table-column>
                     <el-table-column
                             label="操作"
@@ -78,6 +92,8 @@
         data () {
             return {
                 logisticData:[],
+                searchStr:'',
+                tableShowData:[]
             }
         },
         methods: {
@@ -94,6 +110,7 @@
                         this.logisticData = res.body.data.filter(function (item,index) {
                             return item.rank == 3
                         })
+                        this.tableShowData = this.logisticData
                     }
                     console.log(res)
                 })
@@ -144,7 +161,7 @@
 //                                message: '删除成功',
 //                                type: 'success'
 //                            });
-                            this.logisticData = this.logisticData.filter(function (item,index) {
+                            this.tableShowData = this.tableShowData.filter(function (item,index) {
                                 if(item.id == id) return false;
                                 return true
                             })
@@ -158,6 +175,16 @@
                         return res.body.status;
                     })
             },
+            searchBtn(){
+
+                if(this.searchStr == ''){
+                    return this.tableShowData = this.logisticData
+                }else{
+                    this.tableShowData = this.logisticData.filter((item,index)=>{
+                        return JSON.stringify(item).toLowerCase().indexOf(this.searchStr.toLowerCase()) >= 0
+                    })
+                }
+            }
         },
         mounted(){
             this.getLogisticData()

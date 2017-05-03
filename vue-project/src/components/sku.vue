@@ -47,7 +47,7 @@
                         width="120">
                 </el-table-column>
                 <el-table-column
-                        prop="weight"
+                        prop="width"
                         label="宽(cm)"
                         sortable
                         width="120">
