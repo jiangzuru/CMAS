@@ -75,9 +75,6 @@ class SkuDetailController extends Controller {
         if (intval($sku_data['domestic_logistics_price']) < 0){
             $this->ajaxReturn(['status'=>0,'message'=>'国内端运费不能小于0']);
         }
-        if (intval($sku_data['logistics_type']) == 0){
-            $this->ajaxReturn(['status'=>0,'message'=>'物流方式不能为空']);
-        }
 
         $SKU_MODEL = M('SkuDetail');
         if ($SKU_MODEL->create()){
@@ -232,7 +229,7 @@ class SkuDetailController extends Controller {
                     $temp_array['logistics_name'] = $v['name'];//物流方式名称
                     $temp_array['logistics_id'] = $v['id'];//物流方式ID
                     if (intval($v['is_oversea']) == 0){//直邮费用
-                        $temp_array['logistics_price'] = floatval($v['price'] * $sku_data['weight'] / 1000);//直邮费用
+                        $temp_array['logistics_price'] = floatval($v['price'] * $sku_data['weight'] / 1000 + $v['deal_fee']);//直邮费用
                         //加上标识id
                         $temp_array['id'] = $i;
                         $i++;
@@ -241,7 +238,7 @@ class SkuDetailController extends Controller {
                         $oversea_data = array();//海外仓数据
                         $oversea_data['volunme_weight'] = (floatval($sku_data['length']) * floatval($sku_data['width']) * floatval($sku_data['height']))/$logistics_data['volume_number'];
                         $weight = $oversea_data['volume_weight'] > $sku_data['weight'] ? $oversea_data['volume_weight'] : $sku_data['weight'];
-                        $temp_array['logistics_price'] = $weight * $v['price'] / 1000;//海外仓头程费用
+                        $temp_array['logistics_price'] = $weight * $v['price'] / 1000 + $v['deal_fee'];//海外仓头程费用
 
                         //海外仓服务费
                         $oversea_fee = self::overseaDeliveryFee($sku_data['length'],$sku_data['width'],$sku_data['height'],$sku_data['weight'],$nation['name']);
