@@ -260,7 +260,7 @@ class SkuDetailController extends Controller {
 
     //获取汇率，如果数据库中有当日汇率，则取出。没有的话，使用yahoo提供的接口。
 
-    private function getExchangeRate($from_Currency,$to_Currency){
+    private function getExchangeRate($from_Currency,$to_Currency='CNY'){
         $date = date('Y-m-d');//获取今日日期
 
         //取出今日保存的汇率;
@@ -276,7 +276,9 @@ class SkuDetailController extends Controller {
             return $data['change_rate'];
         }else{
             $data = array();
-            $data['change_rate'] = $this->getExchangeRateFromYahoo($from_Currency,$to_Currency);
+            $Spider = A('Spider');
+            $data['change_rate'] = $Spider->getChangeRate($from_Currency);
+//            $data['change_rate'] = $this->getExchangeRateFromYahoo($from_Currency,$to_Currency);
             if ($data <= 0){
                 $this->error('获取汇率失败，请重试');
             }else{
@@ -309,19 +311,6 @@ class SkuDetailController extends Controller {
         //返回汇率金额
         return $data[1];
     }
-
-//        public function getExchangeRateFromYahoo2(){
-//        header("Content-type: text/html; charset=utf-8");
-//        $file = fopen('http://download.finance.yahoo.com/d/quotes.csv?e=.csv&f=sl1d1t1&s=EURCNY=x','r');	//参数s=EURCNY, 欧元换人民币, 根据需要更换
-//        while ($data = fgetcsv($file))      //读取CSV文件里的每一行内容
-//        {
-//            $goods_list[] = $data;
-//        }
-//        $shijian = $goods_list[0][2] .' '. $goods_list[0][3];  	//根据 quotes.csv文件得到的数据, 当前时间 在3,4列位置
-//        $huilv = $goods_list[0][1];         					//根据 quotes.csv文件得到的数据, 汇率 在2列位置
-//        echo "当前时间: $shijian, 1欧元可换: $huilv 元人民币<BR>";
-//        fclose($file);
-//    }
 
     //根据长宽高和重量选择海外仓基础服务费费用
     private function overseaDeliveryFee($length,$width,$height,$weight,$sale_domain){
