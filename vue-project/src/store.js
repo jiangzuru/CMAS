@@ -28,7 +28,8 @@ store.registerModule('manager', {
             sku:'',
             weight:'',
             width:'',
-            special_type:['0']
+            special_type:['0'],
+            sort_name:''
         },
         editFbafeeData:{
             high_height:'',
@@ -88,7 +89,8 @@ store.registerModule('manager', {
             sku:'',
             weight:'',
             width:'',
-            special_type:['0']
+            special_type:['0'],
+            sort_name:''
         }}){
             if(typeof(payload.skuData.special_type) == "string"){
                 payload.skuData.special_type = payload.skuData.special_type.split(',')

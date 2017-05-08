@@ -112,9 +112,7 @@ export default {
 //            logistics_type:[{ validator:validate_logistice_type, trigger: 'blur' }],
 
         },
-
         commissionList:[]
-
     }
   },
     components:{skuDetail},
@@ -151,6 +149,8 @@ export default {
               }
           )
           .then((res)=>{
+
+            this.form.special_type = this.form.special_type.split(',')
             if (res.body.status == 1){
                 //success
 
@@ -182,8 +182,6 @@ export default {
               if(res.body.status == 1){
                   console.log(res.body.data)
                   this.logisticOption = res.body.data
-
-
               }
           })
       },
@@ -198,6 +196,7 @@ export default {
       goTryCalculate(){
           this.form.isShow = true
           this.form.id = '0'
+          this.form.special_type = this.form.special_type.join(',')
           this.updateSkuDetail({skuDetail:this.form})
       }
   },
