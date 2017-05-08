@@ -66,7 +66,7 @@ class SkuDetailController extends Controller {
         if (intval($sku_data['weight']) <= 0){
             $this->ajaxReturn(['status'=>0,'message'=>'重量不能小等于0']);
         }
-        if (intval($sku_data['length']) <= 0 || intval($sku_data['width']) <= 0 || intval($sku_data['height']) <= 0){
+        if (intval($sku_data['length']) < 0 || intval($sku_data['width']) < 0 || intval($sku_data['height']) < 0){
             $this->ajaxReturn(['status'=>0,'message'=>'长宽高不能小等于0']);
         }
         if (intval($sku_data['buy_price']) <= 0){
@@ -138,7 +138,7 @@ class SkuDetailController extends Controller {
             if (intval($sku_data['weight']) <= 0){
                 $this->ajaxReturn(['status'=>0,'message'=>'重量不能小等于0']);
             }
-            if (intval($sku_data['length']) <= 0 || intval($sku_data['width']) <= 0 || intval($sku_data['height']) <= 0){
+            if (intval($sku_data['length']) < 0 || intval($sku_data['width']) < 0 || intval($sku_data['height']) < 0){
                 $this->ajaxReturn(['status'=>0,'message'=>'长宽高不能小等于0']);
             }
             if (intval($sku_data['buy_price']) <= 0){

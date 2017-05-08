@@ -106,9 +106,6 @@ export default {
         formRules:{
             sku:[{ required: true, message: '请输入SKU名称', trigger: 'blur' }],
             weight:[{ required: true, message: '请输入重量', trigger: 'blur' }],
-            length:[{ required: true, message: '请输入长度', trigger: 'blur' }],
-            width:[{ required: true, message: '请输入宽度', trigger: 'blur' }],
-            height:[{ required: true, message: '请输入高度', trigger: 'blur' }],
             buy_price:[{ required: true, message: '请输入进货简价', trigger: 'blur' }],
             domestic_logistics_price:[{ required: true, message: '请输入国内端运费', trigger: 'blur' }],
             package_price:[{ required: true, message: '请输入包装成本', trigger: 'blur' }],
