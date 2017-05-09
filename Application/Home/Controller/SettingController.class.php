@@ -29,14 +29,14 @@ class SettingController extends Controller{
         if (trim($data['name']) != '' && $data['value'] != ''){
             $result = $Model->save($data);
             if ($result){
-                $root = array(['status'=>1,'message'=>'success']);
+                $root = array('status'=>1,'message'=>'success');
                 $this->ajaxReturn($root);
             }else {
-                $root = array(['status' => 0, 'message' => '插入数据失败']);
+                $root = array('status' => 0, 'message' => '插入数据失败');
                 $this->ajaxReturn($root);
             }
         }else{
-            $root = array(['status' => 0, 'message' => '插入的数据不能为空']);
+            $root = array('status' => 0, 'message' => '插入的数据不能为空');
             $this->ajaxReturn($root);
         }
     }

@@ -4,7 +4,7 @@
             <div class="background" @click="hideSkuDetail">
 
             </div>
-            <el-row type="flex" justify="center" style="top: 10%;width: 80%;margin: auto;">
+            <el-row type="flex" justify="center" class="detail-contain" style="width: 80%;margin: auto;">
                 <el-col :span="24" class="context">
                     <el-row style="text-align: left;">{{skuDetail.sku}}</el-row>
                     <el-row>
@@ -74,7 +74,7 @@
                                 :data="feeDataSelect"
                                 border
                                 style="width: 100%"
-                                max-height="300"
+                                max-height="500"
                                 v-loading="loading2"
                                 element-loading-text="拼命加载中"
                                 @sort-change="sortChangeHandle"
@@ -88,7 +88,7 @@
                             <el-table-column
                                     label="物流方式"
                                     prop="logistics_name"
-                                    min-width="150"
+                                    min-width="200"
                             >
                             </el-table-column>
                             <el-table-column
@@ -622,10 +622,15 @@ import {mapState,mapMutations} from 'vuex'
     }
 
     .skuDetail .context {
-        top: 10%;
         background: #fff;
         padding: 50px;
         border-radius: 5px;
     }
+    .detail-contain{
+        /*transform: translateY(50%);*/
+        max-height: 100%;
+        overflow-y: auto;
+    }
+
 
 </style>

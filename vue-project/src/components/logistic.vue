@@ -24,13 +24,17 @@
                             label="名称"
                             sortable
                             width="150"
+                            :formatter="function(row){
+                                return row.name+'('+row.rank+'级)'
+                            }"
                     >
                     </el-table-column>
                     <el-table-column
                             prop="destination"
                             label="目的地"
                             sortable
-                            width="">
+                            min-width="200"
+                            >
                     </el-table-column>
                     <el-table-column
                             prop="price"
@@ -113,7 +117,8 @@
                     if(res.body.status == 1){
                         this.updateLogisticData({logisticData:res.body.data});
                         this.logisticData = res.body.data.filter(function (item,index) {
-                            return item.rank == 3
+//                            return item.rank == 3
+                            return true
                         })
                         this.tableShowData = this.logisticData
                     }

@@ -198,6 +198,7 @@ export default {
           this.form.id = '0'
           this.form.special_type = this.form.special_type.join(',')
           this.updateSkuDetail({skuDetail:this.form})
+          this.form.special_type = this.form.special_type.split(',')
       }
   },
   mounted(){
