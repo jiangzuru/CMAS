@@ -41,6 +41,7 @@ class SkuDetailController extends Controller {
 
 
     }
+
     //删除SKU 参数：id
     public function delete(){
         $id = intval(I('request.id'));
@@ -233,6 +234,9 @@ class SkuDetailController extends Controller {
                         $i++;
                         array_push($result_array['data'],$temp_array);
                     }else{//海外仓费用
+                        if (($sku_data['length'] * $sku_data['height'] * $sku_data['width']) == 0){
+                            continue;
+                        }
                         $oversea_data = array();//海外仓数据
                         $oversea_data['volume_weight'] = ($sku_data['length'] * $sku_data['width'] * $sku_data['height'] / $v['volume_number'] * 1000);
                         $weight = $oversea_data['volume_weight']  > $sku_data['weight'] ? $oversea_data['volume_weight'] : $sku_data['weight'];

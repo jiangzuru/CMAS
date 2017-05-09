@@ -24,18 +24,14 @@ class SpiderController extends Controller{
 
     public function getAmazonLinkData(){
         $html = 'https://www.amazon.it/dp/B01IHGWS9E';
-//        $rule = array(
-//          'txt' => array('#priceblock_ourprice','text'),
-//          'rank'=> array('#SalesRank','text'),
-//          'img' => array('.a-button-input','img'),
-//          'star'=> array('.s_star_3_0','text'),
-//          'review_count' => array('.crAvgStars>a','text'),
-//        );
         $rule = array(
-            'txt' => array('*','html','-script -style'),
+          'txt' => array('#priceblock_ourprice','text'),
+          'rank'=> array('#SalesRank','text'),
+          'img' => array('#altImages img','src'),
+          'star'=> array('.s_star_3_0','text'),
+          'review_count' => array('.crAvgStars>a','text'),
         );
-        $range = 'html';
-        $data = QueryList::Query($html)->getHtml();
+        $data = QueryList::Query($html,$rule)->getData();
         $pos = strpos($data[0]['rank'],'.');
         $rank = substr($data[0]['rank'],$pos+2,10);
         $rank = intval($rank);
