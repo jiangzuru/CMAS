@@ -25,7 +25,7 @@ class SpiderController extends Controller{
     public function getAmazonLinkData(){
         $html = 'https://www.amazon.it/dp/B01IHGWS9E';
         $rule = array(
-          'txt' => array('#priceblock_ourprice','text'),
+          'price' => array('#priceblock_ourprice','text'),
           'rank'=> array('#SalesRank','text'),
           'img' => array('#altImages img','src'),
           'star'=> array('.s_star_3_0','text'),
@@ -38,4 +38,5 @@ class SpiderController extends Controller{
         var_dump($data);
         exit();
     }
+
 }
