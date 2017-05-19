@@ -27,16 +27,21 @@ class SpiderController extends Controller{
         $rule = array(
           'price' => array('#priceblock_ourprice','text'),
           'rank'=> array('#SalesRank','text'),
-          'img' => array('#altImages img','src'),
-          'star'=> array('.s_star_3_0','text'),
+          'star'=> array('.swSprite','title','-.s_chevron'),
           'review_count' => array('.crAvgStars>a','text'),
         );
         $data = QueryList::Query($html,$rule)->getData();
         $pos = strpos($data[0]['rank'],'.');
-        $rank = substr($data[0]['rank'],$pos+2,10);
-        $rank = intval($rank);
+        $result['rank'] = substr($data[0]['rank'],$pos+2,10);
+        $result['rank'] = intval($result['rank']);
+        $result['price'] = floatval($data[0]['price']);
+        $result['star'] = substr($data[0]['star'],0,3);
+        $result['review_count'] = intval($data[0]['review_count']);
+        var_dump($result);
         var_dump($data);
         exit();
     }
+
+
 
 }
