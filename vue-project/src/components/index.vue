@@ -2,7 +2,10 @@
 <div>
 
     <el-row>
-        <div style="background: #48576a;text-align: left;font-size: 30px;color: #fff;height:50px" id="main-title">后台管理系统</div>
+        <el-row style="background: #48576a;text-align: left;font-size: 30px;color: #fff;height:50px" id="main-title">
+            <el-col :xs="20" :sm="24" :md="24" :lg="24">后台管理系统</el-col>
+            <!--<el-col :xs="4" :sm="0" :md="0" :lg="0">菜单</el-col>-->
+        </el-row>
     </el-row>
       <el-row :style="{minHeight: dHeight+'px'}">
 

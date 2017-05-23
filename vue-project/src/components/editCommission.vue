@@ -42,7 +42,7 @@
         },
         computed:{
             ...mapState({
-                form: state=>state.manager.editCommissionData
+                form: state=>state.manager.eidtCommissionData
             }),
         },
         methods:{

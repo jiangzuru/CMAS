@@ -10,7 +10,7 @@ import EditLogistic from '@/components/editLogistic'
 import ConstSetting from '@/components/constSetting'
 import Commission from '@/components/commission'
 import EditCommission from '@/components/editCommission'
-
+import Test from '@/components/test'
 
 Vue.use(Router)
 
@@ -78,6 +78,18 @@ export default new Router({
                   component:ConstSetting
               },
           ]
+      },
+      {
+          path: '/test',
+          name: 'test',
+          component: Test,
+          // children:[
+          //     {
+          //         path:'constSetting',
+          //         name:'constSetting',
+          //         component:ConstSetting
+          //     },
+          // ]
       }
   ]
 })

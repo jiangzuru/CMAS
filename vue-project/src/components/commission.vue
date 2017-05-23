@@ -105,6 +105,7 @@ import {mapState,mapMutations} from 'vuex'
             },
 
             toEditcommission(row){
+                console.log(row)
                 if(row){
                     this.updateEditCommissionData({commissionData:row})
                 }else{

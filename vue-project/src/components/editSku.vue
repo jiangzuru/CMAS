@@ -135,7 +135,8 @@ export default {
           if(!validate) return;
           let type = this.type.join(',')
           let url='';
-          if(this.form.id == ''){
+          console.log(this.form)
+          if(this.form.id == '' || this.form.id == 0){
               url = '/home/skuDetail/save';
           }else{
               url = '/home/skuDetail/update'

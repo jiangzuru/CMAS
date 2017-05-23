@@ -134,12 +134,13 @@ store.registerModule('manager', {
 
             state.editLogisticData = Object.assign({},state.editLogisticData,payload.logisticData)
         },
-        updateEditCommissionData(state,payload={
+        updateEditCommissionData(state,payload={commissionData:{
             id:'',
             lowest:'',
             name:'',
             sale_domain:'',
-            value:''}){
+            value:''}}){
+            console.error(payload)
             state.eidtCommissionData = payload.commissionData;
         }
 
