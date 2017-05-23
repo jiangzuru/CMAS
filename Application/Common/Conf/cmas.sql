@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2017-05-02 18:50:35
+Date: 2017-05-19 17:17:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,7 +26,7 @@ CREATE TABLE `think_change_rate` (
   `from_Currency` varchar(11) NOT NULL COMMENT '本币',
   `to_Currency` varchar(11) NOT NULL COMMENT '要兑换的币种',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of think_change_rate
@@ -83,6 +83,78 @@ INSERT INTO `think_change_rate` VALUES ('49', '6.8963', '2017-05-02', 'USD', 'CN
 INSERT INTO `think_change_rate` VALUES ('50', '5.0412', '2017-05-02', 'CAD', 'CNY');
 INSERT INTO `think_change_rate` VALUES ('51', '0.0000', '2017-05-02', 'MXI', 'CNY');
 INSERT INTO `think_change_rate` VALUES ('52', '0.0615', '2017-05-02', 'JPY', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('53', '8.9014', '2017-05-03', 'GBP', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('54', '7.5214', '2017-05-03', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('55', '6.8932', '2017-05-03', 'USD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('56', '5.0228', '2017-05-03', 'CAD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('57', '0.0000', '2017-05-03', 'MXI', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('58', '0.0615', '2017-05-03', 'JPY', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('59', '8.8616', '2017-05-04', 'GBP', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('61', '6.8971', '2017-05-04', 'USD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('62', '5.0186', '2017-05-04', 'CAD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('64', '0.0611', '2017-05-04', 'JPY', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('68', '7.5301', '2017-05-04', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('69', '0.3654', '2017-05-04', 'MXN', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('70', '8.9127', '2017-05-05', 'GBP', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('71', '7.5700', '2017-05-05', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('72', '6.8966', '2017-05-05', 'USD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('73', '5.0226', '2017-05-05', 'CAD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('74', '0.3616', '2017-05-05', 'MXN', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('75', '0.0613', '2017-05-05', 'JPY', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('76', '8.9606', '2017-05-06', 'GBP', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('77', '7.5873', '2017-05-06', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('78', '6.9061', '2017-05-06', 'USD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('79', '5.0659', '2017-05-06', 'CAD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('80', '0.3637', '2017-05-06', 'MXN', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('81', '0.0614', '2017-05-06', 'JPY', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('82', '8.9686', '2017-05-08', 'GBP', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('83', '7.5758', '2017-05-08', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('84', '6.9061', '2017-05-08', 'USD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('85', '5.0684', '2017-05-08', 'CAD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('86', '0.3643', '2017-05-08', 'MXN', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('87', '0.0614', '2017-05-08', 'JPY', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('88', '8.9445', '2017-05-09', 'GBP', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('89', '7.5415', '2017-05-09', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('90', '6.9109', '2017-05-09', 'USD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('91', '5.0556', '2017-05-09', 'CAD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('92', '0.3592', '2017-05-09', 'MXN', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('93', '0.0609', '2017-05-09', 'JPY', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('94', '8.9445', '2017-05-10', 'GBP', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('95', '7.5301', '2017-05-10', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('96', '6.9109', '2017-05-10', 'USD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('97', '5.0505', '2017-05-10', 'CAD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('98', '0.3606', '2017-05-10', 'MXN', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('99', '0.0608', '2017-05-10', 'JPY', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('100', '8.9445', '2017-05-11', 'GBP', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('101', '7.5131', '2017-05-11', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('102', '6.9061', '2017-05-11', 'USD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('103', '5.0429', '2017-05-11', 'CAD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('104', '0.3631', '2017-05-11', 'MXN', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('105', '0.0606', '2017-05-11', 'JPY', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('106', '8.8968', '2017-05-15', 'GBP', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('107', '7.5415', '2017-05-15', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('108', '6.9013', '2017-05-15', 'USD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('109', '5.0454', '2017-05-15', 'CAD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('110', '0.3671', '2017-05-15', 'MXN', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('111', '0.0610', '2017-05-15', 'JPY', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('112', '8.9047', '2017-05-16', 'GBP', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('113', '7.5758', '2017-05-16', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('114', '6.8966', '2017-05-16', 'USD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('115', '5.0761', '2017-05-16', 'CAD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('116', '0.3698', '2017-05-16', 'MXN', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('117', '0.0608', '2017-05-16', 'JPY', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('118', '8.9286', '2017-05-18', 'GBP', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('119', '7.6864', '2017-05-18', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('120', '6.8918', '2017-05-18', 'USD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('121', '5.0736', '2017-05-18', 'CAD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('122', '0.3626', '2017-05-18', 'MXN', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('123', '0.0621', '2017-05-18', 'JPY', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('124', '8.9286', '2017-05-19', 'GBP', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('125', '7.6570', '2017-05-19', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('126', '6.8918', '2017-05-19', 'USD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('127', '5.0761', '2017-05-19', 'CAD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('128', '0.3655', '2017-05-19', 'MXN', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('129', '0.0620', '2017-05-19', 'JPY', 'CNY');
 
 -- ----------------------------
 -- Table structure for `think_commission`
@@ -95,166 +167,21 @@ CREATE TABLE `think_commission` (
   `lowest` decimal(5,4) NOT NULL COMMENT '最低佣金',
   `sale_domain` varchar(128) NOT NULL COMMENT '销售站点',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=318 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=328 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of think_commission
 -- ----------------------------
-INSERT INTO `think_commission` VALUES ('163', '添加剂制造', '0.1200', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('164', '亚马逊设备配件', '0.4500', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('165', '母婴', '0.1500', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('166', '啤酒、葡萄酒和烈酒 ', '0.1000', '0.0000', '德国');
-INSERT INTO `think_commission` VALUES ('167', '图书、音乐、VHS、DVD ', '0.1500', '0.0000', '德国');
-INSERT INTO `think_commission` VALUES ('168', '商业、工业和科学用品 ', '0.1500', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('169', '汽车和摩托车 ', '0.1500', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('170', '电脑', '0.0700', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('171', '电脑:笔记本电脑', '0.0700', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('172', '电脑配件', '0.1200', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('173', '电视/音响', '0.0700', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('174', '自行车', '0.1000', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('175', 'DIY 和工具', '0.1200', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('176', '电视/音响配件', '0.1200', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('177', '电子配件', '0.1500', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('178', '食品服务', '0.1500', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('179', '食品', '0.1500', '0.0000', '德国');
-INSERT INTO `think_commission` VALUES ('180', '工业电气用品 ', '0.1200', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('181', '工业工具和仪器 ', '0.1200', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('182', '珠宝首饰 ', '0.2000', '1.5000', '德国');
-INSERT INTO `think_commission` VALUES ('183', '大型电器(不包含配件、微波炉以及抽油烟机)', '0.0700', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('184', '材料处理 ', '0.1200', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('185', '金属加工 ', '0.1200', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('186', '乐器和DJ', '0.1200', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('187', '软件 ', '0.1500', '0.0000', '德国');
-INSERT INTO `think_commission` VALUES ('188', '运动户外', '0.1500', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('189', '轮胎', '0.1000', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('190', '视频游戏', '0.1500', '0.0000', '德国');
-INSERT INTO `think_commission` VALUES ('191', '视频游戏机 ', '0.0800', '0.0000', '德国');
-INSERT INTO `think_commission` VALUES ('192', '钟表 ', '0.1500', '1.5000', '德国');
-INSERT INTO `think_commission` VALUES ('193', '所有其他分类 ', '0.1500', '0.5000', '德国');
-INSERT INTO `think_commission` VALUES ('194', '添加剂制造', '0.1200', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('195', '亚马逊设备配件', '0.4500', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('196', '母婴', '0.1500', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('197', '大型电器(不包含配件、微波炉以及抽油烟机)', '0.0700', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('198', '啤酒、葡萄酒和烈酒 ', '0.1000', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('199', '图书、音乐、VHS、DVD ', '0.1500', '0.0000', '法国');
-INSERT INTO `think_commission` VALUES ('200', '商业、工业和科学用品 ', '0.1500', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('201', '自行车', '0.1500', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('202', '汽车和摩托车 ', '0.1500', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('203', '电脑', '0.0700', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('204', '电脑:笔记本电脑', '0.0700', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('205', '电脑配件', '0.1200', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('206', '电视/音响', '0.0700', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('207', 'DIY 和工具', '0.1200', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('208', '电视/音响配件', '0.1200', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('209', '电子配件', '0.1500', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('210', '食品服务', '0.1500', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('211', '食品', '0.1500', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('212', '工业电气用品 ', '0.1200', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('213', '工业工具和仪器 ', '0.1200', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('214', '珠宝首饰 ', '0.2000', '1.5000', '法国');
-INSERT INTO `think_commission` VALUES ('215', '材料处理 ', '0.1200', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('216', '金属加工 ', '0.1200', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('217', '乐器和DJ', '0.1200', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('218', '运动户外', '0.1500', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('219', '软件 ', '0.1500', '0.0000', '法国');
-INSERT INTO `think_commission` VALUES ('220', '轮胎', '0.1000', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('221', '视频游戏', '0.1500', '0.0000', '法国');
-INSERT INTO `think_commission` VALUES ('222', '视频游戏机 ', '0.0800', '0.0000', '法国');
-INSERT INTO `think_commission` VALUES ('223', '钟表 ', '0.1500', '1.5000', '法国');
-INSERT INTO `think_commission` VALUES ('224', '所有其他分类 ', '0.1500', '0.5000', '法国');
-INSERT INTO `think_commission` VALUES ('225', '添加剂制造', '0.1200', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('226', '亚马逊设备配件', '0.4500', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('227', '母婴', '0.1500', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('228', '啤酒、葡萄酒和烈酒 ', '0.1000', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('229', '图书、音乐、VHS、DVD ', '0.1500', '0.0000', '意大利');
-INSERT INTO `think_commission` VALUES ('230', '商业、工业和科学用品 ', '0.1500', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('231', '汽车和摩托车 ', '0.1500', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('232', '电脑', '0.0700', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('233', '电脑:笔记本电脑', '0.0500', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('234', '电脑配件', '0.1200', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('235', '电视/音响', '0.0700', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('236', '自行车', '0.1500', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('237', 'DIY 和工具', '0.1500', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('238', '电视/音响配件', '0.1200', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('239', '电子配件', '0.1200', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('240', '食品服务', '0.1500', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('241', '食品', '0.1500', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('242', '工业电气用品 ', '0.1200', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('243', '工业工具和仪器 ', '0.1200', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('244', '珠宝首饰 ', '0.2000', '1.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('245', '大型电器(不包含配件、微波炉以及抽油烟机)', '0.1500', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('246', '材料处理 ', '0.1200', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('247', '金属加工 ', '0.1200', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('248', '乐器和DJ', '0.1200', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('249', '软件 ', '0.1500', '0.0000', '意大利');
-INSERT INTO `think_commission` VALUES ('250', '运动户外', '0.1500', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('251', '轮胎', '0.1000', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('252', '视频游戏', '0.1500', '0.0000', '意大利');
-INSERT INTO `think_commission` VALUES ('253', '视频游戏机 ', '0.0800', '0.0000', '意大利');
-INSERT INTO `think_commission` VALUES ('254', '钟表 ', '0.1500', '1.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('255', '所有其他分类 ', '0.1500', '0.5000', '意大利');
-INSERT INTO `think_commission` VALUES ('256', '添加剂制造', '0.1200', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('257', '亚马逊设备配件', '0.4500', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('258', '母婴', '0.1500', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('259', '啤酒、葡萄酒和烈酒 ', '0.1000', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('260', '图书、音乐、VHS、DVD ', '0.1500', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('261', '商业、工业和科学用品 ', '0.1500', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('262', '汽车和摩托车 ', '0.1500', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('263', '电脑', '0.0700', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('264', '电脑:笔记本电脑', '0.0500', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('265', '电脑配件', '0.1200', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('266', '电视/音响', '0.0700', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('267', '自行车', '0.1500', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('268', 'DIY 和工具', '0.1200', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('269', '电视/音响配件', '0.1200', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('270', '电子配件', '0.1500', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('271', '食品服务', '0.1500', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('272', '食品', '0.1500', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('273', '工业电气用品 ', '0.1200', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('274', '工业工具和仪器 ', '0.1200', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('275', '珠宝首饰 ', '0.2000', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('276', '大型电器(不包含配件、微波炉以及抽油烟机)', '0.1500', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('277', '材料处理 ', '0.1200', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('278', '金属加工 ', '0.1200', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('279', '乐器和DJ', '0.1200', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('280', '软件 ', '0.1500', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('281', '运动户外', '0.1500', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('282', '轮胎', '0.1000', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('283', '视频游戏', '0.1500', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('284', '视频游戏机 ', '0.0800', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('285', '钟表 ', '0.1500', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('286', '所有其他分类 ', '0.1500', '0.0000', '西班牙');
-INSERT INTO `think_commission` VALUES ('287', '添加剂制造', '0.1200', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('288', '亚马逊设备配件', '0.4500', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('289', '母婴', '0.1500', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('290', '啤酒、葡萄酒和烈酒 ', '0.1000', '0.0000', '英国');
-INSERT INTO `think_commission` VALUES ('291', '图书、音乐、VHS、DVD ', '0.1500', '0.0000', '英国');
-INSERT INTO `think_commission` VALUES ('292', '商业、工业和科学用品 ', '0.1500', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('293', '汽车和摩托车 ', '0.1500', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('294', '电脑', '0.0700', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('295', '电脑:笔记本电脑', '0.0700', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('296', '电脑配件', '0.1200', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('297', '电视/音响', '0.0700', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('298', '自行车', '0.1500', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('299', 'DIY 和工具', '0.1200', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('300', '电视/音响配件', '0.1200', '0.0000', '英国');
-INSERT INTO `think_commission` VALUES ('301', '电子配件', '0.1200', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('302', '食品服务', '0.1500', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('303', '食品', '0.1500', '0.0000', '英国');
-INSERT INTO `think_commission` VALUES ('304', '工业电气用品 ', '0.1200', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('305', '工业工具和仪器 ', '0.1200', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('306', '珠宝首饰 ', '0.2500', '1.2500', '英国');
-INSERT INTO `think_commission` VALUES ('307', '大型电器(不包含配件、微波炉以及抽油烟机)', '0.0700', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('308', '材料处理 ', '0.1200', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('309', '金属加工 ', '0.1200', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('310', '乐器和DJ', '0.1200', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('311', '软件 ', '0.1500', '0.0000', '英国');
-INSERT INTO `think_commission` VALUES ('312', '运动户外', '0.1500', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('313', '轮胎', '0.1000', '0.4000', '英国');
-INSERT INTO `think_commission` VALUES ('314', '视频游戏', '0.1500', '0.0000', '英国');
-INSERT INTO `think_commission` VALUES ('315', '视频游戏机 ', '0.0800', '0.0000', '英国');
-INSERT INTO `think_commission` VALUES ('316', '钟表 ', '0.1500', '1.2500', '英国');
-INSERT INTO `think_commission` VALUES ('317', '所有其他分类 ', '0.1500', '0.4000', '英国');
+INSERT INTO `think_commission` VALUES ('318', '鞋子', '0.1500', '0.5000', '德国');
+INSERT INTO `think_commission` VALUES ('319', '鞋子', '0.1500', '0.5000', '法国');
+INSERT INTO `think_commission` VALUES ('320', '鞋子', '0.1500', '0.5000', '意大利');
+INSERT INTO `think_commission` VALUES ('321', '鞋子', '0.1500', '0.0000', '西班牙');
+INSERT INTO `think_commission` VALUES ('322', '鞋子', '0.1500', '0.4000', '英国');
+INSERT INTO `think_commission` VALUES ('323', '玩具', '0.1500', '0.5000', '法国');
+INSERT INTO `think_commission` VALUES ('324', '玩具', '0.1500', '0.5000', '法国');
+INSERT INTO `think_commission` VALUES ('325', '玩具', '0.1500', '0.5000', '意大利');
+INSERT INTO `think_commission` VALUES ('326', '玩具', '0.1500', '0.0000', '西班牙');
+INSERT INTO `think_commission` VALUES ('327', '玩具', '0.1500', '0.4000', '英国');
 
 -- ----------------------------
 -- Table structure for `think_logistics`
@@ -273,7 +200,7 @@ CREATE TABLE `think_logistics` (
   `is_oversea` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否是海外仓头程 0:是 1:不是',
   `deal_fee` decimal(4,2) NOT NULL DEFAULT '0.00' COMMENT '处理费',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of think_logistics
@@ -283,9 +210,18 @@ INSERT INTO `think_logistics` VALUES ('2', '直邮', '1', '0', '0', '1', '0.00',
 INSERT INTO `think_logistics` VALUES ('3', 'FBA-空运', '2', '1', '0', '0', '0.00', '0', '0', '0', '0.00');
 INSERT INTO `think_logistics` VALUES ('4', '云途泛欧头程', '3', '3', '0', '0', '40.00', '6000', '德国,英国,法国,意大利,西班牙', '1', '0.00');
 INSERT INTO `think_logistics` VALUES ('5', '云途', '2', '2', '0', '1', '0.00', '0', '0', '0', '0.00');
-INSERT INTO `think_logistics` VALUES ('6', 'DHL英国', '3', '5', '0', '1', '60.00', '0', '英国', '0', '20.00');
-INSERT INTO `think_logistics` VALUES ('8', '云途德国专线挂号', '3', '5', '0', '1', '50.00', '0', '德国', '0', '20.00');
-INSERT INTO `think_logistics` VALUES ('9', '电饭锅', '3', '5', '1', '0', '0.00', '0', '美国,日本', '0', '0.00');
+INSERT INTO `think_logistics` VALUES ('8', '云途德国专线挂号', '3', '5', '0', '0', '40.00', '0', '德国', '0', '20.00');
+INSERT INTO `think_logistics` VALUES ('9', '云途意大利专线挂号', '3', '5', '0', '0', '45.00', '0', '意大利', '0', '25.00');
+INSERT INTO `think_logistics` VALUES ('10', '云途意大利专线平邮', '3', '5', '0', '0', '95.00', '0', '意大利', '0', '4.00');
+INSERT INTO `think_logistics` VALUES ('11', '云途西班牙专线挂号', '3', '5', '0', '0', '44.00', '0', '西班牙', '0', '20.00');
+INSERT INTO `think_logistics` VALUES ('12', '云途西班牙专线平邮', '3', '5', '0', '0', '75.00', '0', '西班牙', '0', '1.90');
+INSERT INTO `think_logistics` VALUES ('13', '云途法国专线挂号', '3', '5', '0', '0', '54.00', '0', '法国', '0', '25.00');
+INSERT INTO `think_logistics` VALUES ('14', '云途英国专线挂号', '3', '5', '0', '0', '32.00', '0', '英国', '0', '18.00');
+INSERT INTO `think_logistics` VALUES ('15', '云途美国EUB', '3', '5', '0', '0', '67.50', '0', '美国', '0', '8.10');
+INSERT INTO `think_logistics` VALUES ('16', '云途加拿大EUB', '3', '5', '0', '0', '58.50', '0', '加拿大', '0', '17.10');
+INSERT INTO `think_logistics` VALUES ('17', '云途法国EUB', '3', '5', '0', '0', '54.00', '0', '法国', '0', '17.10');
+INSERT INTO `think_logistics` VALUES ('18', '云途小包挂号，美加英法', '3', '5', '0', '0', '76.93', '0', '美国,加拿大,英国,法国', '0', '6.80');
+INSERT INTO `think_logistics` VALUES ('19', '云途小包挂号 德西', '3', '5', '0', '0', '68.85', '0', '德国,西班牙', '0', '6.80');
 
 -- ----------------------------
 -- Table structure for `think_nation`
@@ -309,7 +245,7 @@ INSERT INTO `think_nation` VALUES ('4', '意大利', 'EUR', '€');
 INSERT INTO `think_nation` VALUES ('5', '西班牙', 'EUR', '€');
 INSERT INTO `think_nation` VALUES ('6', '美国', 'USD', '$');
 INSERT INTO `think_nation` VALUES ('7', '加拿大', 'CAD', '$');
-INSERT INTO `think_nation` VALUES ('8', '墨西哥', 'MXI', '$');
+INSERT INTO `think_nation` VALUES ('8', '墨西哥', 'MXN', '$');
 INSERT INTO `think_nation` VALUES ('9', '日本', 'JPY', '¥');
 
 -- ----------------------------
@@ -471,14 +407,14 @@ CREATE TABLE `think_sku_detail` (
   `package_price` decimal(11,2) NOT NULL DEFAULT '0.00' COMMENT '包装成本',
   `special_type` varchar(20) NOT NULL DEFAULT '0' COMMENT '是否特殊物品。0.普通，1.带电产品 2.粉末 3.液体',
   `sort_name` varchar(50) NOT NULL COMMENT '品类名称',
-  `is_oversea` varchar(45) NOT NULL,
-  `commission` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of think_sku_detail
 -- ----------------------------
-INSERT INTO `think_sku_detail` VALUES ('19', 'XZ01HCBK01-F2', '500.00', '22.00', '22.00', '34.00', '11.00', '2.00', '2.00', '0', '所有其他分类', '', '');
-INSERT INTO `think_sku_detail` VALUES ('23', 'XZ12BL38-F1', '350.00', '26.00', '11.00', '5.00', '10.00', '3.00', '0.00', '1', '所有其他分类', '', '');
-INSERT INTO `think_sku_detail` VALUES ('24', 'DZZ1111', '500.00', '23.00', '23.00', '11.00', '11.00', '2.00', '1.00', '0', '所有其他分类', '', '');
+INSERT INTO `think_sku_detail` VALUES ('23', 'XZ12BL38-F1', '350.00', '26.00', '11.00', '5.00', '10.00', '3.00', '0.00', '1', '鞋子');
+INSERT INTO `think_sku_detail` VALUES ('26', 'XZ17', '610.00', '29.00', '20.00', '11.00', '47.00', '0.70', '0.70', '0', '鞋子');
+INSERT INTO `think_sku_detail` VALUES ('31', 'XZ38', '800.00', '0.00', '0.00', '0.00', '45.00', '0.00', '0.00', '0', '鞋子');
+INSERT INTO `think_sku_detail` VALUES ('33', 'xz37', '600.00', '25.50', '16.00', '9.50', '29.00', '4.00', '0.70', '0', '鞋子');
+INSERT INTO `think_sku_detail` VALUES ('34', 'xz43', '280.00', '27.50', '10.50', '3.50', '30.00', '2.00', '0.70', '0', '鞋子');
