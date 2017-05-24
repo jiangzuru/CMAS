@@ -67,6 +67,13 @@ store.registerModule('manager', {
             sale_domain:'',
             value:'',
         },
+        eidtAsinData:{
+            id:'',
+            name:'',
+            asin:'',
+            nation:'',
+            competer_asin:'',
+        },
     },
     mutations: {
         login(state, payload){
@@ -140,8 +147,16 @@ store.registerModule('manager', {
             name:'',
             sale_domain:'',
             value:''}}){
-            console.error(payload)
             state.eidtCommissionData = payload.commissionData;
+        },
+        updateEditAsinData(state,payload={asinData:{
+            id:'',
+            name:'',
+            asin:'',
+            nation:'',
+            competer_asin:'',}}){
+            console.error(payload)
+            state.eidtAsinData = payload.asinData;
         }
 
     },

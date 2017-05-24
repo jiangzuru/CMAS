@@ -10,7 +10,14 @@ import EditLogistic from '@/components/editLogistic'
 import ConstSetting from '@/components/constSetting'
 import Commission from '@/components/commission'
 import EditCommission from '@/components/editCommission'
+import Asin from '@/components/asin'
+import EditAsin from '@/components/editAsin'
+
+
 import Test from '@/components/test'
+
+
+
 
 Vue.use(Router)
 
@@ -64,6 +71,16 @@ export default new Router({
                   path:'editCommission',
                   name:'editCommission',
                   component:EditCommission
+              },
+              {
+                  path:'asin',
+                  name:'asin',
+                  component:Asin
+              },
+              {
+                  path:'editAsin',
+                  name:'editAsin',
+                  component:EditAsin
               }
           ]
       },

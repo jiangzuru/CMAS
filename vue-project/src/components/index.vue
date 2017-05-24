@@ -27,6 +27,9 @@
                           <router-link to="/index/commission">
                               <el-menu-item index="1-4">品类管理</el-menu-item>
                           </router-link>
+                          <router-link to="/index/asin">
+                              <el-menu-item index="1-5">asin管理</el-menu-item>
+                          </router-link>
                       </el-submenu>
                       <el-submenu index="2">
                       <template slot="title">配置</template>
