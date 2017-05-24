@@ -24,22 +24,46 @@ class SpiderController extends Controller{
 
     public function getAmazonLinkData(){
         $html = 'https://www.amazon.it/dp/B01IHGWS9E';
+
         $rule = array(
           'price' => array('#priceblock_ourprice','text'),
           'rank'=> array('#SalesRank','text'),
-          'star'=> array('.swSprite','title','-.s_chevron'),
+          'star'=> array('.swSprite','text'),
           'review_count' => array('.crAvgStars>a','text'),
         );
         $data = QueryList::Query($html,$rule)->getData();
+
+        //处理排名
         $pos = strpos($data[0]['rank'],'.');
         $result['rank'] = substr($data[0]['rank'],$pos+2,10);
         $result['rank'] = intval($result['rank']);
-        $result['price'] = floatval($data[0]['price']);
-        $result['star'] = substr($data[0]['star'],0,3);
+
+        //处理价格
+        $data[0]['price'] = str_replace(',','.',$data[0]['price']);
+        preg_match_all("/(\d+)\.(\d+)/is", $data[0]['price'], $arr);//获取价格的正则
+        $result['low_price'] = floatval($arr[0][0]);
+        if ($arr[0][1]){
+            $result['high_price'] = floatval($arr[0][1]);
+        }else{
+            $result['high_price'] = floatval($arr[0][0]);
+        }
+
+        //处理评分
+        $arr = array();
+        preg_match_all("/(\d+)\.(\d+)/is",$data[1]['star'],$arr);
+        $result['star'] = floatval($arr[0][0]);
+
+        //处理评论数
         $result['review_count'] = intval($data[0]['review_count']);
-        var_dump($result);
-        var_dump($data);
-        exit();
+
+        $result['time'] = time();
+
+        $Model = M('LinkData');
+        $Model->add($result);
+    }
+
+    public function test(){
+
     }
 
 

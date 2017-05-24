@@ -77,3 +77,24 @@ CREATE TABLE `think_nation`(
 	`dollar_logo` varchar(10) NOT NULL COMMENT '货币符号',
 	PRIMARY KEY(`id`)
 )ENGINE=innoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `think_link_data`(
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`asin` varchar(40) NOT NULL COMMENT 'ASIN码',
+	`low_price` decimal(5,2) NOT NULL COMMENT '最低价格',
+	`high_price` decimal(5,2) NOT NULL COMMENT '最高价格',
+	`start` decimal(1,1) NOT NULL COMMENT '评分',
+	`review_count` int(4) NOT NULL COMMENT '评论数',
+	`nation` varchar(40) NOT NULL COMMENT '站点',
+	`rank` int(8) NOT NULL COMMENT '排名',
+	`time` int(11) NOT NULL COMMENT '时间',
+	PRIMARY KEY(`id`)
+)ENGINE=innoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `think_asin`(
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`asin` varchar(40) NOT NULL COMMENT 'ASIN码',
+	`nation` varchar(40) NOT NULL COMMENT '站点';
+	`name` varchar(40) NOT NULL COMMENT '名称';
+)
