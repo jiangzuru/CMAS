@@ -1,19 +1,39 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : mysql
-Source Server Version : 50553
-Source Host           : localhost:3306
+Source Server         : centos
+Source Server Version : 50548
+Source Host           : 192.168.178.128:3306
 Source Database       : cmas
 
 Target Server Type    : MYSQL
-Target Server Version : 50553
+Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2017-05-19 17:17:54
+Date: 2017-05-24 19:33:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `think_asin`
+-- ----------------------------
+DROP TABLE IF EXISTS `think_asin`;
+CREATE TABLE `think_asin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `asin` varchar(40) NOT NULL COMMENT 'ASIN码',
+  `nation` varchar(40) NOT NULL COMMENT '站点',
+  `name` varchar(40) NOT NULL COMMENT '名称',
+  `competer_asin` varchar(100) NOT NULL COMMENT '竞争对手的ASIN码',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of think_asin
+-- ----------------------------
+INSERT INTO `think_asin` VALUES ('1', 'B01IHGWS9E', '意大利', 'XZ17-V1', '');
+INSERT INTO `think_asin` VALUES ('2', 'B01F6O2MXM', '意大利', 'XZ01-F2', '');
+INSERT INTO `think_asin` VALUES ('3', 'B01IHGKAPI', '意大利', 'XZ17-V2', 'B01MQ4FKMQ,B01JV6LT7G');
 
 -- ----------------------------
 -- Table structure for `think_change_rate`
@@ -26,7 +46,7 @@ CREATE TABLE `think_change_rate` (
   `from_Currency` varchar(11) NOT NULL COMMENT '本币',
   `to_Currency` varchar(11) NOT NULL COMMENT '要兑换的币种',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of think_change_rate
@@ -155,6 +175,12 @@ INSERT INTO `think_change_rate` VALUES ('126', '6.8918', '2017-05-19', 'USD', 'C
 INSERT INTO `think_change_rate` VALUES ('127', '5.0761', '2017-05-19', 'CAD', 'CNY');
 INSERT INTO `think_change_rate` VALUES ('128', '0.3655', '2017-05-19', 'MXN', 'CNY');
 INSERT INTO `think_change_rate` VALUES ('129', '0.0620', '2017-05-19', 'JPY', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('130', '8.9366', '2017-05-24', 'GBP', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('131', '7.7459', '2017-05-24', 'EUR', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('132', '6.8918', '2017-05-24', 'USD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('133', '5.1282', '2017-05-24', 'CAD', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('134', '0.3697', '2017-05-24', 'MXN', 'CNY');
+INSERT INTO `think_change_rate` VALUES ('135', '0.0620', '2017-05-24', 'JPY', 'CNY');
 
 -- ----------------------------
 -- Table structure for `think_commission`
@@ -182,6 +208,99 @@ INSERT INTO `think_commission` VALUES ('324', '玩具', '0.1500', '0.5000', '法
 INSERT INTO `think_commission` VALUES ('325', '玩具', '0.1500', '0.5000', '意大利');
 INSERT INTO `think_commission` VALUES ('326', '玩具', '0.1500', '0.0000', '西班牙');
 INSERT INTO `think_commission` VALUES ('327', '玩具', '0.1500', '0.4000', '英国');
+
+-- ----------------------------
+-- Table structure for `think_link_data`
+-- ----------------------------
+DROP TABLE IF EXISTS `think_link_data`;
+CREATE TABLE `think_link_data` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `asin` varchar(40) NOT NULL COMMENT 'ASIN码',
+  `low_price` decimal(5,2) NOT NULL COMMENT '最低价格',
+  `high_price` decimal(5,2) NOT NULL COMMENT '最高价格',
+  `star` decimal(2,1) NOT NULL COMMENT '评分',
+  `review_count` int(4) NOT NULL COMMENT '评论数',
+  `nation` varchar(40) NOT NULL COMMENT '站点',
+  `rank` int(8) NOT NULL COMMENT '排名',
+  `time` int(11) NOT NULL COMMENT '时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=234 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of think_link_data
+-- ----------------------------
+INSERT INTO `think_link_data` VALUES ('162', '', '27.99', '28.99', '3.3', '31', '', '152', '1495618201');
+INSERT INTO `think_link_data` VALUES ('163', '', '25.99', '29.99', '3.5', '44', '', '2272', '1495618201');
+INSERT INTO `think_link_data` VALUES ('164', '', '27.99', '28.99', '3.3', '31', '', '152', '1495618802');
+INSERT INTO `think_link_data` VALUES ('165', '', '25.99', '29.99', '3.5', '44', '', '2272', '1495618802');
+INSERT INTO `think_link_data` VALUES ('166', '', '27.99', '28.99', '3.3', '31', '', '152', '1495619401');
+INSERT INTO `think_link_data` VALUES ('167', '', '25.99', '29.99', '3.5', '44', '', '2272', '1495619401');
+INSERT INTO `think_link_data` VALUES ('168', '', '27.99', '28.99', '3.3', '31', '', '190', '1495620001');
+INSERT INTO `think_link_data` VALUES ('169', '', '25.99', '29.99', '3.5', '44', '', '2272', '1495620001');
+INSERT INTO `think_link_data` VALUES ('170', '', '27.99', '27.99', '4.1', '37', '', '116', '1495620001');
+INSERT INTO `think_link_data` VALUES ('171', 'B01IHGWS9E', '27.99', '28.99', '3.3', '31', '', '152', '1495620250');
+INSERT INTO `think_link_data` VALUES ('172', 'B01F6O2MXM', '25.99', '29.99', '3.5', '44', '', '628', '1495620250');
+INSERT INTO `think_link_data` VALUES ('173', 'B01IHGKAPI', '27.99', '27.99', '4.1', '37', '', '134', '1495620250');
+INSERT INTO `think_link_data` VALUES ('174', 'B01IHGWS9E', '27.99', '28.99', '3.3', '31', '', '190', '1495620316');
+INSERT INTO `think_link_data` VALUES ('175', 'B01F6O2MXM', '25.99', '29.99', '3.5', '44', '', '2272', '1495620316');
+INSERT INTO `think_link_data` VALUES ('176', 'B01IHGKAPI', '27.99', '27.99', '4.1', '37', '', '116', '1495620316');
+INSERT INTO `think_link_data` VALUES ('177', 'B', '0.00', '0.00', '0.0', '0', '', '0', '1495620316');
+INSERT INTO `think_link_data` VALUES ('178', 'B', '0.00', '0.00', '0.0', '0', '', '0', '1495620316');
+INSERT INTO `think_link_data` VALUES ('179', 'B01IHGWS9E', '27.99', '28.99', '3.3', '31', '', '190', '1495620511');
+INSERT INTO `think_link_data` VALUES ('180', 'B01F6O2MXM', '25.99', '29.99', '3.5', '44', '', '628', '1495620511');
+INSERT INTO `think_link_data` VALUES ('181', 'B01IHGKAPI', '27.99', '27.99', '4.1', '37', '', '134', '1495620511');
+INSERT INTO `think_link_data` VALUES ('182', 'B', '0.00', '0.00', '0.0', '0', '', '0', '1495620511');
+INSERT INTO `think_link_data` VALUES ('183', 'B', '0.00', '0.00', '0.0', '0', '', '0', '1495620511');
+INSERT INTO `think_link_data` VALUES ('184', 'B01IHGWS9E', '27.99', '28.99', '3.3', '31', '', '190', '1495620535');
+INSERT INTO `think_link_data` VALUES ('185', 'B01F6O2MXM', '25.99', '29.99', '3.5', '44', '', '2272', '1495620535');
+INSERT INTO `think_link_data` VALUES ('186', 'B01IHGKAPI', '27.99', '27.99', '4.1', '37', '', '134', '1495620535');
+INSERT INTO `think_link_data` VALUES ('187', 'B01MQ4FKMQ', '0.00', '0.00', '4.0', '7', '', '2339', '1495620535');
+INSERT INTO `think_link_data` VALUES ('188', 'B01JV6LT7G', '25.99', '39.99', '4.3', '32', '', '2798', '1495620535');
+INSERT INTO `think_link_data` VALUES ('189', 'B01IHGWS9E', '27.99', '28.99', '3.3', '31', '', '190', '1495620601');
+INSERT INTO `think_link_data` VALUES ('190', 'B01F6O2MXM', '25.99', '29.99', '3.5', '44', '', '628', '1495620601');
+INSERT INTO `think_link_data` VALUES ('191', 'B01IHGKAPI', '27.99', '27.99', '4.1', '37', '', '134', '1495620601');
+INSERT INTO `think_link_data` VALUES ('192', 'B01MQ4FKMQ', '0.00', '0.00', '4.0', '7', '', '2339', '1495620601');
+INSERT INTO `think_link_data` VALUES ('193', 'B01JV6LT7G', '25.99', '39.99', '4.3', '32', '', '2798', '1495620601');
+INSERT INTO `think_link_data` VALUES ('194', 'B01IHGWS9E', '27.99', '28.99', '3.3', '31', '', '190', '1495621201');
+INSERT INTO `think_link_data` VALUES ('195', 'B01F6O2MXM', '25.99', '29.99', '3.5', '44', '', '628', '1495621201');
+INSERT INTO `think_link_data` VALUES ('196', 'B01IHGKAPI', '27.99', '27.99', '4.1', '37', '', '134', '1495621201');
+INSERT INTO `think_link_data` VALUES ('197', 'B01MQ4FKMQ', '0.00', '0.00', '4.0', '7', '', '2339', '1495621201');
+INSERT INTO `think_link_data` VALUES ('198', 'B01JV6LT7G', '25.99', '39.99', '4.3', '32', '', '2798', '1495621201');
+INSERT INTO `think_link_data` VALUES ('199', 'B01IHGWS9E', '27.99', '28.99', '3.3', '31', '', '190', '1495621801');
+INSERT INTO `think_link_data` VALUES ('200', 'B01F6O2MXM', '25.99', '29.99', '3.5', '44', '', '628', '1495621801');
+INSERT INTO `think_link_data` VALUES ('201', 'B01IHGKAPI', '27.99', '27.99', '4.1', '37', '', '134', '1495621801');
+INSERT INTO `think_link_data` VALUES ('202', 'B01MQ4FKMQ', '0.00', '0.00', '4.0', '7', '', '2339', '1495621801');
+INSERT INTO `think_link_data` VALUES ('203', 'B01JV6LT7G', '25.99', '39.99', '4.3', '32', '', '2798', '1495621801');
+INSERT INTO `think_link_data` VALUES ('204', 'B01IHGWS9E', '27.99', '28.99', '3.3', '31', '', '190', '1495622401');
+INSERT INTO `think_link_data` VALUES ('205', 'B01F6O2MXM', '25.99', '29.99', '3.5', '44', '', '628', '1495622401');
+INSERT INTO `think_link_data` VALUES ('206', 'B01IHGKAPI', '27.99', '27.99', '4.1', '37', '', '134', '1495622401');
+INSERT INTO `think_link_data` VALUES ('207', 'B01MQ4FKMQ', '0.00', '0.00', '4.0', '7', '', '2339', '1495622401');
+INSERT INTO `think_link_data` VALUES ('208', 'B01JV6LT7G', '25.99', '39.99', '4.3', '32', '', '2798', '1495622401');
+INSERT INTO `think_link_data` VALUES ('209', 'B01IHGWS9E', '27.99', '28.99', '3.3', '31', '', '190', '1495623001');
+INSERT INTO `think_link_data` VALUES ('210', 'B01F6O2MXM', '25.99', '29.99', '3.5', '44', '', '628', '1495623001');
+INSERT INTO `think_link_data` VALUES ('211', 'B01IHGKAPI', '27.99', '27.99', '4.1', '37', '', '134', '1495623001');
+INSERT INTO `think_link_data` VALUES ('212', 'B01MQ4FKMQ', '0.00', '0.00', '4.0', '7', '', '2339', '1495623001');
+INSERT INTO `think_link_data` VALUES ('213', 'B01JV6LT7G', '25.99', '39.99', '4.3', '32', '', '2798', '1495623001');
+INSERT INTO `think_link_data` VALUES ('214', 'B01IHGWS9E', '27.99', '28.99', '3.3', '31', '', '190', '1495623602');
+INSERT INTO `think_link_data` VALUES ('215', 'B01F6O2MXM', '25.99', '29.99', '3.5', '44', '', '628', '1495623602');
+INSERT INTO `think_link_data` VALUES ('216', 'B01IHGKAPI', '27.99', '27.99', '4.1', '37', '', '134', '1495623602');
+INSERT INTO `think_link_data` VALUES ('217', 'B01MQ4FKMQ', '0.00', '0.00', '4.0', '7', '', '2339', '1495623602');
+INSERT INTO `think_link_data` VALUES ('218', 'B01JV6LT7G', '25.99', '39.99', '4.3', '32', '', '2798', '1495623602');
+INSERT INTO `think_link_data` VALUES ('219', 'B01IHGWS9E', '27.99', '28.99', '3.3', '31', '', '190', '1495624202');
+INSERT INTO `think_link_data` VALUES ('220', 'B01F6O2MXM', '25.99', '29.99', '3.5', '44', '', '628', '1495624202');
+INSERT INTO `think_link_data` VALUES ('221', 'B01IHGKAPI', '27.99', '27.99', '4.1', '37', '', '134', '1495624202');
+INSERT INTO `think_link_data` VALUES ('222', 'B01MQ4FKMQ', '0.00', '0.00', '4.0', '7', '', '2339', '1495624202');
+INSERT INTO `think_link_data` VALUES ('223', 'B01JV6LT7G', '25.99', '39.99', '4.3', '32', '', '2798', '1495624202');
+INSERT INTO `think_link_data` VALUES ('224', 'B01IHGWS9E', '27.99', '28.99', '3.3', '31', '', '190', '1495624801');
+INSERT INTO `think_link_data` VALUES ('225', 'B01F6O2MXM', '25.99', '29.99', '3.5', '44', '', '628', '1495624801');
+INSERT INTO `think_link_data` VALUES ('226', 'B01IHGKAPI', '27.99', '27.99', '4.1', '37', '', '134', '1495624801');
+INSERT INTO `think_link_data` VALUES ('227', 'B01MQ4FKMQ', '0.00', '0.00', '4.0', '7', '', '2339', '1495624801');
+INSERT INTO `think_link_data` VALUES ('228', 'B01JV6LT7G', '25.99', '39.99', '4.3', '32', '', '2798', '1495624801');
+INSERT INTO `think_link_data` VALUES ('229', 'B01IHGWS9E', '27.99', '28.99', '3.3', '31', '', '190', '1495625402');
+INSERT INTO `think_link_data` VALUES ('230', 'B01F6O2MXM', '25.99', '29.99', '3.5', '44', '', '628', '1495625402');
+INSERT INTO `think_link_data` VALUES ('231', 'B01IHGKAPI', '27.99', '27.99', '4.1', '37', '', '134', '1495625402');
+INSERT INTO `think_link_data` VALUES ('232', 'B01MQ4FKMQ', '0.00', '0.00', '4.0', '7', '', '2339', '1495625402');
+INSERT INTO `think_link_data` VALUES ('233', 'B01JV6LT7G', '25.99', '39.99', '4.3', '32', '', '2798', '1495625402');
 
 -- ----------------------------
 -- Table structure for `think_logistics`
@@ -408,7 +527,7 @@ CREATE TABLE `think_sku_detail` (
   `special_type` varchar(20) NOT NULL DEFAULT '0' COMMENT '是否特殊物品。0.普通，1.带电产品 2.粉末 3.液体',
   `sort_name` varchar(50) NOT NULL COMMENT '品类名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of think_sku_detail

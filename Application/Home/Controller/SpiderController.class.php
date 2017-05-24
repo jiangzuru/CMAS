@@ -22,20 +22,41 @@ class SpiderController extends Controller{
         return $change_rate;
     }
 
-    public function getAmazonLinkData(){
-        $html = 'https://www.amazon.it/dp/B01IHGWS9E';
+    public function spiderLinksData(){
+        $Model = M('Asin');
+        $asin_list = $Model->select();
 
+        $time = time() - 8*3600;
+        foreach ($asin_list as $v){
+            //爬取自己的listing
+            if ($v['nation'] == '意大利'){
+                $html = 'https://www.amazon.it/dp/'.$v['asin'];
+                self::getItalyData($v['asin'],$time);
+            }
+            //爬取竞争对手的listing
+            if ($v['competer_asin'] != ''){
+                $competer_list = $array=explode(",",$v['competer_asin']);
+                foreach ($competer_list as $vv){
+                    self::getItalyData($vv,$time);
+                }
+            }
+        }
+    }
+
+    private function getItalyData($asin,$time){
+        $html = 'https://www.amazon.it/dp/'.$asin;
         $rule = array(
-          'price' => array('#priceblock_ourprice','text'),
-          'rank'=> array('#SalesRank','text'),
-          'star'=> array('.swSprite','text'),
-          'review_count' => array('.crAvgStars>a','text'),
+            'price' => array('#priceblock_ourprice','text'),
+            'rank'=> array('#SalesRank','text'),
+            'star'=> array('.swSprite','text'),
+            'review_count' => array('.crAvgStars>a','text'),
         );
         $data = QueryList::Query($html,$rule)->getData();
 
         //处理排名
         $pos = strpos($data[0]['rank'],'.');
         $result['rank'] = substr($data[0]['rank'],$pos+2,10);
+        $result['rank'] = str_replace('.','',$result['rank']);
         $result['rank'] = intval($result['rank']);
 
         //处理价格
@@ -56,14 +77,26 @@ class SpiderController extends Controller{
         //处理评论数
         $result['review_count'] = intval($data[0]['review_count']);
 
-        $result['time'] = time();
+        $result['time'] = $time;
+        $result['asin'] = $asin;
 
         $Model = M('LinkData');
         $Model->add($result);
     }
 
     public function test(){
-
+        $Model = M('Asin');
+        $asin_list = $Model->select();
+        foreach ($asin_list as $v){
+            //爬取竞争对手的listing
+            if ($v['competer_asin'] != ''){
+                $competer_list = $array=explode(",",$v['competer_asin']);
+                foreach ($competer_list as $vv){
+                    var_dump($vv);
+                }
+            }
+        }
+        exit();
     }
 
 

@@ -91,10 +91,11 @@ CREATE TABLE `think_link_data`(
 	PRIMARY KEY(`id`)
 )ENGINE=innoDB DEFAULT CHARSET=utf8;
 
-
 CREATE TABLE `think_asin`(
 	`id` int(11) NOT NULL AUTO_INCREMENT,
 	`asin` varchar(40) NOT NULL COMMENT 'ASIN码',
-	`nation` varchar(40) NOT NULL COMMENT '站点';
-	`name` varchar(40) NOT NULL COMMENT '名称';
-)
+	`nation` varchar(40) NOT NULL COMMENT '站点',
+	`name` varchar(40) NOT NULL COMMENT '名称',
+	`competer_asin` varchar(100) NOT NULL COMMENT '竞争对手的ASIN码', 
+	PRIMARY KEY(`id`)
+)ENGINE=innoDB DEFAULT CHARSET=utf8;
