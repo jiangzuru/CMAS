@@ -43,6 +43,10 @@ class AsinManageController extends Controller {
             $root['error'] = '站点不能为空';
             $this->ajaxReturn($root);
         }
+        if (trim($data['name']) == ''){
+            $root['error'] = '名称不能为空';
+            $this->ajaxReturn($root);
+        }
 
         $rs = $Model->add($data);
         if ($rs){
@@ -75,6 +79,10 @@ class AsinManageController extends Controller {
         }
         if (trim($data['nation']) == ''){
             $root['error'] = '站点不能为空';
+            $this->ajaxReturn($root);
+        }
+        if (trim($data['name']) == ''){
+            $root['error'] = '名称不能为空';
             $this->ajaxReturn($root);
         }
 

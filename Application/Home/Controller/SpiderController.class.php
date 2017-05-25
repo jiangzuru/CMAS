@@ -46,6 +46,7 @@ class SpiderController extends Controller{
     private function getItalyData($asin,$time){
         $html = 'https://www.amazon.it/dp/'.$asin;
         $rule = array(
+            'sale_price' => array('#priceblock_saleprice','text'),
             'price' => array('#priceblock_ourprice','text'),
             'rank'=> array('#SalesRank','text'),
             'star'=> array('.swSprite','text'),
@@ -59,9 +60,20 @@ class SpiderController extends Controller{
         $result['rank'] = str_replace('.','',$result['rank']);
         $result['rank'] = intval($result['rank']);
 
-        //处理价格
-        $data[0]['price'] = str_replace(',','.',$data[0]['price']);
-        preg_match_all("/(\d+)\.(\d+)/is", $data[0]['price'], $arr);//获取价格的正则
+        //处理价格.如果有促销价格，按促销价格计算
+        if ($data[0]['sale_price'] != ''){
+            $data[0]['sale_price'] = str_replace(',','.',$data[0]['sale_price']);
+            preg_match_all("/(\d+)\.(\d+)/is", $data[0]['sale_price'], $arr);//获取价格的正则
+            //促销价格有时会是纯文字，此时按正常价格计算
+            if (floatval($arr[0][0]) == 0){
+                $arr = array();
+                $data[0]['price'] = str_replace(',','.',$data[0]['price']);
+                preg_match_all("/(\d+)\.(\d+)/is", $data[0]['price'], $arr);
+            }
+        }else{
+            $data[0]['price'] = str_replace(',','.',$data[0]['price']);
+            preg_match_all("/(\d+)\.(\d+)/is", $data[0]['price'], $arr);//获取价格的正则
+        }
         $result['low_price'] = floatval($arr[0][0]);
         if ($arr[0][1]){
             $result['high_price'] = floatval($arr[0][1]);
@@ -85,20 +97,60 @@ class SpiderController extends Controller{
     }
 
     public function test(){
-        $Model = M('Asin');
-        $asin_list = $Model->select();
-        foreach ($asin_list as $v){
-            //爬取竞争对手的listing
-            if ($v['competer_asin'] != ''){
-                $competer_list = $array=explode(",",$v['competer_asin']);
-                foreach ($competer_list as $vv){
-                    var_dump($vv);
-                }
-            }
-        }
-        exit();
+        $str = 'EUR 25,99 - EUR 39,99';
+        preg_match_all("/(\d+)\.(\d+)/is", $str, $arr);
+        var_dump($arr);exit();
     }
 
+    public function spiderTest(){
+        $html = 'https://www.amazon.it/dp/B01JV6LT7G';
+        $rule = array(
+            'sale_price' => array('#priceblock_saleprice','text'),
+            'price' => array('#priceblock_ourprice','text'),
+            'rank'=> array('#SalesRank','text'),
+            'star'=> array('.swSprite','text'),
+            'review_count' => array('.crAvgStars>a','text'),
+        );
+        $data = QueryList::Query($html,$rule)->getData();
+        //处理排名
+        $pos = strpos($data[0]['rank'],'.');
+        $result['rank'] = substr($data[0]['rank'],$pos+2,10);
+        $result['rank'] = str_replace('.','',$result['rank']);
+        $result['rank'] = intval($result['rank']);
+
+        //处理价格
+        if ($data[0]['sale_price'] != ''){
+            $data[0]['sale_price'] = str_replace(',','.',$data[0]['sale_price']);
+            preg_match_all("/(\d+)\.(\d+)/is", $data[0]['sale_price'], $arr);//获取价格的正则
+            if (floatval($arr[0][0]) == 0){
+                $arr = array();
+                $data[0]['price'] = str_replace(',','.',$data[0]['price']);
+                preg_match_all("/(\d+)\.(\d+)/is", $data[0]['price'], $arr);
+            }
+        }else{
+            $data[0]['price'] = str_replace(',','.',$data[0]['price']);
+            preg_match_all("/(\d+)\.(\d+)/is", $data[0]['price'], $arr);//获取价格的正则
+        }
+        $result['low_price'] = floatval($arr[0][0]);
+        if ($arr[0][1]){
+            $result['high_price'] = floatval($arr[0][1]);
+        }else{
+            $result['high_price'] = floatval($arr[0][0]);
+        }
+
+        //处理评分
+        $arr = array();
+        preg_match_all("/(\d+)\.(\d+)/is",$data[1]['star'],$arr);
+        $result['star'] = floatval($arr[0][0]);
+
+        //处理评论数
+        $result['review_count'] = intval($data[0]['review_count']);
+        var_dump($result);
+        exit();
+
+        $Model = M('LinkData');
+        $Model->add($result);
+    }
 
 
 }
