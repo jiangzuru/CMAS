@@ -59,7 +59,8 @@ class AsinTrackController extends Controller {
         $root['data']['rankData']['legend'] = $asin_arr;
         $root['data']['rankData']['xAxis']  = $time_arr;
 
+        $this->ajaxReturn($root);
 //        var_dump($root);
-        exit();
+//        exit();
     }
 }
