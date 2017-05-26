@@ -30,37 +30,84 @@ class AsinTrackController extends Controller {
 
         //爬取的链接数据库
         $Model = M('LinkData');
+        $time_arr = array();
 
+        //取出自己的listing和竞争对手的listing数组
         foreach($asin_arr as $v){
             $condition = array();
             $condition['asin'] = $v;
             $condition['time'] = array('EGT',$time);
 
             //获取某个asin一段时间内的排名数据
-            $rankData = array();
-            $rankData = $Model->where($condition)->field('rank')->select();
-            $temp_arr = array();
-            $temp_arr['name'] = $v;
-            $temp_arr['data'] = $rankData;
-            $root['data']['rankData']['series'][] = $temp_arr;
+            $linkData = array();
+            $linkData = $Model->where($condition)->select();
 
-            //获取某个asin一段时间内的价格数据
+            $sql = "select review_count,DATE_FORMAT(FROM_UNIXTIME(time),'%Y-%m-%d') as time from think_link_data where
+                  time>=".$time." and asin='".$v."' group by DATE_FORMAT(FROM_UNIXTIME(time),'%d %b %Y')";
+            $reviewData = $Model->query($sql);
+            $review_array = array();
+            $review_array['name'] = $v;
+            if ($v == $asinData['asin']){
+                foreach ($reviewData as $dd){
+                    $root['data']['reviewData']['xAxis'][] = $dd['time'];
+                }
+            }
+            foreach ($reviewData as $rr){
+                $review_array['data'][]  = $rr['review_count'];
+            }
+            $root['data']['reviewData']['series'][] = $review_array;
 
+            //临时数组初始化
+            $rank_temp_arr = array();
+            $rank_temp_arr['name'] = $v;
 
+            $low_price_temp_arr = array();
+            $low_price_temp_arr['name'] = $v;
+
+            $high_price_temp_arr = array();
+            $high_price_temp_arr['name'] = $v;
+
+            //如果是自己的listing，把时间计入坐标数组;是竞争对手的就不记时间
+            if ($v == $asinData['asin']){
+                foreach ($linkData as $vv){
+                    $rank_temp_arr['data'][] = $vv['rank'];
+                    $low_price_temp_arr['data'][] = $vv['low_price'];
+                    $high_price_temp_arr['data'][] = $vv['high_price'];
+                    $star_temp_arr['data'][] = $vv['star'];
+                    $time_arr[] = date('Y-m-d H:i',$vv['time']);
+                }
+            }else{
+                foreach ($linkData as $vv){
+                    $rank_temp_arr['data'][] = $vv['rank'];
+                    $low_price_temp_arr['data'][] = $vv['low_price'];
+                    $high_price_temp_arr['data'][] = $vv['high_price'];
+                    $star_temp_arr['data'][] = $vv['star'];
+                }
+            }
+            $root['data']['rankData']['series'][] = $rank_temp_arr;
+            $root['data']['priceData']['series'][] = $low_price_temp_arr;
+            $root['data']['priceData']['series'][] = $high_price_temp_arr;
         }
 
-        $map = array();
-        $map['asin'] = trim($asinData['asin']);
-        $map['time'] = array('EGT',$time);
-//        $time_arr = $Model->where($map)->field('time')->select();
-        $sql = "select FROM_UNIXTIME(v.time) from think_link_data as v where v.asin='".trim($asinData['asin'])."' and v.time>=".$time;
-        $time_arr = $Model->query($sql);
+        $root['data']['reviewData']['legend'] = $asin_arr;
 
         $root['data']['rankData']['legend'] = $asin_arr;
         $root['data']['rankData']['xAxis']  = $time_arr;
 
+        $root['data']['priceData']['legend'] = $asin_arr;
+        $root['data']['priceData']['xAxis']  = $time_arr;
+
         $this->ajaxReturn($root);
-//        var_dump($root);
-//        exit();
+    }
+
+    public function test(){
+        $time = time();
+        $time = $time - 8 * 3600 - (7 * 24 *3600);//计算7天前的时间戳
+        $sql = "select review_count,DATE_FORMAT(FROM_UNIXTIME(time),'%Y-%m-%d') as time from think_link_data where
+                  time>=".$time." and asin='B01F6O2MXM' group by DATE_FORMAT(FROM_UNIXTIME(time),'%d %b %Y')";
+        $Model = M('LinkData');
+        $data = $Model->query($sql);
+
+        var_dump($data);exit();
     }
 }
