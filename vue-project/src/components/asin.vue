@@ -29,7 +29,7 @@
                         sortable
                 >
                     <template scope="scope">
-                        <el-button @click="showDetail(scope.row)" type="text" size="small">
+                        <el-button @click="showChartPage(scope.row)" type="text" size="small">
                             {{scope.row.name}}
                         </el-button>
                     </template>
@@ -67,27 +67,47 @@
                 <el-button type="primary" @click="toEditAsin(false)">新增</el-button>
             </div>
         </div>
-    <!--<sku-detail v-if="skuDetail.isShow"></sku-detail>-->
 
         </el-card>
+        <div class="asin-chart" v-if="chartPageIsShow">
+            <div class="chart-contain">
+                <div class="background" @click="hideChart"></div>
+                    <el-row type="flex" justify="center" style="width: 80%;margin: auto">
+                    <el-col :span="24" class="context">
+                        <el-tabs type="border-card">
+                            <el-tab-pane label="价格">
+                                <div id="priceChart" style="width: 700px;height: 550px;"></div>
+                            </el-tab-pane>
+                            <el-tab-pane label="排名">
+                                <div id="rankChart" style="width: 700px;height: 550px;"></div></el-tab-pane>
+                            <el-tab-pane label="评论">
+                                <div id="commentChart" style="width: 700px;height: 550px;"></div></el-tab-pane>
+                            <el-tab-pane label="评分">
+                                <div id="markChart" style="width: 700px;height: 550px;"></div></el-tab-pane>
+                        </el-tabs>
+
+                    </el-col>
+                    </el-row>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+    import echarts from 'echarts'
 import {mapState,mapMutations} from 'vuex'
-//    import skuDetail from '@/components/skuDetail'
     export default {
         name: 'asin',
-//        components:{skuDetail},
         data () {
             return {
                 asinData: [],
-                showDetailId: 0,
+                showChartPageId: 0,
                 loadingTable:true,
                 searchStr:'',
                 tableShowData:[],
                 filterAsin:[],
-                filterNation:[]
+                filterNation:[],
+                chartPageIsShow:false,
             }
         },
         computed: {
@@ -125,7 +145,6 @@ import {mapState,mapMutations} from 'vuex'
                                 }
                                 this.filterAsin = tAsin;
                                 this.filterNation = tNation
-                                console.log(this.filterAsin)
 
                             } else {
                                 //TODO
@@ -134,9 +153,15 @@ import {mapState,mapMutations} from 'vuex'
                         }
                     )
             },
-            showDetail(row){
-                row.isShow = true;
-//                this.updateSkuDetail({skuDetail:row})
+            showChartPage(row){
+                let id = row.id
+                this.getSpiderData(id).then(data=>{
+                    if(data.body.status == 0){
+                        this.renderAllChart(data.body.data)
+                    }
+
+                })
+                this.chartPageIsShow = true
             },
             filterTag(value, row) {
                 return row.nation === value;
@@ -209,8 +234,303 @@ import {mapState,mapMutations} from 'vuex'
                         return JSON.stringify(item).toLowerCase().indexOf(this.searchStr.toLowerCase()) >= 0
                     })
                 }
+            },
+            hideChart(){
+                this.chartPageIsShow=false
+            },
+            getSpiderData(id){
+                return this.$http({
+                    url:'/home/asinTrack/getSpiderData',
+                    params:{
+                        id:id
+                    }
+                })
+            },
+            renderPriceChart(priceData){
+                priceData.series.map(item=>item.type = 'line')
+                var option = {
+                    title: {
+                        text: '价格图'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:priceData.legend
+                    },
+                    grid: {
+                        top:'12%',
+                        left: '1%',
+                        right: '10%',
+                        bottom: '10%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    dataZoom: [
+                        {
+                            id: 'dataZoomX',
+                            type: 'inside',
+                            xAxisIndex: [0],
+                            filterMode: 'filter',
+                            show:true,
+                        },
+                        {
+                            id: 'dataZoomX2',
+                            type: 'slider',
+                            xAxisIndex: [0],
+                            filterMode: 'filter',
+                            show:true,
+                        },
+                        {
+                            id: 'dataZoomY',
+                            type: 'slider',
+                            yAxisIndex: [0],
+                            filterMode: 'filter'
+                        }
+                    ],
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: priceData.xAxis
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: priceData.series
+                };
 
 
+                let priceChart = echarts.init(document.getElementById('priceChart'))
+                priceChart.setOption(option)
+            },
+            renderRankChart(rankData){
+                rankData.series.map(item=>item.type = 'line')
+                var option = {
+                    title: {
+                        text: '折线图堆叠'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:rankData.legend
+                    },
+                    grid: {
+                        top:'12%',
+                        left: '1%',
+                        right: '10%',
+                        bottom: '10%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    dataZoom: [
+                        {
+                            id: 'dataZoomX',
+                            type: 'inside',
+                            xAxisIndex: [0],
+                            filterMode: 'filter',
+                            show:true,
+                        },
+                        {
+                            id: 'dataZoomX2',
+                            type: 'slider',
+                            xAxisIndex: [0],
+                            filterMode: 'filter',
+                            show:true,
+                        },
+                        {
+                            id: 'dataZoomY',
+                            type: 'slider',
+                            yAxisIndex: [0],
+                            filterMode: 'filter'
+                        }
+                    ],
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: rankData.xAxis
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: rankData.series
+                };
+
+
+                let rankChart = echarts.init(document.getElementById('rankChart'))
+                rankChart.setOption(option)
+            },
+            renderCommentChart(reviewData){
+                reviewData.series.map(item=>item.type = 'bar')
+                var option = {
+                    title: {
+                        text: '折线图堆叠'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:reviewData.legend
+                    },
+                    grid: {
+                        top:'12%',
+                        left: '1%',
+                        right: '10%',
+                        bottom: '10%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    dataZoom: [
+                        {
+                            id: 'dataZoomX',
+                            type: 'inside',
+                            xAxisIndex: [0],
+                            filterMode: 'filter',
+                            show:true,
+                        },
+                        {
+                            id: 'dataZoomX2',
+                            type: 'slider',
+                            xAxisIndex: [0],
+                            filterMode: 'filter',
+                            show:true,
+                        },
+                        {
+                            id: 'dataZoomY',
+                            type: 'slider',
+                            yAxisIndex: [0],
+                            filterMode: 'filter'
+                        }
+                    ],
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: true,
+                        data: reviewData.xAxis
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: reviewData.series
+                };
+
+
+                let commentChart = echarts.init(document.getElementById('commentChart'))
+                commentChart.setOption(option)
+            },
+            renderMarkChart(){
+                var option = {
+                    title: {
+                        text: '折线图堆叠'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+                    },
+                    grid: {
+                        top:'12%',
+                        left: '0%',
+                        right: '10%',
+                        bottom: '10%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+//                    dataZoom: [
+//                        {
+//                            id: 'dataZoomX',
+//                            type: 'inside',
+//                            xAxisIndex: [0],
+//                            filterMode: 'filter',
+//                            show:true,
+//                        },
+//                        {
+//                            id: 'dataZoomX2',
+//                            type: 'slider',
+//                            xAxisIndex: [0],
+//                            filterMode: 'filter',
+//                            show:true,
+//                        },
+//                        {
+//                            id: 'dataZoomY',
+//                            type: 'slider',
+//                            yAxisIndex: [0],
+//                            filterMode: 'filter'
+//                        }
+//                    ],
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: true,
+                        data: ['周一','周二','周三','周四','周五','周六','周日']
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name:'邮件营销',
+                            type:'bar',
+//                            stack: '总量',
+                            data:[120, 132, 101, 134, 90, 230, 210]
+                        },
+                        {
+                            name:'邮件营销',
+                            type:'bar',
+//                            stack: '总量',
+                            data:[10, 132, 101, 134, 90, 230, 210]
+                        },
+                        {
+                            name:'联盟广告',
+                            type:'bar',
+//                            stack: '总量',
+                            data:[220, 182, 191, 234, 290, 330, 310]
+                        },
+                        {
+                            name:'视频广告',
+                            type:'bar',
+//                            stack: '总量',
+                            data:[150, 232, 201, 154, 190, 330, 410]
+                        },
+                        {
+                            name:'直接访问',
+                            type:'bar',
+//                            stack: '总量',
+                            data:[320, 332, 301, 334, 390, 330, 320]
+                        },
+                        {
+                            name:'搜索引擎',
+                            type:'bar',
+//                            stack: '总量',
+                            data:[1, 2, 3, 4, 5, 6, 7]
+                        }
+                    ]
+                };
+
+
+                let markChart = echarts.init(document.getElementById('markChart'))
+                markChart.setOption(option)
+            },
+            renderAllChart(renderData){
+                this.renderPriceChart(renderData.priceData)
+                this.renderRankChart(renderData.rankData)
+                this.renderCommentChart(renderData.reviewData)
+                this.renderMarkChart()
             }
         },
         mounted(){
@@ -225,7 +545,7 @@ import {mapState,mapMutations} from 'vuex'
         margin: 20px;
     }
 
-    .asinDetail {
+    .asin-chart {
         position: fixed;
         top: 0;
         left: 0;
@@ -234,17 +554,19 @@ import {mapState,mapMutations} from 'vuex'
         z-index: 100;
     }
 
-    .asinDetail .background {
+    .asin-chart .background {
         position: absolute;
         height: 100%;
         width: 100%;
         background: rgba(0, 0, 0, 0.5);
     }
 
-    .asinDetail .context {
+    .asin-chart .context {
         top: 10%;
         background: #fff;
         padding: 50px;
         border-radius: 5px;
     }
+
+
 </style>
