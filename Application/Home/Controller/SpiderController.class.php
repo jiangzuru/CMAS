@@ -49,8 +49,8 @@ class SpiderController extends Controller{
             'sale_price' => array('#priceblock_saleprice','text'),
             'price' => array('#priceblock_ourprice','text'),
             'rank'=> array('#SalesRank','text'),
-            'star'=> array('.swSprite','text'),
-            'review_count' => array('.crAvgStars>a','text'),
+            'star'=> array('#summaryStars>a','title'),
+            'review_count' => array('#summaryStars>a','text','-span'),
         );
         $data = QueryList::Query($html,$rule)->getData();
 
@@ -83,7 +83,7 @@ class SpiderController extends Controller{
 
         //处理评分
         $arr = array();
-        preg_match_all("/(\d+)\.(\d+)/is",$data[1]['star'],$arr);
+        preg_match_all("/(\d+)\.(\d+)/is",$data[0]['star'],$arr);
         $result['star'] = floatval($arr[0][0]);
 
         //处理评论数
@@ -103,13 +103,13 @@ class SpiderController extends Controller{
     }
 
     public function spiderTest(){
-        $html = 'https://www.amazon.it/dp/B01JV6LT7G';
+        $html = 'https://www.amazon.it/dp/B00A7YHIQS';
         $rule = array(
             'sale_price' => array('#priceblock_saleprice','text'),
             'price' => array('#priceblock_ourprice','text'),
             'rank'=> array('#SalesRank','text'),
-            'star'=> array('.swSprite','text'),
-            'review_count' => array('.crAvgStars>a','text'),
+            'star'=> array('#summaryStars>a','title'),
+            'review_count' => array('#summaryStars>a','text','-span'),
         );
         $data = QueryList::Query($html,$rule)->getData();
         //处理排名
@@ -140,12 +140,13 @@ class SpiderController extends Controller{
 
         //处理评分
         $arr = array();
-        preg_match_all("/(\d+)\.(\d+)/is",$data[1]['star'],$arr);
+        preg_match_all("/(\d+)\.(\d+)/is",$data[0]['star'],$arr);
         $result['star'] = floatval($arr[0][0]);
 
         //处理评论数
         $result['review_count'] = intval($data[0]['review_count']);
         var_dump($result);
+        var_dump($data);
         exit();
 
         $Model = M('LinkData');
