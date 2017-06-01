@@ -32,7 +32,6 @@ class AsinManageController extends Controller {
             'status' => 0,
             'error'  => ''
         );
-
         $Model = M('Asin');
         $data  = I('request.');
         if (trim($data['asin']) == ''){
@@ -45,6 +44,15 @@ class AsinManageController extends Controller {
         }
         if (trim($data['name']) == ''){
             $root['error'] = '名称不能为空';
+            $this->ajaxReturn($root);
+        }
+
+        $competer_asin_arr = explode(',',$data['competer_asin']);
+        $competer_name_arr = explode(',',$data['competer_name']);
+        $asin_count = count($competer_asin_arr);
+        $name_count = count($competer_name_arr);
+        if ($asin_count != $name_count){
+            $root['error'] = '竞争对手asin数与名称数不匹配';
             $this->ajaxReturn($root);
         }
 
@@ -86,6 +94,15 @@ class AsinManageController extends Controller {
             $this->ajaxReturn($root);
         }
 
+        $competer_asin_arr = explode(',',$data['competer_asin']);
+        $competer_name_arr = explode(',',$data['competer_name']);
+        $asin_count = count($competer_asin_arr);
+        $name_count = count($competer_name_arr);
+        if ($asin_count != $name_count){
+            $root['error'] = '竞争对手asin数与名称数不匹配';
+            $this->ajaxReturn($root);
+        }
+
         $rs = $Model->where('id='.$data['id'])->save($data);
         if ($rs){
             $root['status'] = 1;
@@ -94,7 +111,6 @@ class AsinManageController extends Controller {
             $root['status'] = 0;
             $root['error']  = '编辑asin失败';
         }
-
         $this->ajaxReturn($root);
     }
 

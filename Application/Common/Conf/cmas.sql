@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50548
 File Encoding         : 65001
 
-Date: 2017-06-01 17:24:33
+Date: 2017-06-01 18:35:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,6 +24,7 @@ CREATE TABLE `think_asin` (
   `asin` varchar(40) NOT NULL COMMENT 'ASIN码',
   `nation` varchar(40) NOT NULL COMMENT '站点',
   `name` varchar(40) NOT NULL COMMENT '名称',
+  `competer_name` varchar(100) NOT NULL COMMENT '竞争对手名称',
   `competer_asin` varchar(100) NOT NULL COMMENT '竞争对手的ASIN码',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
@@ -31,11 +32,11 @@ CREATE TABLE `think_asin` (
 -- ----------------------------
 -- Records of think_asin
 -- ----------------------------
-INSERT INTO `think_asin` VALUES ('2', 'B01F6O2MXM', '意大利', 'XZ01-F2', '');
-INSERT INTO `think_asin` VALUES ('3', 'B00A7YHIQS', '意大利', '黄运动鞋', 'B01MQ4FKMQ,B01JV6LT7G');
-INSERT INTO `think_asin` VALUES ('4', 'B01IHGWS9E', '意大利', 'XZ17意大利01', '');
-INSERT INTO `think_asin` VALUES ('5', 'B01IHGJLCG', '意大利', 'XZ17意大利02', '');
-INSERT INTO `think_asin` VALUES ('6', 'B01IHGKAPI', '意大利', 'XZ17意大利03', '');
+INSERT INTO `think_asin` VALUES ('2', 'B01F6O2MXM', '意大利', 'XZ01-F2', '', '');
+INSERT INTO `think_asin` VALUES ('3', 'B00A7YHIQS', '意大利', '黄运动鞋', '对手1,对手2', 'B01MQ4FKMQ,B01JV6LT7G');
+INSERT INTO `think_asin` VALUES ('4', 'B01IHGWS9E', '意大利', 'XZ17意大利01', '', '');
+INSERT INTO `think_asin` VALUES ('5', 'B01IHGJLCG', '意大利', 'XZ17意大利02', '', '');
+INSERT INTO `think_asin` VALUES ('6', 'B01IHGKAPI', '意大利', 'XZ17意大利03', '', '');
 
 -- ----------------------------
 -- Table structure for `think_change_rate`
@@ -238,7 +239,7 @@ CREATE TABLE `think_link_data` (
   `rank` int(8) NOT NULL COMMENT '排名',
   `time` int(11) NOT NULL COMMENT '时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=756 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=763 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of think_link_data
@@ -998,6 +999,13 @@ INSERT INTO `think_link_data` VALUES ('752', 'B01JV6LT7G', '19.99', '39.99', '4.
 INSERT INTO `think_link_data` VALUES ('753', 'B01IHGWS9E', '26.99', '28.99', '3.3', '32', '', '314', '1496282402');
 INSERT INTO `think_link_data` VALUES ('754', 'B01IHGJLCG', '26.99', '28.99', '3.8', '26', '', '149', '1496282402');
 INSERT INTO `think_link_data` VALUES ('755', 'B01IHGKAPI', '26.99', '26.99', '4.1', '38', '', '75', '1496282402');
+INSERT INTO `think_link_data` VALUES ('756', 'B01F6O2MXM', '25.99', '29.99', '3.5', '44', '', '1066', '1496286001');
+INSERT INTO `think_link_data` VALUES ('757', 'B00A7YHIQS', '26.47', '26.47', '3.7', '19', '', '85', '1496286001');
+INSERT INTO `think_link_data` VALUES ('758', 'B01MQ4FKMQ', '27.11', '27.11', '4.0', '7', '', '765', '1496286001');
+INSERT INTO `think_link_data` VALUES ('759', 'B01JV6LT7G', '19.99', '39.99', '4.3', '32', '', '1196', '1496286001');
+INSERT INTO `think_link_data` VALUES ('760', 'B01IHGWS9E', '26.99', '28.99', '3.3', '32', '', '314', '1496286001');
+INSERT INTO `think_link_data` VALUES ('761', 'B01IHGJLCG', '26.99', '28.99', '3.8', '26', '', '149', '1496286001');
+INSERT INTO `think_link_data` VALUES ('762', 'B01IHGKAPI', '26.99', '26.99', '4.1', '38', '', '75', '1496286001');
 
 -- ----------------------------
 -- Table structure for `think_logistics`
