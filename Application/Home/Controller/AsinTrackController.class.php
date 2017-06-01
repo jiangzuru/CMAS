@@ -25,8 +25,12 @@ class AsinTrackController extends Controller {
         //Asin数据
         $asinModel = M('Asin');
         $asinData  = $asinModel->where('id='.$input['id'])->find();
-        $asin_arr = explode(',',$asinData['competer_asin']);//竞争对手asin
-        $asin_arr[] = trim($asinData['asin']);//把自己的ASIN和竞争对手asin拼起来
+        $asin_arr[] = trim($asinData['asin']);//自己的asin
+        $competer_arr = explode(',',$asinData['competer_asin']);//竞争对手asin
+        if ($competer_arr[0] == ''){//如果没有竞争对手，设为空
+            $competer_arr = array();
+        }
+        $asin_arr = array_merge($asin_arr,$competer_arr);//合并asin
 
         //爬取的链接数据库
         $Model = M('LinkData');
@@ -42,20 +46,31 @@ class AsinTrackController extends Controller {
             $linkData = array();
             $linkData = $Model->where($condition)->select();
 
-            $sql = "select review_count,DATE_FORMAT(FROM_UNIXTIME(time),'%Y-%m-%d') as time from think_link_data where
+            $sql = "select review_count,star,DATE_FORMAT(FROM_UNIXTIME(time),'%Y-%m-%d') as time from think_link_data where
                   time>=".$time." and asin='".$v."' group by DATE_FORMAT(FROM_UNIXTIME(time),'%d %b %Y')";
             $reviewData = $Model->query($sql);
+            //初始化评论数临时数组
             $review_array = array();
             $review_array['name'] = $v;
+
+            //初始化评分临时数组
+            $star_array = array();
+            $star_array['name'] = $v;
+
+            //是自己的asin，就记录时间
             if ($v == $asinData['asin']){
                 foreach ($reviewData as $dd){
                     $root['data']['reviewData']['xAxis'][] = $dd['time'];
+                    $root['data']['starData']['xAxis'][] = $dd['time'];
                 }
             }
             foreach ($reviewData as $rr){
                 $review_array['data'][]  = $rr['review_count'];
+                $star_array['data'][]  = $rr['star'];
             }
+            //记录评论数
             $root['data']['reviewData']['series'][] = $review_array;
+            $root['data']['starData']['series'][] = $star_array;
 
             //临时数组初始化
             $rank_temp_arr = array();
@@ -90,6 +105,7 @@ class AsinTrackController extends Controller {
         }
 
         $root['data']['reviewData']['legend'] = $asin_arr;
+        $root['data']['starData']['legend'] = $asin_arr;
 
         $root['data']['rankData']['legend'] = $asin_arr;
         $root['data']['rankData']['xAxis']  = $time_arr;
