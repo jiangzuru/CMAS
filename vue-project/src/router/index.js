@@ -19,7 +19,7 @@ import Test from '@/components/test'
 
 
 Vue.use(Router)
-let checkLogin = false
+let checkLogin = true
 let router = new Router({
   routes: [
       {

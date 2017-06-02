@@ -7,13 +7,13 @@
                 <el-tab-pane label="登录" name="login">
                     <el-form :model="loginForm"  label-width="100px" class="">
                         <el-form-item label="用户名">
-                            <el-input type="text" v-model="loginForm.account" auto-complete="off"></el-input>
+                            <el-input type="text" v-model="loginForm.account"></el-input>
                         </el-form-item>
                         <el-form-item label="密码">
                             <el-input type="password" v-model="loginForm.password" auto-complete="off"></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="">登录</el-button>
+                            <el-button type="primary" @click="login">登录</el-button>
                         </el-form-item>
                     </el-form>
                 </el-tab-pane>
@@ -26,7 +26,7 @@
                             <el-input type="password" v-model="loginForm.password" auto-complete="off"></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="">提交注册</el-button>
+                            <el-button type="primary" @click="register">提交注册</el-button>
                         </el-form-item>
                     </el-form>
                 </el-tab-pane>
@@ -63,6 +63,51 @@ import {mapState,mapMutations} from 'vuex'
             ...mapMutations([
                 'updateEditAsinData',
             ]),
+            login(){
+                this.$http({
+                    url:'/home/users/login',
+                    params:this.loginForm
+                }).then(res=>{
+                    if(res.body.status == 1){
+                        this.$notify({
+                            title: '登录成功',
+                            message: res.body.message,
+                            type: 'success'
+                        });
+                        setTimeout(function () {
+                            this.$router.push({path:'/index'})
+                        }.bind(this),1500)
+                    }else{
+                        this.$notify({
+                            title: '登录失败',
+                            message: res.body.message,
+                            type: 'error'
+                        });
+                    }
+                })
+
+            },
+            register(){
+                this.$http({
+                    url:'/home/users/register',
+                    params:this.loginForm
+                }).then(res=>{
+                    if(res.body.status == 1){
+                        this.$notify({
+                            title: '注册成功,请点击登录',
+                            message: res.body.message,
+                            type: 'success'
+                        });
+                        this.action = 'login'
+                    }else{
+                        this.$notify({
+                            title: '注册失败',
+                            message: res.body.message,
+                            type: 'error'
+                        });
+                    }
+                })
+            },
         },
         mounted(){
         }
