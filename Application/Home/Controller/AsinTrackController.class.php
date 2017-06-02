@@ -52,7 +52,7 @@ class AsinTrackController extends Controller {
             $linkData = $Model->where($condition)->select();
 
             $sql = "select review_count,star,DATE_FORMAT(FROM_UNIXTIME(time),'%Y-%m-%d') as time from think_link_data where
-                  time>=".$time." and asin='".$k."' group by DATE_FORMAT(FROM_UNIXTIME(time),'%d %b %Y')";
+                  time>=".$time." and asin='".$k."' group by DATE_FORMAT(FROM_UNIXTIME(time),'%d %b %Y') order by time";
             $reviewData = $Model->query($sql);
             //初始化评论数临时数组
             $review_array = array();
