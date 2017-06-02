@@ -73,6 +73,7 @@ store.registerModule('manager', {
             asin:'',
             nation:'',
             competer_asin:'',
+            competer_name:'',
         },
     },
     mutations: {
@@ -154,7 +155,8 @@ store.registerModule('manager', {
             name:'',
             asin:'',
             nation:'',
-            competer_asin:'',}}){
+            competer_asin:'',
+            competer_name:'',}}){
             console.error(payload)
             state.eidtAsinData = payload.asinData;
         }

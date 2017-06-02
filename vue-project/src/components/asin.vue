@@ -50,7 +50,13 @@
                 </el-table-column>
                 <el-table-column
                         prop="competer_asin"
-                        label="竞争对手"
+                        label="竞争对手ASIN"
+                        sortable
+                        width="300">
+                </el-table-column>
+                <el-table-column
+                        prop="competer_name"
+                        label="竞争对手名字"
                         sortable
                         width="300">
                 </el-table-column>
@@ -75,15 +81,16 @@
                     <el-row type="flex" justify="center" style="width: 80%;margin: auto">
                     <el-col :span="24" class="context">
                         <el-tabs type="border-card">
+                                 <!--@tab-click="test"-->
                             <el-tab-pane label="价格">
-                                <div id="priceChart" style="width: 700px;height: 550px;"></div>
+                                <div id="priceChart" style="width: 1200px;height: 550px;"></div>
                             </el-tab-pane>
-                            <el-tab-pane label="排名">
-                                <div id="rankChart" style="width: 700px;height: 550px;"></div></el-tab-pane>
-                            <el-tab-pane label="评论">
-                                <div id="commentChart" style="width: 700px;height: 550px;"></div></el-tab-pane>
-                            <el-tab-pane label="评分">
-                                <div id="markChart" style="width: 700px;height: 550px;"></div></el-tab-pane>
+                            <el-tab-pane label="排名" >
+                                <div id="rankChart" style="width: 1200px;height: 550px;"></div></el-tab-pane>
+                            <el-tab-pane label="评论/评分">
+                                <div id="commentChart" style="width: 1200px;height: 550px;"></div></el-tab-pane>
+                            <!--<el-tab-pane label="评分">-->
+                                <!--<div id="markChart" style="width: 700px;height: 550px;"></div></el-tab-pane>-->
                         </el-tabs>
 
                     </el-col>
@@ -108,6 +115,7 @@ import {mapState,mapMutations} from 'vuex'
                 filterAsin:[],
                 filterNation:[],
                 chartPageIsShow:false,
+                renderData:{}
             }
         },
         computed: {
@@ -119,6 +127,12 @@ import {mapState,mapMutations} from 'vuex'
             ...mapMutations([
                 'updateEditAsinData',
             ]),
+            test(){
+                console.log(111)
+                setTimeout(function () {
+                    this.renderAllChart(this.renderData)
+                }.bind(this),1000)
+            },
             getAsinData(){
                 this.$http({
                     url: '/home/asinManage/index',
@@ -157,6 +171,7 @@ import {mapState,mapMutations} from 'vuex'
                 let id = row.id
                 this.getSpiderData(id).then(data=>{
                     if(data.body.status == 0){
+                        this.renderData = data.body.data
                         this.renderAllChart(data.body.data)
                     }
 
@@ -311,7 +326,7 @@ import {mapState,mapMutations} from 'vuex'
                 rankData.series.map(item=>item.type = 'line')
                 var option = {
                     title: {
-                        text: '折线图堆叠'
+                        text: '排名折线图'
                     },
                     tooltip: {
                         trigger: 'axis'
@@ -359,20 +374,23 @@ import {mapState,mapMutations} from 'vuex'
                         data: rankData.xAxis
                     },
                     yAxis: {
-                        type: 'value'
+                        type: 'value',
+                        inverse: true
                     },
                     series: rankData.series
                 };
 
 
                 let rankChart = echarts.init(document.getElementById('rankChart'))
+                rankChart.dispose();
+                rankChart = echarts.init(document.getElementById('rankChart'))
+
                 rankChart.setOption(option)
             },
-            renderCommentChart(reviewData){
-                reviewData.series.map(item=>item.type = 'bar')
+            renderCommentChart(reviewData,starData){
                 var option = {
                     title: {
-                        text: '折线图堆叠'
+                        text: '评论/评分'
                     },
                     tooltip: {
                         trigger: 'axis'
@@ -407,25 +425,35 @@ import {mapState,mapMutations} from 'vuex'
                             filterMode: 'filter',
                             show:true,
                         },
-                        {
-                            id: 'dataZoomY',
-                            type: 'slider',
-                            yAxisIndex: [0],
-                            filterMode: 'filter'
-                        }
                     ],
                     xAxis: {
                         type: 'category',
                         boundaryGap: true,
                         data: reviewData.xAxis
                     },
-                    yAxis: {
-                        type: 'value'
+                    yAxis: [{
+                        type: 'value',
+                        name:'评论（个）'
                     },
-                    series: reviewData.series
+                    {
+                        type: 'value',
+                        name:'评分（分）'
+                    }
+                    ],
+                    series:[]
                 };
+                reviewData.series.map(item=>{
+                    item.type = 'bar'
+                    option.series.push(item)
+                })
+                starData.series.map(item=>{
+                    item.type = 'line';
+                    item.yAxisIndex = 1;
+                    option.series.push(item)
+                })
 
 
+console.log(option.series);
                 let commentChart = echarts.init(document.getElementById('commentChart'))
                 commentChart.setOption(option)
             },
@@ -529,8 +557,8 @@ import {mapState,mapMutations} from 'vuex'
             renderAllChart(renderData){
                 this.renderPriceChart(renderData.priceData)
                 this.renderRankChart(renderData.rankData)
-                this.renderCommentChart(renderData.reviewData)
-                this.renderMarkChart()
+                this.renderCommentChart(renderData.reviewData,renderData.starData)
+//                this.renderMarkChart()
             }
         },
         mounted(){

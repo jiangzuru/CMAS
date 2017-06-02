@@ -24,6 +24,10 @@
         <el-input v-model="form.competer_asin"></el-input>
         <span>可以输入多个ASIN，以‘,’(半角逗号)分割</span>
       </el-form-item>
+      <el-form-item label="竞争对手名字" >
+        <el-input v-model="form.competer_name"></el-input>
+        <span>可以输入多个ASIN，以‘,’(半角逗号)分割</span>
+      </el-form-item>
 
       <el-form-item>
         <el-button type="success" @click="onSubmit">保存</el-button>

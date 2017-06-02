@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Login from '@/components/login'
 import Index from '@/components/index'
 import Sku from '@/components/sku'
 import Fbafee from  '@/components/fbafee'
@@ -17,15 +18,18 @@ import EditAsin from '@/components/editAsin'
 import Test from '@/components/test'
 
 
-
-
 Vue.use(Router)
-
-export default new Router({
+let checkLogin = false
+let router = new Router({
   routes: [
       {
           path: '/',
           redirect:'/index'
+      },
+      {
+          path:'/login',
+          name:'login',
+          component:Login
       },
       {
           path: '/index',
@@ -110,3 +114,26 @@ export default new Router({
       }
   ]
 })
+router.beforeEach(function (to, from, next) {
+    var login = getCookie('userinfo_account')
+    var toUrl = to.path
+    if(!checkLogin){
+        next()
+        return
+    }
+    if(login || toUrl =='/login'){
+        next()
+    }else{
+        next('/login');
+    }
+})
+
+function getCookie(name) {
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+    if(arr=document.cookie.match(reg))
+        return unescape(arr[2]);
+    else
+        return null;
+}
+
+export default router
