@@ -26,7 +26,9 @@ class SpiderController extends Controller{
         $Model = M('Asin');
         $asin_list = $Model->select();
 
-        $time = time() - 8*3600;
+        date_default_timezone_set("Etc/GMT-8");
+
+        $time = time();
         foreach ($asin_list as $v){
             //爬取自己的listing
             if ($v['nation'] == '意大利'){
@@ -97,9 +99,11 @@ class SpiderController extends Controller{
     }
 
     public function test(){
-        $str = 'EUR 25,99 - EUR 39,99';
-        preg_match_all("/(\d+)\.(\d+)/is", $str, $arr);
-        var_dump($arr);exit();
+        date_default_timezone_set("Etc/GMT-8");
+
+        $time = time();
+        $date = date('Y-m-d H:i:',$time);
+        var_dump($date);
     }
 
     public function spiderTest(){

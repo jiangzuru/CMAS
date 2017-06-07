@@ -202,8 +202,11 @@ class SkuDetailController extends Controller {
             $commission_data = $commissionModel->where($map)->field('value,lowest')->find();
             $nation['commission_rate'] = floatval($commission_data['value']);
             $nation['commission_lowest'] = floatval($commission_data['lowest']);
+            //如果没有该品类的佣金，则用15%替代
+            if($nation['commission_rate'] <= 0){
+                $nation['commission_rate'] = 0.15;
+            }
         }
-
         $result_array = array();
         $result_array['data'] = array();
         $i = 0;
@@ -363,8 +366,8 @@ class SkuDetailController extends Controller {
             $temp_Fee['type_name'] = $v['type_name'];
             $temp_Fee['price'] = $v['price'];
             array_push($oversea_Fee,$temp_Fee);
+            break;
         }
-
         return $oversea_Fee;
     }
 
