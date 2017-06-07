@@ -203,7 +203,6 @@ import {mapState,mapMutations} from 'vuex'
                     this.deleteAsin(row.id)
                         .then((status)=>{
                             if(status == 1){
-
                                 this.$message({
                                     type: 'success',
                                     message: '删除成功!'
